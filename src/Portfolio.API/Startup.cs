@@ -1,5 +1,4 @@
-﻿using System;
-using HotChocolate;
+﻿using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,10 +26,13 @@ namespace Portfolio.API
             services.AddGraphQL(s => SchemaBuilder.New()
                 .AddServices(s)
                 .AddQueryType(d => d.Name("Queries"))
-                .AddType<GeneralQuery>()
+                .AddType<WorkQueries>()
+                .AddType<TagQueries>()
+                .AddType<AuthorQueries>()
                 .AddMutationType(d => d.Name("Mutations"))
-                .AddType<GeneralMutation>()
+                .AddType<WorkMutations>()
                 .AddType<TagMutations>()
+                .AddType<AuthorMutations>()
                 .Create());
         }
 

@@ -11,9 +11,9 @@ namespace Portfolio.API.Mutations
     public class TagMutations
     {
         private readonly ApplicationDataService _data;
-        private readonly ILogger<GeneralMutation> _logger;
+        private readonly ILogger<TagMutations> _logger;
 
-        public TagMutations(ApplicationDataService data, ILogger<GeneralMutation> logger)
+        public TagMutations(ApplicationDataService data, ILogger<TagMutations> logger)
         {
             _data = data;
             _logger = logger;

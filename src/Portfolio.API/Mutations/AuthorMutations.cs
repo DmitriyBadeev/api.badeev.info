@@ -8,29 +8,15 @@ using Portfolio.Infrastructure.Services;
 namespace Portfolio.API.Mutations
 {
     [ExtendObjectType(Name = "Mutations")]
-    public class GeneralMutation
+    public class AuthorMutations
     {
         private readonly ApplicationDataService _data;
-        private readonly ILogger<GeneralMutation> _logger;
+        private readonly ILogger<AuthorMutations> _logger;
 
-        public GeneralMutation(ApplicationDataService data, ILogger<GeneralMutation> logger)
+        public AuthorMutations(ApplicationDataService data, ILogger<AuthorMutations> logger)
         {
             _data = data;
             _logger = logger;
-        }
-
-        public Work CreateWork(CreateWorkInput inputWork)
-        {
-            _logger.LogInformation("Creating work");
-            var work = new MapperConfiguration(cfg => cfg.CreateMap<CreateWorkInput, Work>())
-                .CreateMapper()
-                .Map<Work>(inputWork); 
-
-            var createdWork = _data.EfContext.Works.Add(work);
-            _data.EfContext.SaveChanges();
-
-            _logger.LogInformation("Work is created successfully");
-            return createdWork.Entity;
         }
 
         public Author CreateAuthor(CreateAuthorInput inputAuthor)
@@ -39,8 +25,8 @@ namespace Portfolio.API.Mutations
             var work = _data.EfContext.Works.Find(inputAuthor.WorkId);
 
             var author = new MapperConfiguration(cfg =>
-                cfg.CreateMap<CreateAuthorInput, Author>()
-                    .ForMember("Work", opt => opt.MapFrom(c => work)))
+                    cfg.CreateMap<CreateAuthorInput, Author>()
+                        .ForMember("Work", opt => opt.MapFrom(c => work)))
                 .CreateMapper()
                 .Map<Author>(inputAuthor);
 
