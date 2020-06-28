@@ -22,17 +22,14 @@ namespace Portfolio.API.Queries
         public IQueryable<Work> Works()
         {
             return _data.EfContext.Works
-                .Include(w => w.Authors)
-                .Include(w => w.Tags)
                 .OrderByDescending(w => w.Date)
                 .AsQueryable();
         }
 
-        public Work WorksById(int id)
+        public Work WorkById(int id)
         {
             return _data.EfContext.Works
                 .Include(w => w.Authors)
-                .Include(w => w.Tags)
                 .FirstOrDefault(w => w.Id == id);
         }
     }

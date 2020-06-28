@@ -52,7 +52,6 @@ namespace Portfolio.API
                 .AllowAnyMethod()
                 .AllowAnyOrigin());
 
-
             app.UsePlayground();
             app.UseGraphQL("/graphql");
         }

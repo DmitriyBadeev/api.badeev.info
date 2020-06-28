@@ -21,5 +21,14 @@ namespace Portfolio.API.Queries
             return _data.EfContext.Tags
                     .AsQueryable();
         }
+
+        public IQueryable<Tag> TagsByWorkId(int workId)
+        {
+            var tagIds = _data.EfContext.TagWorks
+                .Where(t => t.WorkId == workId)
+                .Select(t => t.TagId);
+
+            return _data.EfContext.Tags.Where(t => tagIds.Contains(t.Id));
+        }
     }
 }
