@@ -1,4 +1,4 @@
-﻿namespace Portfolio.API.Mutations.InputTypes
+﻿namespace Portfolio.API.Mutations.InputTypes.Author
 {
     public class CreateAuthorInput
     {

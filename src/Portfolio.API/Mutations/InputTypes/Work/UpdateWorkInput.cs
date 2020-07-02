@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using Portfolio.Core.Entities;
 
-namespace Portfolio.API.Mutations.InputTypes
+namespace Portfolio.API.Mutations.InputTypes.Work
 {
-    public class CreateWorkInput
+    public class UpdateWorkInput
     {
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
         public string ShortDescription { get; set; }
@@ -14,7 +14,7 @@ namespace Portfolio.API.Mutations.InputTypes
 
         public string Link { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
 
         public string Task { get; set; }
 

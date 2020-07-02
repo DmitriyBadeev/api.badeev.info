@@ -1,4 +1,4 @@
-﻿namespace Portfolio.API.Mutations.InputTypes
+﻿namespace Portfolio.API.Mutations.InputTypes.Tag
 {
     public class ConnectTagWorkInput
     {

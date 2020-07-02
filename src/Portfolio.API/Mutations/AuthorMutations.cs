@@ -2,6 +2,7 @@
 using HotChocolate.Types;
 using Microsoft.Extensions.Logging;
 using Portfolio.API.Mutations.InputTypes;
+using Portfolio.API.Mutations.InputTypes.Author;
 using Portfolio.Core.Entities;
 using Portfolio.Infrastructure.Services;
 
@@ -21,7 +22,7 @@ namespace Portfolio.API.Mutations
 
         public Author CreateAuthor(CreateAuthorInput inputAuthor)
         {
-            _logger.LogInformation("Creating author");
+            _logger.LogInformation($"Creating author {inputAuthor.Name}");
             var work = _data.EfContext.Works.Find(inputAuthor.WorkId);
 
             var author = new MapperConfiguration(cfg =>
@@ -33,8 +34,38 @@ namespace Portfolio.API.Mutations
             var createdAuthor = _data.EfContext.Authors.Add(author);
             _data.EfContext.SaveChanges();
 
-            _logger.LogInformation("Author is created successfully");
+            _logger.LogInformation($"Author {inputAuthor.Name} is created successfully (id = {createdAuthor.Entity.Id})");
             return createdAuthor.Entity;
+        }
+
+        public Author UpdateAuthor(UpdateAuthorInput inputAuthor)
+        {
+            _logger.LogInformation($"Updating author (id = {inputAuthor.Id})");
+
+            var authorEntity = _data.EfContext.Authors.Find(inputAuthor.Id);
+
+            authorEntity.Name = inputAuthor.Name ?? authorEntity.Name;
+            authorEntity.Role = inputAuthor.Role ?? authorEntity.Role;
+            authorEntity.Link = inputAuthor.Link ?? authorEntity.Link;
+            authorEntity.WorkId = inputAuthor.WorkId ?? authorEntity.WorkId;
+
+            _data.EfContext.Authors.Update(authorEntity);
+            _data.EfContext.SaveChanges();
+
+            _logger.LogInformation($"Author (id = {inputAuthor.Id}) is updated successfully");
+            return authorEntity;
+        }
+
+        public Author DeleteAuthor(int authorId)
+        {
+            _logger.LogInformation($"Deleting author with id = {authorId}");
+
+            var authorEntity = _data.EfContext.Authors.Find(authorId);
+            _data.EfContext.Remove(authorEntity);
+            _data.EfContext.SaveChanges();
+
+            _logger.LogInformation($"Author with id = {authorId} is deleted successfully");
+            return authorEntity;
         }
     }
 }
