@@ -28,13 +28,10 @@ namespace Portfolio.API.Queries
         [UsePaging]
         public IQueryable<Work> WorksByTagIds(int[] tagIds, bool isFilter)
         {
-            var workIds = _data.EfContext.TagWorks
-                .Where(tw => tagIds.Contains(tw.TagId))
-                .Select(tw => tw.WorkId);
-
             if (isFilter)
                 return _data.EfContext.Works
-                    .Where(w => workIds.Contains(w.Id))
+                    .Include(w => w.Tags)
+                    .Where(w => tagIds.All(id => w.Tags.Any(t => t.TagId == id)))
                     .OrderByDescending(w => w.Date)
                     .AsQueryable();
 
