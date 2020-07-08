@@ -9,6 +9,8 @@ namespace Portfolio.Infrastructure
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<TagWork> TagWorks { get; set; }
+        public DbSet<FrontendTag> FrontendTags { get; set; }
+        public DbSet<BackendTag> BackendTags { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {

@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using HotChocolate.Types;
 using Microsoft.Extensions.Logging;
-using Portfolio.API.Mutations.InputTypes;
 using Portfolio.API.Mutations.InputTypes.Tag;
 using Portfolio.Core.Entities;
 using Portfolio.Infrastructure.Services;
@@ -55,6 +55,26 @@ namespace Portfolio.API.Mutations
             return createdConnection.Entity;
         }
 
+        public TagWork DisconnectTagAndWork(ConnectTagWorkInput inputTagWork)
+        {
+            _logger.LogInformation($"Disconnecting between tag (id = {inputTagWork.TagId}) and work (id = {inputTagWork.WorkId})");
+            var connect = _data.EfContext.TagWorks.FirstOrDefault(tw =>
+                tw.TagId == inputTagWork.TagId && tw.WorkId == inputTagWork.WorkId);
+
+            if (connect != null)
+            {
+                _data.EfContext.TagWorks.Remove(connect);
+                _data.EfContext.SaveChanges();
+
+                _logger.LogInformation($"Disconnecting between tag (id = {inputTagWork.TagId}) and work (id = {inputTagWork.WorkId}) is successfully");
+
+                return connect;
+            }
+
+            _logger.LogInformation("Connect has not found");
+            return null;
+        }
+
         public Tag UpdateTag(UpdateTagInput inputTag)
         {
             _logger.LogInformation($"Updating tag (id = {inputTag.Id})");
@@ -81,6 +101,78 @@ namespace Portfolio.API.Mutations
 
             _logger.LogInformation($"Tag with id - {tagId} is deleted successfully");
             return tagEntity;
+        }
+
+        public FrontendTag AddFrontendTag(int tagId)
+        {
+            _logger.LogInformation($"Adding frontend tag - {tagId}");
+
+            var tag = _data.EfContext.Tags.Find(tagId);
+            var frontendTag = new FrontendTag()
+            {
+                TagId = tagId,
+                Tag = tag
+            };
+
+            var tagEntity = _data.EfContext.FrontendTags.Add(frontendTag);
+            _data.EfContext.SaveChanges();
+
+            _logger.LogInformation($"Frontend tag {tagId} has added successfully");
+            return tagEntity.Entity;
+        }
+
+        public BackendTag AddBackendTag(int tagId)
+        {
+            _logger.LogInformation($"Adding backend tag - {tagId}");
+
+            var tag = _data.EfContext.Tags.Find(tagId);
+            var backendTag = new BackendTag()
+            {
+                TagId = tagId,
+                Tag = tag
+            };
+
+            var tagEntity = _data.EfContext.BackendTags.Add(backendTag);
+            _data.EfContext.SaveChanges();
+
+            _logger.LogInformation($"Backend tag {tagId} has added successfully");
+            return tagEntity.Entity;
+        }
+
+        public FrontendTag DeleteFrontendTag(int tagId)
+        {
+            _logger.LogInformation($"Deleting frontend tag - {tagId}");
+
+            var frontendTag = _data.EfContext.FrontendTags.FirstOrDefault(t => t.TagId == tagId);
+
+            if (frontendTag != null)
+            {
+                var tagEntity = _data.EfContext.FrontendTags.Remove(frontendTag);
+                _data.EfContext.SaveChanges();
+                _logger.LogInformation($"Backend tag {tagId} has deleted successfully");
+                return tagEntity.Entity;
+            }
+
+            _logger.LogInformation($"Backend tag {tagId} has not found");
+            return null;
+        }
+
+        public BackendTag DeleteBackendTag(int tagId)
+        {
+            _logger.LogInformation($"Deleting backend tag - {tagId}");
+
+            var backendTag = _data.EfContext.BackendTags.FirstOrDefault(t => t.TagId == tagId);
+
+            if (backendTag != null)
+            {
+                var tagEntity = _data.EfContext.BackendTags.Remove(backendTag);
+                _data.EfContext.SaveChanges();
+                _logger.LogInformation($"Backend tag {tagId} has deleted successfully");
+                return tagEntity.Entity;
+            }
+
+            _logger.LogInformation($"Backend tag {tagId} has not found");
+            return null;
         }
     }
 }

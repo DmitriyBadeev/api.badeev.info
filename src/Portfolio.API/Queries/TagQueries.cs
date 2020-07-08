@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using HotChocolate.Types;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities;
 using Portfolio.Infrastructure.Services;
 
@@ -29,6 +30,20 @@ namespace Portfolio.API.Queries
                 .Select(t => t.TagId);
 
             return _data.EfContext.Tags.Where(t => tagIds.Contains(t.Id));
+        }
+
+        public IQueryable<Tag> FrontendTags()
+        {
+            return _data.EfContext.FrontendTags
+                .Include(t => t.Tag)
+                .Select(t => t.Tag);
+        }
+
+        public IQueryable<Tag> BackendTags()
+        {
+            return _data.EfContext.BackendTags
+                .Include(t => t.Tag)
+                .Select(t => t.Tag);
         }
     }
 }
