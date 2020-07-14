@@ -37,6 +37,15 @@ namespace Portfolio.API.Mutations
         public TagWork ConnectTagAndWork(ConnectTagWorkInput inputTagWork)
         {
             _logger.LogInformation($"Creating connect between tag (id = {inputTagWork.TagId}) and work (id = {inputTagWork.WorkId})");
+            var connect = _data.EfContext.TagWorks.FirstOrDefault(tw =>
+                tw.TagId == inputTagWork.TagId && tw.WorkId == inputTagWork.WorkId);
+
+            if (connect != null)
+            {
+                _logger.LogInformation("Connect already exists");
+                return null;
+            }
+
             var work = _data.EfContext.Works.Find(inputTagWork.WorkId);
             var tag = _data.EfContext.Tags.Find(inputTagWork.TagId);
 

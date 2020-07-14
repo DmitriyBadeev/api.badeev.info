@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,12 @@ namespace Portfolio.API.Queries
             return _data.EfContext.Works
                 .Include(w => w.Authors)
                 .FirstOrDefault(w => w.Id == id);
+        }
+
+        [Authorize]
+        public string SecretData()
+        {
+            return "Secret";
         }
     }
 }

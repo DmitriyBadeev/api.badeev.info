@@ -4,7 +4,8 @@
 Logs/
 .config
 
-Portfolio.Frontend/
+Portfolio.PromoFrontend/
+Portfolio.CabinetFrontend/
 
 *.swp
 *.*~

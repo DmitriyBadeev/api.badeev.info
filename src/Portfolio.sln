@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.API", "Portfolio.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Core", "Portfolio.Core\Portfolio.Core.csproj", "{86D924FC-FD81-4D49-B8B1-636990F532E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Infrastructure", "Portfolio.Infrastructure\Portfolio.Infrastructure.csproj", "{63D9F220-4C7F-48F7-82E9-933212C33574}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Infrastructure", "Portfolio.Infrastructure\Portfolio.Infrastructure.csproj", "{63D9F220-4C7F-48F7-82E9-933212C33574}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Identity", "Portfolio.Identity\Portfolio.Identity.csproj", "{D1D50BED-FA9C-41E0-8316-CBFB2BBAACBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{63D9F220-4C7F-48F7-82E9-933212C33574}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63D9F220-4C7F-48F7-82E9-933212C33574}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63D9F220-4C7F-48F7-82E9-933212C33574}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1D50BED-FA9C-41E0-8316-CBFB2BBAACBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1D50BED-FA9C-41E0-8316-CBFB2BBAACBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1D50BED-FA9C-41E0-8316-CBFB2BBAACBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1D50BED-FA9C-41E0-8316-CBFB2BBAACBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

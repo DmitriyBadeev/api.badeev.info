@@ -19,8 +19,7 @@ namespace Portfolio.API.Queries
         [UseFiltering]
         public IQueryable<Tag> Tags()
         {
-            return _data.EfContext.Tags
-                    .AsQueryable();
+            return _data.EfContext.Tags;
         }
 
         public IQueryable<Tag> TagsByWorkId(int workId)
@@ -44,6 +43,11 @@ namespace Portfolio.API.Queries
             return _data.EfContext.BackendTags
                 .Include(t => t.Tag)
                 .Select(t => t.Tag);
+        }
+
+        public IQueryable<TagWork> TagWorkConnections()
+        {
+            return _data.EfContext.TagWorks;
         }
     }
 }

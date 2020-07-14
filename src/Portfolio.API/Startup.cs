@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using System.IdentityModel.Tokens.Jwt;
+using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,7 @@ namespace Portfolio.API
             services.AddCors();
             services.AddGraphQL(s => SchemaBuilder.New()
                 .AddServices(s)
+                .AddAuthorizeDirectiveType()
                 .AddQueryType(d => d.Name("Queries"))
                 .AddType<WorkQueries>()
                 .AddType<TagQueries>()
@@ -34,6 +36,15 @@ namespace Portfolio.API
                 .AddType<TagMutations>()
                 .AddType<AuthorMutations>()
                 .Create());
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = "Portfolio.API";
+                });
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
