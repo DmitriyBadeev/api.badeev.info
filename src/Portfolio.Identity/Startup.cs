@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +24,7 @@ namespace Portfolio.Identity
             var login = Configuration["login"];
             var password = Configuration["password"];
             var clientId = Configuration["client_id"];
-            var redirect = Configuration["redirect_uris"];
+            var redirects = Configuration.GetSection("redirect_uris").Get<List<string>>();
             var api = Configuration["api"];
 
             var rsa = new RsaKeyService(_environment, TimeSpan.FromDays(30));
@@ -34,7 +35,7 @@ namespace Portfolio.Identity
                 .AddSigningCredential(rsa.GetKey())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources(api))
-                .AddInMemoryClients(Config.GetSpaClient(clientId, redirect, api))
+                .AddInMemoryClients(Config.GetSpaClient(clientId, redirects, api))
                 .AddTestUsers(Config.GetUser(login, password));
         }
 

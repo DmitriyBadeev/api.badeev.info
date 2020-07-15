@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using HotChocolate;
+﻿using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,8 +39,7 @@ namespace Portfolio.API
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "http://localhost:5000";
-                    options.RequireHttpsMetadata = false;
+                    options.Authority = "https://identity.badeev.info";
                     options.ApiName = "Portfolio.API";
                 });
 
@@ -62,6 +60,8 @@ namespace Portfolio.API
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowAnyOrigin());
+
+            app.UseAuthentication();
 
             app.UsePlayground();
             app.UseGraphQL("/graphql");

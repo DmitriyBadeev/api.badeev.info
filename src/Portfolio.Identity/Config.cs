@@ -15,7 +15,7 @@ namespace Portfolio.Identity
             };
         }
 
-        public static IEnumerable<Client> GetSpaClient(string clientId, string redirect, string api)
+        public static IEnumerable<Client> GetSpaClient(string clientId, List<string> redirects, string api)
         {
             return new List<Client>
             {
@@ -26,8 +26,14 @@ namespace Portfolio.Identity
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "http://localhost:3000", "https://badeev.info" },
-                    RedirectUris = { redirect },
+                    AllowedCorsOrigins = 
+                    { 
+                        "http://localhost:3000", 
+                        "http://localhost:3001", 
+                        "https://badeev.info",
+                        "https://cabinet.badeev.info"
+                    },
+                    RedirectUris = redirects,
                     AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, api }
                 }
             };
