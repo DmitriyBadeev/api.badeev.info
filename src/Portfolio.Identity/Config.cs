@@ -23,7 +23,8 @@ namespace Portfolio.Identity
                 {
                     ClientId = clientId,
                     ClientName = "Тайный бункер",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
                     AllowAccessTokensViaBrowser = true,
                     RequireClientSecret = false,
                     AllowedCorsOrigins = 
@@ -33,6 +34,7 @@ namespace Portfolio.Identity
                         "https://badeev.info",
                         "https://cabinet.badeev.info"
                     },
+                    PostLogoutRedirectUris = new List<string> {"https://badeev.info/"},
                     RedirectUris = redirects,
                     AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, api }
                 }
