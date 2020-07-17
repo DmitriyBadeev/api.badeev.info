@@ -266,6 +266,9 @@ namespace Portfolio.Identity.Quickstart.Account
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
 
+            if (vm.AutomaticRedirectAfterSignOut && !string.IsNullOrWhiteSpace(vm.PostLogoutRedirectUri))
+                return Redirect(vm.PostLogoutRedirectUri);
+
             return View("LoggedOut", vm);
         }
 

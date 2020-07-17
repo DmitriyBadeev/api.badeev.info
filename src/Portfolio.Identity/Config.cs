@@ -34,7 +34,11 @@ namespace Portfolio.Identity
                         "https://badeev.info",
                         "https://cabinet.badeev.info"
                     },
-                    PostLogoutRedirectUris = new List<string> {"https://badeev.info/"},
+                    PostLogoutRedirectUris = new List<string> 
+                    {
+                        "https://cabinet.badeev.info/signout",
+                        "http://localhost:3000/signout"
+                    },
                     RedirectUris = redirects,
                     AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, api }
                 }
