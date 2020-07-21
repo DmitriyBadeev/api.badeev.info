@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Portfolio.Core\Portfolio.Core.csproj" />
     <ProjectReference Include="..\Portfolio.Infrastructure\Portfolio.Infrastructure.csproj" />
+    <ProjectReference Include="..\Portfolio.Typograf\Portfolio.Typograf.csproj" />
   </ItemGroup>
 
 </Project>

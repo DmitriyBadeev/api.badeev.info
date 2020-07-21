@@ -30,6 +30,7 @@ namespace Portfolio.API
                 .AddType<WorkQueries>()
                 .AddType<TagQueries>()
                 .AddType<AuthorQueries>()
+                .AddType<TypografQueries>()
                 .AddMutationType(d => d.Name("Mutations"))
                 .AddType<WorkMutations>()
                 .AddType<TagMutations>()
