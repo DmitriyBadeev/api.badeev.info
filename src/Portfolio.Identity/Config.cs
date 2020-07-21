@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
@@ -27,6 +29,7 @@ namespace Portfolio.Identity
                     RequirePkce = true,
                     AllowAccessTokensViaBrowser = true,
                     RequireClientSecret = false,
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     AllowedCorsOrigins = 
                     { 
                         "http://localhost:3000", 
@@ -40,7 +43,12 @@ namespace Portfolio.Identity
                         "http://localhost:3000/signout"
                     },
                     RedirectUris = redirects,
-                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, api }
+                    AllowedScopes = 
+                    { 
+                        IdentityServerConstants.StandardScopes.OpenId, 
+                        IdentityServerConstants.StandardScopes.Profile,
+                        api 
+                    }
                 }
             };
         }
@@ -54,6 +62,14 @@ namespace Portfolio.Identity
                     SubjectId = "1",
                     Username = login,
                     Password = password,
+                    Claims = new List<Claim>
+                    {
+                        new Claim(JwtClaimTypes.Name, "Дмитрий"),
+                        new Claim(JwtClaimTypes.FamilyName, "Бадеев"),
+                        new Claim(JwtClaimTypes.Email, "mail@badeev.info"),
+                        new Claim(JwtClaimTypes.Role, "Создатель"),
+                        new Claim(JwtClaimTypes.Picture, "https://storage.badeev.info/avatar-min.png")
+                    }
                 }
             };
         }
