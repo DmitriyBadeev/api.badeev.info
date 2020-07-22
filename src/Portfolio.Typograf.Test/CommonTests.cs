@@ -38,7 +38,7 @@ namespace Portfolio.Typograf.Test
         }
 
         [Test]
-        public void Common4()
+        public void CheckDash()
         {
             var inputText = "Колян - за пивом!";
             var outputText = "Колян&nbsp;&mdash; за&nbsp;пивом!";
@@ -49,10 +49,21 @@ namespace Portfolio.Typograf.Test
         }
 
         [Test]
-        public void Common5()
+        public void CheckQuotes()
         {
             var inputText = "\"Если вы не занимаетесь политикой, то политика займётся вами\" - Отто фон Бисмарк.";
             var outputText = "&laquo;Если вы&nbsp;не&nbsp;занимаетесь политикой, то&nbsp;политика займётся вами&raquo;&nbsp;&mdash; Отто фон Бисмарк.";
+
+            var typografText = Typograf.Run(inputText).Result;
+
+            Assert.AreEqual(outputText, typografText);
+        }
+
+        [Test]
+        public void CheckEncoding()
+        {
+            var inputText = "Это набор базовых установок и&nbsp;принципов, которые являются основой моих убеждений и&nbsp;взглядов на&nbsp;жизнь. Используется для облегчения принятия решений, а&nbsp;также для вынесения своих вердиктов по&nbsp;поводу любых событий.";
+            var outputText = "Это набор базовых установок и&nbsp;принципов, которые являются основой моих убеждений и&nbsp;взглядов на&nbsp;жизнь. Используется для облегчения принятия решений, а&nbsp;также для вынесения своих вердиктов по&nbsp;поводу любых событий.";
 
             var typografText = Typograf.Run(inputText).Result;
 

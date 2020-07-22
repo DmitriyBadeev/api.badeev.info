@@ -20,12 +20,13 @@ namespace Portfolio.Typograf
 
 			var re = new Regex(@"<ProcessTextResult>\s*((.|\n)*?)\s*<\/ProcessTextResult>");
 			var res = re.Match(xml).Value;
-			res = res.Replace("<ProcessTextResult>", "");
-			res = res.Replace("</ProcessTextResult>", "");
-			res = res.Replace("\n", "");
-			res = res.Replace("&gt;", ">");
-			res = res.Replace("&lt;", "<");
-			res = res.Replace("&amp;", "&");
+			res = res
+				.Replace("<ProcessTextResult>", "")
+				.Replace("</ProcessTextResult>", "")
+				.Replace("\n", "")
+				.Replace("&gt;", ">")
+				.Replace("&lt;", "<")
+				.Replace("&amp;", "&");
 
 			return res;
 		}
@@ -33,6 +34,11 @@ namespace Portfolio.Typograf
 		private async static Task<string> GetXmlResponseFromService(string text)
 		{
 			var client = new HttpClient();
+
+			text = text
+				.Replace(">", "&gt;")
+				.Replace("<", "&lt;")
+				.Replace("&", "&amp;");
 
 			var contentString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
 				"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
