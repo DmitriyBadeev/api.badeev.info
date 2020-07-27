@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using Microsoft.Extensions.Logging;
-using Portfolio.API.Mutations.InputTypes;
 using Portfolio.API.Mutations.InputTypes.Work;
 using Portfolio.Core.Entities;
 using Portfolio.Infrastructure.Services;
@@ -20,6 +20,7 @@ namespace Portfolio.API.Mutations
             _logger = logger;
         }
 
+        [Authorize]
         public Work CreateWork(CreateWorkInput inputWork)
         {
             _logger.LogInformation($"Creating work {inputWork.Title}");
@@ -34,6 +35,7 @@ namespace Portfolio.API.Mutations
             return createdWork.Entity;
         }
 
+        [Authorize]
         public Work UpdateWork(UpdateWorkInput inputWork)
         {
             _logger.LogInformation($"Updating work (id = {inputWork.Id})");
@@ -55,6 +57,7 @@ namespace Portfolio.API.Mutations
             return workEntity;
         }
 
+        [Authorize]
         public Work DeleteWork(int workId)
         {
             _logger.LogInformation($"Deleting work (id = {workId})");

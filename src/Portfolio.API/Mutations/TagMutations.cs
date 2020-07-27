@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using Microsoft.Extensions.Logging;
 using Portfolio.API.Mutations.InputTypes.Tag;
@@ -20,6 +21,7 @@ namespace Portfolio.API.Mutations
             _logger = logger;
         }
 
+        [Authorize]
         public Tag CreateTag(CreateTagInput inputTag)
         {
             _logger.LogInformation($"Creating tag {inputTag.Title}");
@@ -34,6 +36,7 @@ namespace Portfolio.API.Mutations
             return createdTag.Entity;
         }
 
+        [Authorize]
         public TagWork ConnectTagAndWork(ConnectTagWorkInput inputTagWork)
         {
             _logger.LogInformation($"Creating connect between tag (id = {inputTagWork.TagId}) and work (id = {inputTagWork.WorkId})");
@@ -64,6 +67,7 @@ namespace Portfolio.API.Mutations
             return createdConnection.Entity;
         }
 
+        [Authorize]
         public TagWork DisconnectTagAndWork(ConnectTagWorkInput inputTagWork)
         {
             _logger.LogInformation($"Disconnecting between tag (id = {inputTagWork.TagId}) and work (id = {inputTagWork.WorkId})");
@@ -84,6 +88,7 @@ namespace Portfolio.API.Mutations
             return null;
         }
 
+        [Authorize]
         public Tag UpdateTag(UpdateTagInput inputTag)
         {
             _logger.LogInformation($"Updating tag (id = {inputTag.Id})");
@@ -100,6 +105,7 @@ namespace Portfolio.API.Mutations
             return tagEntity;
         }
 
+        [Authorize]
         public Tag DeleteTag(int tagId)
         {
             _logger.LogInformation($"Deleting tag with id - {tagId}");
@@ -112,6 +118,7 @@ namespace Portfolio.API.Mutations
             return tagEntity;
         }
 
+        [Authorize]
         public FrontendTag AddFrontendTag(int tagId)
         {
             _logger.LogInformation($"Adding frontend tag - {tagId}");
@@ -130,6 +137,7 @@ namespace Portfolio.API.Mutations
             return tagEntity.Entity;
         }
 
+        [Authorize]
         public BackendTag AddBackendTag(int tagId)
         {
             _logger.LogInformation($"Adding backend tag - {tagId}");
@@ -148,6 +156,7 @@ namespace Portfolio.API.Mutations
             return tagEntity.Entity;
         }
 
+        [Authorize]
         public FrontendTag DeleteFrontendTag(int tagId)
         {
             _logger.LogInformation($"Deleting frontend tag - {tagId}");
@@ -166,6 +175,7 @@ namespace Portfolio.API.Mutations
             return null;
         }
 
+        [Authorize]
         public BackendTag DeleteBackendTag(int tagId)
         {
             _logger.LogInformation($"Deleting backend tag - {tagId}");

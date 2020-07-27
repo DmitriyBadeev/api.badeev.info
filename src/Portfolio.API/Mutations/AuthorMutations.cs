@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using Microsoft.Extensions.Logging;
-using Portfolio.API.Mutations.InputTypes;
 using Portfolio.API.Mutations.InputTypes.Author;
 using Portfolio.Core.Entities;
 using Portfolio.Infrastructure.Services;
@@ -20,6 +20,7 @@ namespace Portfolio.API.Mutations
             _logger = logger;
         }
 
+        [Authorize]
         public Author CreateAuthor(CreateAuthorInput inputAuthor)
         {
             _logger.LogInformation($"Creating author {inputAuthor.Name}");
@@ -38,6 +39,7 @@ namespace Portfolio.API.Mutations
             return createdAuthor.Entity;
         }
 
+        [Authorize]
         public Author UpdateAuthor(UpdateAuthorInput inputAuthor)
         {
             _logger.LogInformation($"Updating author (id = {inputAuthor.Id})");
@@ -56,6 +58,7 @@ namespace Portfolio.API.Mutations
             return authorEntity;
         }
 
+        [Authorize]
         public Author DeleteAuthor(int authorId)
         {
             _logger.LogInformation($"Deleting author with id = {authorId}");
