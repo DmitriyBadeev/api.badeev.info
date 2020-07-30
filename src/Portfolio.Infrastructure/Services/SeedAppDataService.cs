@@ -5,12 +5,12 @@ using Portfolio.Core.Interfaces;
 
 namespace Portfolio.Infrastructure.Services
 {
-    public class SeedDataService : ISeedDataService
+    public class SeedAppDataService : ISeedDataService
     {
-        private readonly ILogger<SeedDataService> _logger;
+        private readonly ILogger<SeedAppDataService> _logger;
         private readonly AppDbContext _context;
 
-        public SeedDataService(ILogger<SeedDataService> logger, AppDbContext context)
+        public SeedAppDataService(ILogger<SeedAppDataService> logger, AppDbContext context)
         {
             _logger = logger;
             _context = context;

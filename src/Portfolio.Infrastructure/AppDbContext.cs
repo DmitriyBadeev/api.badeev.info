@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities;
+using Portfolio.Core.Entities.Portfolio;
 
 namespace Portfolio.Infrastructure
 {

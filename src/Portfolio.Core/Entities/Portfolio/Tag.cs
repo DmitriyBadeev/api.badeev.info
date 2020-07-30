@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Portfolio.Core.Interfaces;
 
-namespace Portfolio.Core.Entities
+namespace Portfolio.Core.Entities.Portfolio
 {
     public class Tag : IEntityBase
     {

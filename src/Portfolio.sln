@@ -13,9 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Infrastructure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Identity", "Portfolio.Identity\Portfolio.Identity.csproj", "{D1D50BED-FA9C-41E0-8316-CBFB2BBAACBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Typograf", "Portfolio.Typograf\Portfolio.Typograf.csproj", "{8A0177EC-030D-47A5-BD40-8A31A28FF4B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Typograf", "Portfolio.Typograf\Portfolio.Typograf.csproj", "{8A0177EC-030D-47A5-BD40-8A31A28FF4B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Typograf.Test", "Portfolio.Typograf.Test\Portfolio.Typograf.Test.csproj", "{7A7532E7-4159-427D-BBD2-628BAA0ED8AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Typograf.Test", "Portfolio.Typograf.Test\Portfolio.Typograf.Test.csproj", "{7A7532E7-4159-427D-BBD2-628BAA0ED8AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Finance.API", "Portfolio.Finance.API\Portfolio.Finance.API.csproj", "{0C4AC1BB-85CB-4B3C-ACA6-A4B2DADA46B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Finance.Services", "Portfolio.Finance.Services\Portfolio.Finance.Services.csproj", "{5322A86D-8DF1-4A00-8096-251FF319495C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Finance.Services.Test", "Portfolio.Finance.Services.Test\Portfolio.Finance.Services.Test.csproj", "{B0AA455F-511D-46EF-8B29-F2C69955B6B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +57,18 @@ Global
 		{7A7532E7-4159-427D-BBD2-628BAA0ED8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A7532E7-4159-427D-BBD2-628BAA0ED8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A7532E7-4159-427D-BBD2-628BAA0ED8AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4AC1BB-85CB-4B3C-ACA6-A4B2DADA46B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4AC1BB-85CB-4B3C-ACA6-A4B2DADA46B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4AC1BB-85CB-4B3C-ACA6-A4B2DADA46B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4AC1BB-85CB-4B3C-ACA6-A4B2DADA46B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5322A86D-8DF1-4A00-8096-251FF319495C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5322A86D-8DF1-4A00-8096-251FF319495C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5322A86D-8DF1-4A00-8096-251FF319495C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5322A86D-8DF1-4A00-8096-251FF319495C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0AA455F-511D-46EF-8B29-F2C69955B6B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0AA455F-511D-46EF-8B29-F2C69955B6B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0AA455F-511D-46EF-8B29-F2C69955B6B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0AA455F-511D-46EF-8B29-F2C69955B6B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

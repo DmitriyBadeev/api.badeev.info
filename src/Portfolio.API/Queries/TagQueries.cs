@@ -2,6 +2,7 @@
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities;
+using Portfolio.Core.Entities.Portfolio;
 using Portfolio.Infrastructure.Services;
 
 namespace Portfolio.API.Queries

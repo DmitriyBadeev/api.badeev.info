@@ -10,7 +10,17 @@ namespace Portfolio.Infrastructure.Services
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<ApplicationDataService>();
-            services.AddScoped<ISeedDataService, SeedDataService>();
+            services.AddScoped<ISeedDataService, SeedAppDataService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddFinanceInfrastructureServices(this IServiceCollection services,
+            string connectionString)
+        {
+            services.AddDbContext<FinanceDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<FinanceDataService>();
+            services.AddScoped<ISeedDataService, SeedFinanceDataService>();
 
             return services;
         }

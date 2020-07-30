@@ -9,15 +9,16 @@ namespace Portfolio.Identity
 {
     public class Config
     {
-        public static IEnumerable<ApiResource> GetApiResources(string api)
+        public static IEnumerable<ApiResource> GetApiResources(string apiPortfolio, string apiFinance)
         {
             return new List<ApiResource>
             {
-                new ApiResource(api, "Тайные знания")
+                new ApiResource(apiPortfolio, "Тайные знания"),
+                new ApiResource(apiFinance, "Черная бухгалтерия")
             };
         }
 
-        public static IEnumerable<Client> GetSpaClient(string clientId, List<string> redirects, string api)
+        public static IEnumerable<Client> GetSpaClient(string clientId, List<string> redirects, string apiPortfolio, string apiFinance)
         {
             return new List<Client>
             {
@@ -47,7 +48,8 @@ namespace Portfolio.Identity
                     { 
                         IdentityServerConstants.StandardScopes.OpenId, 
                         IdentityServerConstants.StandardScopes.Profile,
-                        api 
+                        apiPortfolio,
+                        apiFinance
                     }
                 }
             };

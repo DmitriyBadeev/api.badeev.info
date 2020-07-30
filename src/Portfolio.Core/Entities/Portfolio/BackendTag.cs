@@ -1,4 +1,4 @@
-﻿namespace Portfolio.Core.Entities
+﻿namespace Portfolio.Core.Entities.Portfolio
 {
     public class BackendTag
     {

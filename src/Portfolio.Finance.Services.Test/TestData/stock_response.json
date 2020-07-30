@@ -1,0 +1,274 @@
+{
+  "securities": {
+    "metadata": {
+      "SECID": {
+        "type": "string",
+        "bytes": 36,
+        "max_size": 0
+      },
+      "BOARDID": {
+        "type": "string",
+        "bytes": 12,
+        "max_size": 0
+      },
+      "SHORTNAME": {
+        "type": "string",
+        "bytes": 30,
+        "max_size": 0
+      },
+      "PREVPRICE": { "type": "double" },
+      "LOTSIZE": { "type": "int32" },
+      "FACEVALUE": { "type": "double" },
+      "STATUS": {
+        "type": "string",
+        "bytes": 3,
+        "max_size": 0
+      },
+      "BOARDNAME": {
+        "type": "string",
+        "bytes": 381,
+        "max_size": 0
+      },
+      "DECIMALS": { "type": "int32" },
+      "SECNAME": {
+        "type": "string",
+        "bytes": 90,
+        "max_size": 0
+      },
+      "REMARKS": {
+        "type": "string",
+        "bytes": 24,
+        "max_size": 0
+      },
+      "MARKETCODE": {
+        "type": "string",
+        "bytes": 12,
+        "max_size": 0
+      },
+      "INSTRID": {
+        "type": "string",
+        "bytes": 12,
+        "max_size": 0
+      },
+      "SECTORID": {
+        "type": "string",
+        "bytes": 12,
+        "max_size": 0
+      },
+      "MINSTEP": { "type": "double" },
+      "PREVWAPRICE": { "type": "double" },
+      "FACEUNIT": {
+        "type": "string",
+        "bytes": 12,
+        "max_size": 0
+      },
+      "PREVDATE": {
+        "type": "date",
+        "bytes": 10,
+        "max_size": 0
+      },
+      "ISSUESIZE": { "type": "int64" },
+      "ISIN": {
+        "type": "string",
+        "bytes": 36,
+        "max_size": 0
+      },
+      "LATNAME": {
+        "type": "string",
+        "bytes": 90,
+        "max_size": 0
+      },
+      "REGNUMBER": {
+        "type": "string",
+        "bytes": 90,
+        "max_size": 0
+      },
+      "PREVLEGALCLOSEPRICE": { "type": "double" },
+      "PREVADMITTEDQUOTE": { "type": "double" },
+      "CURRENCYID": {
+        "type": "string",
+        "bytes": 12,
+        "max_size": 0
+      },
+      "SECTYPE": {
+        "type": "string",
+        "bytes": 3,
+        "max_size": 0
+      },
+      "LISTLEVEL": { "type": "int32" },
+      "SETTLEDATE": {
+        "type": "date",
+        "bytes": 10,
+        "max_size": 0
+      }
+    },
+    "columns": [ "SECID", "BOARDID", "SHORTNAME", "PREVPRICE", "LOTSIZE", "FACEVALUE", "STATUS", "BOARDNAME", "DECIMALS", "SECNAME", "REMARKS", "MARKETCODE", "INSTRID", "SECTORID", "MINSTEP", "PREVWAPRICE", "FACEUNIT", "PREVDATE", "ISSUESIZE", "ISIN", "LATNAME", "REGNUMBER", "PREVLEGALCLOSEPRICE", "PREVADMITTEDQUOTE", "CURRENCYID", "SECTYPE", "LISTLEVEL", "SETTLEDATE" ],
+    "data": [
+      [ "YNDX", "SPEQ", "Yandex clA", 3108.6, 1, 0.01, "A", "Поставка по СК (акции)", 1, "PLLC Yandex N.V. class A shs", null, "RPST", "EQIN", null, 0.1, null, "EUR", "2020-07-27", 317430479, "NL0009805522", "PLLC Yandex N.V.", null, null, null, "SUR", "1", 1, "2020-07-30" ],
+      [ "YNDX", "TQBR", "Yandex clA", 4123, 1, 0.01, "A", "Т+: Акции и ДР - безадрес.", 1, "PLLC Yandex N.V. class A shs", null, "FNDT", "EQIN", null, 0.2, 4077.2, "EUR", "2020-07-27", 317430479, "NL0009805522", "PLLC Yandex N.V.", null, 4070, 4070, "SUR", "1", 1, "2020-07-30" ],
+      [ "YNDX", "TQDP", "Yandex clA", null, 1, 0.01, "A", "Крупные пакеты - Акции - безадрес.", 1, "PLLC Yandex N.V. class A shs", null, "FNDT", "EQIN", null, 0.2, null, "EUR", "2020-07-27", 317430479, "NL0009805522", "PLLC Yandex N.V.", null, null, null, "SUR", "1", 1, "2020-07-30" ]
+    ]
+  },
+  "marketdata": {
+    "metadata": {
+      "SECID": {
+        "type": "string",
+        "bytes": 36,
+        "max_size": 0
+      },
+      "BOARDID": {
+        "type": "string",
+        "bytes": 12,
+        "max_size": 0
+      },
+      "BID": { "type": "double" },
+      "BIDDEPTH": {
+        "type": "undefined",
+        "bytes": 0,
+        "max_size": 0
+      },
+      "OFFER": { "type": "double" },
+      "OFFERDEPTH": {
+        "type": "undefined",
+        "bytes": 0,
+        "max_size": 0
+      },
+      "SPREAD": { "type": "double" },
+      "BIDDEPTHT": { "type": "int32" },
+      "OFFERDEPTHT": { "type": "int32" },
+      "OPEN": { "type": "double" },
+      "LOW": { "type": "double" },
+      "HIGH": { "type": "double" },
+      "LAST": { "type": "double" },
+      "LASTCHANGE": { "type": "double" },
+      "LASTCHANGEPRCNT": { "type": "double" },
+      "QTY": { "type": "int32" },
+      "VALUE": { "type": "double" },
+      "VALUE_USD": { "type": "double" },
+      "WAPRICE": { "type": "double" },
+      "LASTCNGTOLASTWAPRICE": { "type": "double" },
+      "WAPTOPREVWAPRICEPRCNT": { "type": "double" },
+      "WAPTOPREVWAPRICE": { "type": "double" },
+      "CLOSEPRICE": { "type": "double" },
+      "MARKETPRICETODAY": { "type": "double" },
+      "MARKETPRICE": { "type": "double" },
+      "LASTTOPREVPRICE": { "type": "double" },
+      "NUMTRADES": { "type": "int32" },
+      "VOLTODAY": { "type": "int64" },
+      "VALTODAY": { "type": "int64" },
+      "VALTODAY_USD": { "type": "int64" },
+      "ETFSETTLEPRICE": { "type": "double" },
+      "TRADINGSTATUS": {
+        "type": "string",
+        "bytes": 3,
+        "max_size": 0
+      },
+      "UPDATETIME": {
+        "type": "time",
+        "bytes": 10,
+        "max_size": 0
+      },
+      "ADMITTEDQUOTE": { "type": "double" },
+      "LASTBID": {
+        "type": "undefined",
+        "bytes": 0,
+        "max_size": 0
+      },
+      "LASTOFFER": {
+        "type": "undefined",
+        "bytes": 0,
+        "max_size": 0
+      },
+      "LCLOSEPRICE": { "type": "double" },
+      "LCURRENTPRICE": { "type": "double" },
+      "MARKETPRICE2": { "type": "double" },
+      "NUMBIDS": {
+        "type": "undefined",
+        "bytes": 0,
+        "max_size": 0
+      },
+      "NUMOFFERS": {
+        "type": "undefined",
+        "bytes": 0,
+        "max_size": 0
+      },
+      "CHANGE": { "type": "double" },
+      "TIME": {
+        "type": "time",
+        "bytes": 10,
+        "max_size": 0
+      },
+      "HIGHBID": {
+        "type": "undefined",
+        "bytes": 0,
+        "max_size": 0
+      },
+      "LOWOFFER": {
+        "type": "undefined",
+        "bytes": 0,
+        "max_size": 0
+      },
+      "PRICEMINUSPREVWAPRICE": { "type": "double" },
+      "OPENPERIODPRICE": { "type": "double" },
+      "SEQNUM": { "type": "int64" },
+      "SYSTIME": {
+        "type": "datetime",
+        "bytes": 19,
+        "max_size": 0
+      },
+      "CLOSINGAUCTIONPRICE": { "type": "double" },
+      "CLOSINGAUCTIONVOLUME": { "type": "double" },
+      "ISSUECAPITALIZATION": { "type": "double" },
+      "ISSUECAPITALIZATION_UPDATETIME": {
+        "type": "time",
+        "bytes": 10,
+        "max_size": 0
+      },
+      "ETFSETTLECURRENCY": {
+        "type": "string",
+        "bytes": 18,
+        "max_size": 0
+      },
+      "VALTODAY_RUR": { "type": "int64" },
+      "TRADINGSESSION": {
+        "type": "string",
+        "bytes": 3,
+        "max_size": 0
+      }
+    },
+    "columns": [ "SECID", "BOARDID", "BID", "BIDDEPTH", "OFFER", "OFFERDEPTH", "SPREAD", "BIDDEPTHT", "OFFERDEPTHT", "OPEN", "LOW", "HIGH", "LAST", "LASTCHANGE", "LASTCHANGEPRCNT", "QTY", "VALUE", "VALUE_USD", "WAPRICE", "LASTCNGTOLASTWAPRICE", "WAPTOPREVWAPRICEPRCNT", "WAPTOPREVWAPRICE", "CLOSEPRICE", "MARKETPRICETODAY", "MARKETPRICE", "LASTTOPREVPRICE", "NUMTRADES", "VOLTODAY", "VALTODAY", "VALTODAY_USD", "ETFSETTLEPRICE", "TRADINGSTATUS", "UPDATETIME", "ADMITTEDQUOTE", "LASTBID", "LASTOFFER", "LCLOSEPRICE", "LCURRENTPRICE", "MARKETPRICE2", "NUMBIDS", "NUMOFFERS", "CHANGE", "TIME", "HIGHBID", "LOWOFFER", "PRICEMINUSPREVWAPRICE", "OPENPERIODPRICE", "SEQNUM", "SYSTIME", "CLOSINGAUCTIONPRICE", "CLOSINGAUCTIONVOLUME", "ISSUECAPITALIZATION", "ISSUECAPITALIZATION_UPDATETIME", "ETFSETTLECURRENCY", "VALTODAY_RUR", "TRADINGSESSION" ],
+    "data": [
+      [ "YNDX", "SPEQ", null, null, null, null, 0, 0, 0, null, null, null, null, 0, 0, 0, 0.00, 0, null, 0, 0, 0, null, null, 4069.2, 0, 0, 0, 0, 0, null, "T", "09:25:07", null, null, null, null, null, null, null, null, null, "09:25:07", null, null, null, null, 2094, "2020-07-28 09:40:09", null, null, 1309273753683.4001, "17:28:57", null, 0, "1" ],
+      [ "YNDX", "TQBR", 4077, null, 4078.8, null, 1.8, 69149, 53779, 4194, 3971.8, 4198.8, 4078, -0.4, -0.01, 40, 163120.00, 2278.69, 4064.4, 0.8, -0.31, -12.8, null, null, 4069.2, -1.09, 50611, 1027982, 4180777954, 58402989, null, "T", "17:14:19", null, null, null, null, 4078.4, null, null, null, -45, "17:14:18", null, null, 0.8, 4194, 462375, "2020-07-28 17:29:19", null, null, 1309273753683.4001, "17:28:57", null, 4180777954, "1" ],
+      [ "YNDX", "TQDP", null, null, null, null, 0, null, null, null, null, null, null, 0, 0, 0, 0.00, 0, null, 0, 0, 0, null, null, 4069.2, 0, 0, 0, 0, 0, null, "D", "17:00:01", null, null, null, null, null, null, null, null, null, "17:00:01", null, null, null, null, 450396, "2020-07-28 17:15:01", null, null, 1309273753683.4001, "17:28:57", null, 0, "1" ]
+    ]
+  },
+  "dataversion": {
+    "metadata": {
+      "data_version": { "type": "int32" },
+      "seqnum": { "type": "int64" }
+    },
+    "columns": [ "data_version", "seqnum" ],
+    "data": [
+      [ 5876, 462332 ]
+    ]
+  },
+  "marketdata_yields": {
+    "metadata": {
+      "boardid": {
+        "type": "string",
+        "bytes": 12,
+        "max_size": 0
+      },
+      "secid": {
+        "type": "string",
+        "bytes": 36,
+        "max_size": 0
+      }
+    },
+    "columns": [ "boardid", "secid" ],
+    "data": [
+
+    ]
+  }
+}

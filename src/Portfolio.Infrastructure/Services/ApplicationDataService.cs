@@ -1,10 +1,10 @@
 ﻿namespace Portfolio.Infrastructure.Services
 {
-    public class ApplicationDataService
+    public class ApplicationDataService : IDataService
     {
-        public ApplicationDataService(AppDbContext context)
+        public ApplicationDataService(AppDbContext appContext)
         {
-            EfContext = context;
+            EfContext = appContext;
         }
 
         public AppDbContext EfContext { get; }

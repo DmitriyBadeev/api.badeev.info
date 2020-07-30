@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Portfolio.Infrastructure\Portfolio.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

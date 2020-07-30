@@ -25,7 +25,8 @@ namespace Portfolio.Identity
             var password = Configuration["password"];
             var clientId = Configuration["client_id"];
             var redirects = Configuration.GetSection("redirect_uris").Get<List<string>>();
-            var api = Configuration["api"];
+            var apiPortfolio = Configuration["apiPortfolio"];
+            var apiFinance = Configuration["apiFinance"];
 
             var rsa = new RsaKeyService(_environment, TimeSpan.FromDays(30));
             services.AddSingleton(provider => rsa);
@@ -34,8 +35,8 @@ namespace Portfolio.Identity
             services.AddIdentityServer()
                 .AddSigningCredential(rsa.GetKey())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApiResources(api))
-                .AddInMemoryClients(Config.GetSpaClient(clientId, redirects, api))
+                .AddInMemoryApiResources(Config.GetApiResources(apiPortfolio, apiFinance))
+                .AddInMemoryClients(Config.GetSpaClient(clientId, redirects, apiPortfolio, apiFinance))
                 .AddTestUsers(Config.GetUser(login, password));
         }
 

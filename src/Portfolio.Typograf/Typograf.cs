@@ -14,7 +14,7 @@ namespace Portfolio.Typograf
 
 	public class Typograf
 	{
-		public async static Task<string> Run(string text)
+		public static async Task<string> Run(string text)
 		{
 			var xml = await GetXmlResponseFromService(text);
 
@@ -31,7 +31,7 @@ namespace Portfolio.Typograf
 			return res;
 		}
 
-		private async static Task<string> GetXmlResponseFromService(string text)
+		private static async Task<string> GetXmlResponseFromService(string text)
 		{
 			var client = new HttpClient();
 

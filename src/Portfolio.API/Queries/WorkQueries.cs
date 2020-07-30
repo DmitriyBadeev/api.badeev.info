@@ -4,6 +4,7 @@ using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities;
+using Portfolio.Core.Entities.Portfolio;
 using Portfolio.Infrastructure.Services;
 
 namespace Portfolio.API.Queries
