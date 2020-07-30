@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net.Http;
+using System.Text.Json;
 using NUnit.Framework;
 using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Services;
@@ -21,11 +22,11 @@ namespace Portfolio.Finance.Services.Test
             var stockMarketAPI = new StockMarketAPI(client);
             var stockMarketData = new Services.StockMarketData(stockMarketAPI);
 
-            var json = File.ReadAllTextAsync("TestData/stock_response.json").Result;
+            var jsonYNDX = File.ReadAllTextAsync("TestData/stock_response_YNDX.json").Result;
 
             mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/securities/YNDX.json")
-                .Respond("application/json", json);
+                .Respond("application/json", jsonYNDX);
 
             _data = stockMarketData.GetStockData("YNDX").Result;
         }
@@ -49,17 +50,19 @@ namespace Portfolio.Finance.Services.Test
         [Test]
         public void GetValueOfColumn()
         {
-            var strPrice = FinanceHelpers.GetValueOfColumn("LAST", _data);
+            var stockInfoList = FinanceHelpers.GetStockInfo("TQBR", _data);
+            var strPrice = FinanceHelpers.GetValueOfColumn("LAST", stockInfoList, _data);
 
-            Assert.AreEqual("4078", strPrice);
+            Assert.AreEqual(4078, strPrice.GetDouble());
         }
 
         [Test]
         public void GetValueOfColumn__invalidIndex()
         {
-            var strPrice = FinanceHelpers.GetValueOfColumn("BLABLA", _data);
+            var stockInfoList = FinanceHelpers.GetStockInfo("TQBR", _data);
+            var strPrice = FinanceHelpers.GetValueOfColumn("BLABLA", stockInfoList, _data);
 
-            Assert.IsNull(strPrice);
+            Assert.AreEqual(JsonValueKind.Undefined, strPrice.ValueKind);
         }
     }
 }

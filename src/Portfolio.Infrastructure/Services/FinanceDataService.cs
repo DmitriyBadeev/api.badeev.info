@@ -1,12 +1,12 @@
 ﻿namespace Portfolio.Infrastructure.Services
 {
-    public class FinanceDataService : IDataService
+    public class FinanceDataService
     {
-        public FinanceDataService(AppDbContext efFinanceContext)
+        public FinanceDataService(FinanceDbContext efFinanceContext)
         {
             EfContext = efFinanceContext;
         }
 
-        public AppDbContext EfContext { get; }
+        public FinanceDbContext EfContext { get; }
     }
 }

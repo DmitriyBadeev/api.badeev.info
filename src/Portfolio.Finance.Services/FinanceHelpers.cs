@@ -1,4 +1,6 @@
-﻿using Portfolio.Finance.Services.Entities;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using Portfolio.Finance.Services.Entities;
 
 namespace Portfolio.Finance.Services
 {
@@ -11,17 +13,22 @@ namespace Portfolio.Finance.Services
             return whole + fraction;
         }
 
-        public static string GetValueOfColumn(string column, StockResponse data)
+        public static JsonElement GetValueOfColumn(string column, List<JsonElement> stockInfo, StockResponse data)
         {
             var index = data.marketdata.columns.IndexOf(column);
 
-
             if (index != -1)
             {
-                return data.marketdata.data[1][index].ToString();
+                return stockInfo[index];
             }
 
-            return null;
+            return new JsonElement();
+        }
+
+        public static List<JsonElement> GetStockInfo(string boardId, StockResponse data)
+        {
+            var indexOfBoardId = data.marketdata.columns.IndexOf("BOARDID");
+            return data.marketdata.data.Find(el => el[indexOfBoardId].GetString() == boardId);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Portfolio.Finance.Services.Entities
 {
@@ -683,7 +684,7 @@ namespace Portfolio.Finance.Services.Entities
     {
         public Metadata2 metadata { get; set; }
         public List<string> columns { get; set; }
-        public List<List<object>> data { get; set; }
+        public List<List<JsonElement>> data { get; set; }
 
     }
 

@@ -6,12 +6,25 @@ using Portfolio.Core.Interfaces;
 
 namespace Portfolio.Infrastructure.Services
 {
+    public static class SeedFinanceData
+    {
+        public static string BUY_ACTION = "Покупка";
+        public static string SELL_ACTION = "Продажа";
+        
+        public static string REFILL_ACTION = "Пополнение";
+        public static string WITHDRAWAL_ACTION = "Вывод";
+        
+        public static string STOCK_ASSET_TYPE = "Акция";
+        public static string FOND_ASSET_TYPE = "Фонд";
+        public static string BOND_ASSET_TYPE = "Облигация";
+    }
+
     public class SeedFinanceDataService : ISeedDataService
     {
-        private readonly ILogger<SeedAppDataService> _logger;
+        private readonly ILogger<SeedFinanceDataService> _logger;
         private readonly FinanceDbContext _context;
 
-        public SeedFinanceDataService(ILogger<SeedAppDataService> logger, FinanceDbContext context)
+        public SeedFinanceDataService(ILogger<SeedFinanceDataService> logger, FinanceDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -21,13 +34,16 @@ namespace Portfolio.Infrastructure.Services
         {
             _logger.LogInformation("Seeding database");
 
-            if (_context.Database.GetPendingMigrations().Any())
+            if (_context.Database.IsSqlServer())
             {
-                _logger.LogInformation("Migrating database");
-                _context.Database.Migrate();
-                _logger.LogInformation("Database has migrated successfully");
+                if (_context.Database.GetPendingMigrations().Any())
+                {
+                    _logger.LogInformation("Migrating database");
+                    _context.Database.Migrate();
+                    _logger.LogInformation("Database has migrated successfully");
+                }
             }
-
+            
             AddActions();
             AddAssetTypes();
 
@@ -41,12 +57,12 @@ namespace Portfolio.Infrastructure.Services
                 _logger.LogInformation("Add asset actions");
                 var buy = new AssetAction()
                 {
-                    Name = "Покупка"
+                    Name = SeedFinanceData.BUY_ACTION
                 };
 
                 var sell = new AssetAction()
                 {
-                    Name = "Продажа"
+                    Name = SeedFinanceData.SELL_ACTION
                 };
 
                 _context.AssetActions.AddRange(buy, sell);
@@ -59,12 +75,12 @@ namespace Portfolio.Infrastructure.Services
                 _logger.LogInformation("Add currency actions");
                 var refill = new CurrencyAction()
                 {
-                    Name = "Пополнение"
+                    Name = SeedFinanceData.REFILL_ACTION
                 };
 
                 var withdrawal = new CurrencyAction()
                 {
-                    Name = "Вывод"
+                    Name = SeedFinanceData.WITHDRAWAL_ACTION
                 };
 
                 _context.CurrencyActions.AddRange(refill, withdrawal);
@@ -80,17 +96,17 @@ namespace Portfolio.Infrastructure.Services
                 _logger.LogInformation("Add asset types");
                 var stock = new AssetType()
                 {
-                    Name = "Акция"
+                    Name = SeedFinanceData.STOCK_ASSET_TYPE
                 };
 
                 var fond = new AssetType()
                 {
-                    Name = "Фонд"
+                    Name = SeedFinanceData.FOND_ASSET_TYPE
                 };
 
                 var bond = new AssetType()
                 {
-                    Name = "Облигация"
+                    Name = SeedFinanceData.BOND_ASSET_TYPE
                 };
 
                 _context.AssetTypes.AddRange(stock, fond, bond);

@@ -1,6 +1,6 @@
 ﻿namespace Portfolio.Infrastructure.Services
 {
-    public class ApplicationDataService : IDataService
+    public class ApplicationDataService
     {
         public ApplicationDataService(AppDbContext appContext)
         {

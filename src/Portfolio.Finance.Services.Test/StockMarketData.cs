@@ -26,9 +26,9 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
-        public async Task GetValidStockData()
+        public async Task GetValidStockData1()
         {
-            var json = await File.ReadAllTextAsync("TestData/stock_response.json");
+            var json = await File.ReadAllTextAsync("TestData/stock_response_YNDX.json");
 
             _mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/securities/YNDX.json")
@@ -37,6 +37,21 @@ namespace Portfolio.Finance.Services.Test
             var response = await _stockMarketData.GetStockData("YNDX");
 
             Assert.AreEqual("YNDX", response.marketdata.data[0][0].ToString());
+            Assert.AreEqual(56, response.marketdata.columns.Count);
+        }
+
+        [Test]
+        public async Task GetValidStockData2()
+        {
+            var json = await File.ReadAllTextAsync("TestData/stock_response_SBER.json");
+
+            _mockHttp
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/securities/SBER.json")
+                .Respond("application/json", json);
+
+            var response = await _stockMarketData.GetStockData("SBER");
+
+            Assert.AreEqual("SBER", response.marketdata.data[0][0].ToString());
             Assert.AreEqual(56, response.marketdata.columns.Count);
         }
 
