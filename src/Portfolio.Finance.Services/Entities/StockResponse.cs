@@ -245,7 +245,7 @@ namespace Portfolio.Finance.Services.Entities
     {
         public Metadata metadata { get; set; }
         public List<string> columns { get; set; }
-        public List<List<object>> data { get; set; }
+        public List<List<JsonElement>> data { get; set; }
 
     }
 
@@ -742,7 +742,7 @@ namespace Portfolio.Finance.Services.Entities
     {
         public Metadata4 metadata { get; set; }
         public List<string> columns { get; set; }
-        public List<object> data { get; set; }
+        public List<JsonElement> data { get; set; }
 
     }
 

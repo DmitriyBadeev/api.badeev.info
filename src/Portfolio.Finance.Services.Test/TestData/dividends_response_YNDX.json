@@ -1,0 +1,31 @@
+{
+  "dividends": {
+    "metadata": {
+      "secid": {
+        "type": "string",
+        "bytes": 36,
+        "max_size": 0
+      },
+      "isin": {
+        "type": "string",
+        "bytes": 36,
+        "max_size": 0
+      },
+      "registryclosedate": {
+        "type": "date",
+        "bytes": 10,
+        "max_size": 0
+      },
+      "value": { "type": "double" },
+      "currencyid": {
+        "type": "string",
+        "bytes": 9,
+        "max_size": 0
+      }
+    },
+    "columns": [ "secid", "isin", "registryclosedate", "value", "currencyid" ],
+    "data": [
+
+    ]
+  }
+}

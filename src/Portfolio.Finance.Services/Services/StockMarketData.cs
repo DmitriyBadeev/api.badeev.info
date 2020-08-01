@@ -27,5 +27,18 @@ namespace Portfolio.Finance.Services.Services
 
             return null;
         }
+
+        public async Task<DividendsResponse> GetDividendsData(string codeStock)
+        {
+            var response = await _stockMarketApi.FindDividends(codeStock);
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var data = JsonSerializer.Deserialize<DividendsResponse>(response.JsonContent);
+                return data;
+            }
+
+            return null;
+        }
     }
 }

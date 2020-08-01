@@ -4,6 +4,6 @@ namespace Portfolio.Finance.Services.Interfaces
 {
     public interface IAssetsFactory
     {
-        List<IAssetInfo> Create();
+        List<IAssetInfo> Create(int portfolioId);
     }
 }

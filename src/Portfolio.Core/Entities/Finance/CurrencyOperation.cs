@@ -9,7 +9,7 @@ namespace Portfolio.Core.Entities.Finance
 
         public string CurrencyName { get; set; }
 
-        public int CurrencyId { get; set; }
+        public string CurrencyId { get; set; }
 
         public int Price { get; set; }
 

@@ -10,7 +10,7 @@ using RichardSzalay.MockHttp;
 namespace Portfolio.Finance.Services.Test
 {
     [TestFixture]
-    public class StockMarketData
+    public class StockMarketDataTests
     {
         private MockHttpMessageHandler _mockHttp;
         private IStockMarketData _stockMarketData;
@@ -22,7 +22,7 @@ namespace Portfolio.Finance.Services.Test
             var client = _mockHttp.ToHttpClient();
 
             var stockMarketAPI = new StockMarketAPI(client);
-            _stockMarketData = new Services.StockMarketData(stockMarketAPI);
+            _stockMarketData = new StockMarketData(stockMarketAPI);
         }
 
         [Test]
@@ -56,13 +56,40 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
-        public async Task HandleError()
+        public async Task GetDividends()
+        {
+            var json = await File.ReadAllTextAsync("TestData/dividends_response_SBER.json");
+
+            _mockHttp
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/securities/SBER/dividends.json")
+                .Respond("application/json", json);
+
+            var response = await _stockMarketData.GetDividendsData("SBER");
+
+            Assert.AreEqual(5, response.dividends.columns.Count);
+            Assert.AreEqual(7, response.dividends.data.Count);
+        }
+
+        [Test]
+        public async Task HandleErrorStock()
         {
             _mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/securities/YNDX.json")
                 .Respond(HttpStatusCode.BadGateway);
 
             var response = await _stockMarketData.GetStockData("YNDX");
+
+            Assert.AreEqual(null, response);
+        }
+
+        [Test]
+        public async Task HandleErrorDividend()
+        {
+            _mockHttp
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/securities/YNDX/dividends.json")
+                .Respond(HttpStatusCode.BadGateway);
+
+            var response = await _stockMarketData.GetDividendsData("YNDX");
 
             Assert.AreEqual(null, response);
         }

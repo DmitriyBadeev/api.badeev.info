@@ -2,6 +2,7 @@
 {
     public interface IMarketService
     {
-        
+        int GetAllPrice();
+        int GetAllPaperProfit();
     }
 }

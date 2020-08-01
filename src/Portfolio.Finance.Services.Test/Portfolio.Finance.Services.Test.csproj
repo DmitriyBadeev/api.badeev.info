@@ -20,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="TestData\dividends_response_SBER.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\dividends_response_YNDX.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\stock_response_SBER.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -1,0 +1,37 @@
+{
+  "dividends": {
+    "metadata": {
+      "secid": {
+        "type": "string",
+        "bytes": 36,
+        "max_size": 0
+      },
+      "isin": {
+        "type": "string",
+        "bytes": 36,
+        "max_size": 0
+      },
+      "registryclosedate": {
+        "type": "date",
+        "bytes": 10,
+        "max_size": 0
+      },
+      "value": { "type": "double" },
+      "currencyid": {
+        "type": "string",
+        "bytes": 9,
+        "max_size": 0
+      }
+    },
+    "columns": [ "secid", "isin", "registryclosedate", "value", "currencyid" ],
+    "data": [
+      [ "SBER", "RU0009029540", "2014-06-17", 3.2, "RUB" ],
+      [ "SBER", "RU0009029540", "2015-06-15", 0.45, "RUB" ],
+      [ "SBER", "RU0009029540", "2016-06-14", 1.97, "RUB" ],
+      [ "SBER", "RU0009029540", "2017-06-14", 6, "RUB" ],
+      [ "SBER", "RU0009029540", "2018-06-26", 12, "RUB" ],
+      [ "SBER", "RU0009029540", "2019-06-13", 16, "RUB" ],
+      [ "SBER", "RU0009029540", "2020-10-05", 18.7, "RUB" ]
+    ]
+  }
+}

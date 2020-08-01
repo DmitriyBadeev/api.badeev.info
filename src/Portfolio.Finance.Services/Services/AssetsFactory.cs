@@ -12,40 +12,41 @@ namespace Portfolio.Finance.Services.Services
     {
         private readonly FinanceDataService _financeDataService;
         private readonly IStockMarketData _marketData;
-        private readonly List<IAssetInfo> _assets;
 
         public AssetsFactory(FinanceDataService financeDataService, IStockMarketData marketData)
         {
             _financeDataService = financeDataService;
             _marketData = marketData;
-            _assets = new List<IAssetInfo>();
         }
 
-        public List<IAssetInfo> Create()
+        public List<IAssetInfo> Create(int portfolioId)
         {
+            var assets = new List<IAssetInfo>();
+
             var operations = _financeDataService.EfContext.AssetOperations
+                .Where(o => o.PortfolioId == portfolioId)
                 .Include(o => o.AssetAction)
                 .Include(o => o.AssetType);
 
             foreach (var assetOperation in operations)
             {
-                RegisterOperation(assetOperation);
+                RegisterOperation(assets, assetOperation);
             }
 
-            return _assets;
+            return assets;
         }
 
-        private void RegisterOperation(AssetOperation operation)
+        private void RegisterOperation(List<IAssetInfo> assets, AssetOperation operation)
         {
             if (operation.AssetType.Name == SeedFinanceData.STOCK_ASSET_TYPE)
             {
-                var asset = _assets.FirstOrDefault(a => a.Ticket == operation.Ticket);
+                var asset = assets.FirstOrDefault(a => a.Ticket == operation.Ticket);
 
                 if (asset == null)
                 {
-                    var stockInfo = new StockInfo(_marketData, operation.Ticket, operation.Amount, operation.PaymentPrice);
-                    _assets.Add(stockInfo);
-                    return;
+                    var stockInfo = new StockInfo(_marketData, operation.Ticket);
+                    assets.Add(stockInfo);
+                    asset = stockInfo;
                 }
                 
                 asset.RegisterOperation(operation);
