@@ -27,7 +27,7 @@ namespace Portfolio.Finance.Services.Test
         public async Task MakeRequest()
         {
             var request = _mockHttp
-                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/securities/YNDX.json")
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/YNDX.json?iss.meta=off&iss.only=securities,marketdata")
                 .Respond("application/json", "YNDX");
 
             var response = await _stockMarketAPI.FindStock("YNDX");

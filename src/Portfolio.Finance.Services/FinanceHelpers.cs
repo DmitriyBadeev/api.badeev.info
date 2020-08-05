@@ -13,22 +13,28 @@ namespace Portfolio.Finance.Services
             return whole + fraction;
         }
 
-        public static JsonElement GetValueOfColumn(string column, List<JsonElement> stockInfo, StockResponse data)
+        public static JsonElement GetValueOfColumnMarketdata(string column, AssetResponse data)
         {
             var index = data.marketdata.columns.IndexOf(column);
 
             if (index != -1)
             {
-                return stockInfo[index];
+                return data.marketdata.data[0][index];
             }
 
             return new JsonElement();
         }
 
-        public static List<JsonElement> GetStockInfo(string boardId, StockResponse data)
+        public static JsonElement GetValueOfColumnSecurities(string column, AssetResponse data)
         {
-            var indexOfBoardId = data.marketdata.columns.IndexOf("BOARDID");
-            return data.marketdata.data.Find(el => el[indexOfBoardId].GetString() == boardId);
+            var index = data.securities.columns.IndexOf(column);
+
+            if (index != -1)
+            {
+                return data.securities.data[0][index];
+            }
+
+            return new JsonElement();
         }
     }
 }

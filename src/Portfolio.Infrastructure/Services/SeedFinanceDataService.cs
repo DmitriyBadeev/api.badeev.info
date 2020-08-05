@@ -17,6 +17,9 @@ namespace Portfolio.Infrastructure.Services
         public static string STOCK_ASSET_TYPE = "Акция";
         public static string FOND_ASSET_TYPE = "Фонд";
         public static string BOND_ASSET_TYPE = "Облигация";
+
+        public static string RUB_CURRENCY_ID = "SUR";
+        public static string RUB_CURRENCY_NAME = "Рубль";
     }
 
     public class SeedFinanceDataService : ISeedDataService

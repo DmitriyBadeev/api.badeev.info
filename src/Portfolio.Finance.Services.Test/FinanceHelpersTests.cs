@@ -9,7 +9,7 @@ namespace Portfolio.Finance.Services.Test
     [TestFixture]
     public class FinanceHelpersTests
     {
-        private StockResponse _data;
+        private AssetResponse _data;
 
         [SetUp]
         public void Setup()
@@ -42,19 +42,25 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
-        public void GetValueOfColumn()
+        public void GetValueOfColumnMarketdata()
         {
-            var stockInfoList = FinanceHelpers.GetStockInfo("TQBR", _data);
-            var strPrice = FinanceHelpers.GetValueOfColumn("LAST", stockInfoList, _data);
+            var strPrice = FinanceHelpers.GetValueOfColumnMarketdata("LAST", _data);
 
-            Assert.AreEqual(4078, strPrice.GetDouble());
+            Assert.AreEqual(434720, (int)(strPrice.GetDouble() * 100));
+        }
+
+        [Test]
+        public void GetValueOfColumnSecurities()
+        {
+            var shortName = FinanceHelpers.GetValueOfColumnSecurities("SHORTNAME", _data);
+
+            Assert.AreEqual("Yandex clA", shortName.GetString());
         }
 
         [Test]
         public void GetValueOfColumn__invalidIndex()
         {
-            var stockInfoList = FinanceHelpers.GetStockInfo("TQBR", _data);
-            var strPrice = FinanceHelpers.GetValueOfColumn("BLABLA", stockInfoList, _data);
+            var strPrice = FinanceHelpers.GetValueOfColumnMarketdata("BLABLA", _data);
 
             Assert.AreEqual(JsonValueKind.Undefined, strPrice.ValueKind);
         }

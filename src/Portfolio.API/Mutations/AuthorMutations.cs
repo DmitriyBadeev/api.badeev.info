@@ -3,7 +3,6 @@ using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using Microsoft.Extensions.Logging;
 using Portfolio.API.Mutations.InputTypes.Author;
-using Portfolio.Core.Entities;
 using Portfolio.Core.Entities.Portfolio;
 using Portfolio.Infrastructure.Services;
 

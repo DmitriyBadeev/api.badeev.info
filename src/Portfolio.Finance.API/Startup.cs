@@ -1,10 +1,17 @@
-﻿using HotChocolate;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using HotChocolate;
 using HotChocolate.AspNetCore;
+using HotChocolate.AspNetCore.Interceptors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Portfolio.Finance.API.Mutations;
 using Portfolio.Finance.API.Queries;
+using Portfolio.Finance.Services;
 using Portfolio.Infrastructure.Services;
 
 namespace Portfolio.Finance.API
@@ -21,13 +28,21 @@ namespace Portfolio.Finance.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddFinanceInfrastructureServices(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddFinanceServices();
+            services.AddHttpContextAccessor();
             services.AddCors();
             services.AddGraphQL(s => SchemaBuilder.New()
                 .AddServices(s)
                 .AddAuthorizeDirectiveType()
                 .AddQueryType(d => d.Name("Queries"))
                 .AddType<PortfolioQueries>()
-                //.AddMutationType(d => d.Name("Mutations"))
+                .AddType<ReportQueries>()
+                .AddType<BalanceQueries>()
+                .AddType<OperationQueries>()
+                .AddMutationType(d => d.Name("Mutations"))
+                .AddType<AssetMutations>()
+                .AddType<PortfolioMutations>()
+                .AddType<BalanceMutations>()
                 .Create());
 
             services.AddAuthentication("Bearer")
@@ -36,6 +51,22 @@ namespace Portfolio.Finance.API
                     options.Authority = "https://identity.badeev.info";
                     options.ApiName = "Portfolio.Finance.API";
                 });
+
+            services.AddQueryRequestInterceptor(AuthenticationInterceptor());
+        }
+
+        private static OnCreateRequestAsync AuthenticationInterceptor()
+        {
+            return (context, builder, token) =>
+            {
+                if (context.GetUser().Identity.IsAuthenticated)
+                {
+                    builder.SetProperty("currentUserId",
+                        int.Parse(context.User.FindFirstValue("sub")));
+                }
+
+                return Task.CompletedTask;
+            };
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

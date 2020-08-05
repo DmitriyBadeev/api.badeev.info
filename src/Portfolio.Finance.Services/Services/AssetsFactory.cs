@@ -33,7 +33,7 @@ namespace Portfolio.Finance.Services.Services
                 RegisterOperation(assets, assetOperation);
             }
 
-            return assets;
+            return assets.FindAll(a => a.Amount != 0);
         }
 
         private void RegisterOperation(List<IAssetInfo> assets, AssetOperation operation)

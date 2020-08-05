@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.Json;
+using System.Linq;
 using System.Threading.Tasks;
 using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.Entities;
@@ -12,11 +12,10 @@ namespace Portfolio.Finance.Services.Services
 {
     public class StockInfo : IAssetInfo
     {
-        private StockResponse _data;
-        private List<JsonElement> _stockInfoList;
         private readonly List<AssetOperation> _operations;
         private readonly IStockMarketData _marketData;
         private List<PaymentData> _paymentsData;
+        private AssetResponse _data;
 
         public StockInfo(IStockMarketData marketData, string ticket)
         {
@@ -28,21 +27,23 @@ namespace Portfolio.Finance.Services.Services
         }
 
         public string Ticket { get; }
-        public string Name => GetName();
         public int Amount { get; private set; }
         public int BoughtPrice { get; private set; }
         public List<PaymentData> PaymentsData
         {
             get
             {
-                if (_paymentsData == null)
-                {
-                    LoadData().Wait();
-                }
-
-                return _paymentsData;
+                return GetDividendData().Result;
             }
             private set => _paymentsData = value;
+        }
+
+        public async Task<string> GetName()
+        {
+            var data = await GetData();
+
+            var indexName = data.securities.columns.IndexOf("SHORTNAME");
+            return data.securities.data[0][indexName].GetString();
         }
 
         public void RegisterOperation(AssetOperation operation)
@@ -62,22 +63,19 @@ namespace Portfolio.Finance.Services.Services
             _operations.Add(operation);
         }
 
-        public int GetPrice()
+        public async Task<int> GetPrice()
         {
-            if (_data == null)
-            {
-                LoadData().Wait();
-            }
-
-            var jsonPrice = FinanceHelpers.GetValueOfColumn("LAST", _stockInfoList, _data);
+            var data = await GetData();
+            
+            var jsonPrice = FinanceHelpers.GetValueOfColumnMarketdata("LAST", data);
 
             var price = jsonPrice.GetDouble() * 100;
             return (int)price;
         }
 
-        public int GetPaperProfit()
+        public async Task<int> GetPaperProfit()
         {
-            var price = GetPrice();
+            var price = await GetPrice();
             
             var allPrice = price * Amount;
             return allPrice - BoughtPrice;
@@ -86,6 +84,11 @@ namespace Portfolio.Finance.Services.Services
         public List<PaymentData> GetFuturePayment()
         {
             return PaymentsData.FindAll(d => DateTime.Compare(DateTime.Now, d.RegistryCloseDate) <= 0);
+        }
+
+        public int GetSumPayments()
+        {
+            return GetPaidPayments().Aggregate(0, (total, payment) => total + payment.PaymentValue);
         }
 
         public List<PaymentData> GetPaidPayments()
@@ -130,17 +133,6 @@ namespace Portfolio.Finance.Services.Services
             }
 
             return assetInfo;
-        } 
-
-        private string GetName()
-        {
-            if (_data == null)
-            {
-                LoadData().Wait();
-            }
-
-            var indexName = _data.securities.columns.IndexOf("SHORTNAME");
-            return _data.securities.data[0][indexName].GetString();
         }
 
         private List<PaymentData> GetDividendsData(DividendsResponse responseData)
@@ -169,12 +161,25 @@ namespace Portfolio.Finance.Services.Services
             return dividendsData;
         }
 
-        private async Task LoadData()
+        private async Task<AssetResponse> GetData()
         {
-            _data = await _marketData.GetStockData(Ticket);
-            var dividendsResponse = await _marketData.GetDividendsData(Ticket);
-            PaymentsData = GetDividendsData(dividendsResponse);
-            _stockInfoList = FinanceHelpers.GetStockInfo("TQBR", _data);
+            if (_data == null)
+            {
+                _data = await _marketData.GetStockData(Ticket);
+            }
+
+            return _data;
+        }
+
+        private async Task<List<PaymentData>> GetDividendData()
+        {
+            if (_paymentsData == null)
+            {
+                var dividendsResponse = await _marketData.GetDividendsData(Ticket);
+                PaymentsData = GetDividendsData(dividendsResponse);
+            }
+
+            return _paymentsData;
         }
     }
 }

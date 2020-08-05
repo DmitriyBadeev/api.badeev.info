@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.Interfaces;
@@ -43,48 +44,48 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
-        public void GetPrice1()
+        public async Task GetPrice1()
         {
             var stockInfo = GetYNDXStock();
-            var price = stockInfo.GetPrice();
+            var price = await stockInfo.GetPrice();
 
-            Assert.AreEqual(407800, price);
+            Assert.AreEqual(434720, price);
         }
 
         [Test]
-        public void GetPrice2()
+        public async Task GetPrice2()
         {
             var stockInfo = GetSBERStock();
-            var price = stockInfo.GetPrice();
+            var price = await stockInfo.GetPrice();
 
-            Assert.AreEqual(21779, price);
+            Assert.AreEqual(22658, price);
         }
 
         [Test]
-        public void GetPaperProfit1()
+        public async Task GetPaperProfit1()
         {
             var stockInfo = GetYNDXStock();
-            var profit = stockInfo.GetPaperProfit();
+            var profit = await stockInfo.GetPaperProfit();
 
-            Assert.AreEqual(407800 - 312430, profit);
+            Assert.AreEqual(434720 - 312430, profit);
         }
 
         [Test]
-        public void GetPaperProfit2()
+        public async Task GetPaperProfit2()
         {
             var stockInfo = GetSBERStock();
-            var profit = stockInfo.GetPaperProfit();
+            var profit = await stockInfo.GetPaperProfit();
 
-            Assert.AreEqual(-1137744, profit);
+            Assert.AreEqual(-1134228, profit);
         }
 
         [Test]
-        public void NameAsset()
+        public async Task NameAsset()
         {
             var stockInfo = GetSBERStock();
-            var Name = stockInfo.Name;
+            var name = await stockInfo.GetName();
 
-            Assert.AreEqual("Сбербанк".Length, Name.Length);
+            Assert.AreEqual("Сбербанк".Length, name.Length);
         }
 
         [Test]
@@ -121,6 +122,16 @@ namespace Portfolio.Finance.Services.Test
 
             Assert.AreEqual(2, stockSBERInfo.GetPaidPayments().Count);
             Assert.AreEqual(0, stockYNDXInfo.GetPaidPayments().Count);
+        }
+
+        [Test]
+        public void GetSumPayments()
+        {
+            var stockSBERInfo = GetSBERStock();
+            var stockYNDXInfo = GetYNDXStock();
+
+            Assert.AreEqual(3600 + 6400, stockSBERInfo.GetSumPayments());
+            Assert.AreEqual(0, stockYNDXInfo.GetSumPayments());
         }
 
         private IAssetInfo GetYNDXStock()

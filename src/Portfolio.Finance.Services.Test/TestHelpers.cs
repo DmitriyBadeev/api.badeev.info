@@ -64,7 +64,6 @@ namespace Portfolio.Finance.Services.Test
                 //profit = 95370
                 new AssetOperation()
                 {
-                    Id = 1,
                     Ticket = "YNDX",
                     Amount = 2,
                     PaymentPrice = 624860,
@@ -78,7 +77,6 @@ namespace Portfolio.Finance.Services.Test
                 },
                 new AssetOperation()
                 {
-                    Id = 2,
                     Ticket = "YNDX",
                     Amount = 1,
                     PaymentPrice = 312430,
@@ -94,7 +92,6 @@ namespace Portfolio.Finance.Services.Test
                 //profit = -11 37744
                 new AssetOperation()
                 {
-                    Id = 3,
                     Ticket = "SBER",
                     Amount = 3,
                     PaymentPrice = 1012430,
@@ -108,7 +105,6 @@ namespace Portfolio.Finance.Services.Test
                 },
                 new AssetOperation()
                 {
-                    Id = 4,
                     Ticket = "SBER",
                     Amount = 1,
                     PaymentPrice = 212430,
@@ -124,7 +120,6 @@ namespace Portfolio.Finance.Services.Test
                 //profit = 21779 - 21430
                 new AssetOperation()
                 {
-                    Id = 5,
                     Ticket = "SBER",
                     Amount = 1,
                     PaymentPrice = 21430,
@@ -140,7 +135,6 @@ namespace Portfolio.Finance.Services.Test
 
                 new AssetOperation()
                 {
-                    Id = 6,
                     Ticket = "SBER",
                     Amount = 1,
                     PaymentPrice = 21430,
@@ -158,54 +152,51 @@ namespace Portfolio.Finance.Services.Test
             {
                 new CurrencyOperation()
                 {
-                    Id = 1,
                     PortfolioId = portfolios[0].Id,
                     Portfolio = portfolios[0],
                     Date = new DateTime(2018, 1, 8),
-                    CurrencyId = "RUR",
-                    CurrencyName = "₽",
+                    CurrencyId = SeedFinanceData.RUB_CURRENCY_ID,
+                    CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
                     CurrencyAction = refillAction,
                     CurrencyActionId = refillAction.Id,
                     Price = 2000000
                 },
                 new CurrencyOperation()
                 {
-                    Id = 2,
                     PortfolioId = portfolios[0].Id,
                     Portfolio = portfolios[0],
                     Date = new DateTime(2018, 1, 8),
-                    CurrencyId = "RUR",
-                    CurrencyName = "₽",
+                    CurrencyId = SeedFinanceData.RUB_CURRENCY_ID,
+                    CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
                     CurrencyAction = withdrawalAction,
                     CurrencyActionId = withdrawalAction.Id,
                     Price = 200000
                 },
                 new CurrencyOperation()
                 {
-                    Id = 3,
                     PortfolioId = portfolios[1].Id,
                     Portfolio = portfolios[1],
                     Date = new DateTime(2018, 1, 10),
-                    CurrencyId = "RUR",
-                    CurrencyName = "₽",
+                    CurrencyId = SeedFinanceData.RUB_CURRENCY_ID,
+                    CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
                     CurrencyAction = refillAction,
                     CurrencyActionId = refillAction.Id,
                     Price = 50000
                 },
                 new CurrencyOperation()
                 {
-                    Id = 4,
                     PortfolioId = portfolios[2].Id,
                     Portfolio = portfolios[2],
                     Date = new DateTime(2018, 1, 10),
-                    CurrencyId = "RUR",
-                    CurrencyName = "₽",
+                    CurrencyId = SeedFinanceData.RUB_CURRENCY_ID,
+                    CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
                     CurrencyAction = refillAction,
                     CurrencyActionId = refillAction.Id,
                     Price = 50000
                 }
             };
 
+            context.Portfolios.AddRange(portfolios);
             context.CurrencyOperations.AddRange(currencyOperations);
             context.AssetOperations.AddRange(operations);
             context.SaveChanges();
@@ -217,11 +208,11 @@ namespace Portfolio.Finance.Services.Test
             var jsonSBER = File.ReadAllTextAsync("TestData/stock_response_SBER.json").Result;
 
             mockHttp
-                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/securities/YNDX.json")
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/YNDX.json?iss.meta=off&iss.only=securities,marketdata")
                 .Respond("application/json", jsonYNDX);
 
             mockHttp
-                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/securities/SBER.json")
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/SBER.json?iss.meta=off&iss.only=securities,marketdata")
                 .Respond("application/json", jsonSBER);
         }
 
@@ -231,11 +222,11 @@ namespace Portfolio.Finance.Services.Test
             var jsonDivsYNDX = File.ReadAllTextAsync("TestData/dividends_response_YNDX.json").Result;
 
             mockHttp
-                .When(HttpMethod.Get, "http://iss.moex.com/iss/securities/SBER/dividends.json")
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/securities/SBER/dividends.json?iss.meta=off")
                 .Respond("application/json", jsonDivsSBER);
 
             mockHttp
-                .When(HttpMethod.Get, "http://iss.moex.com/iss/securities/YNDX/dividends.json")
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/securities/YNDX/dividends.json?iss.meta=off")
                 .Respond("application/json", jsonDivsYNDX);
         }
     }

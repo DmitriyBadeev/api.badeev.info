@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.Entities;
 
@@ -10,19 +11,21 @@ namespace Portfolio.Finance.Services.Interfaces
 
         int Amount { get; }
 
-        string Name { get; }
-
         int BoughtPrice { get; }
+
+        Task<string> GetName();
 
         List<PaymentData> PaymentsData { get; }
 
         List<PaymentData> GetFuturePayment();
 
-        int GetPrice();
+        Task<int> GetPrice();
 
-        int GetPaperProfit();
+        Task<int> GetPaperProfit();
 
         List<PaymentData> GetPaidPayments();
+
+        int GetSumPayments();
 
         void RegisterOperation(AssetOperation operation);
     }
