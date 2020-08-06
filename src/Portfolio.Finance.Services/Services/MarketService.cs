@@ -191,6 +191,19 @@ namespace Portfolio.Finance.Services.Services
             }
         }
 
+        public IEnumerable<BondInfo> GetBonds(int userId, int portfolioId)
+        {
+            var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
+
+            foreach (var asset in portfolio.Assets)
+            {
+                var type = asset.GetType();
+
+                if (type.Name == "BondInfo")
+                    yield return (BondInfo)asset;
+            }
+        }
+
         private bool HasAsset(int portfolioId, int amount, string ticket, int userId)
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);

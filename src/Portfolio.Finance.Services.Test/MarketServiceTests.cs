@@ -96,6 +96,17 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
+        public void GetBonds()
+        {
+            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
+            var bonds1 = marketService.GetBonds(1, 1);
+            var bonds2 = marketService.GetBonds(1, 2);
+
+            Assert.AreEqual(2, bonds1.Count());
+            Assert.AreEqual(0, bonds2.Count());
+        }
+
+        [Test]
         public async Task BuyAsset()
         {
             var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
