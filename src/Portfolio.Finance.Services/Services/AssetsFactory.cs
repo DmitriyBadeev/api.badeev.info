@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities.Finance;
+using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Infrastructure.Services;
 
@@ -19,9 +19,9 @@ namespace Portfolio.Finance.Services.Services
             _marketData = marketData;
         }
 
-        public List<IAssetInfo> Create(int portfolioId)
+        public List<AssetInfo> Create(int portfolioId)
         {
-            var assets = new List<IAssetInfo>();
+            var assets = new List<AssetInfo>();
 
             var operations = _financeDataService.EfContext.AssetOperations
                 .Where(o => o.PortfolioId == portfolioId)
@@ -36,7 +36,7 @@ namespace Portfolio.Finance.Services.Services
             return assets.FindAll(a => a.Amount != 0);
         }
 
-        private void RegisterOperation(List<IAssetInfo> assets, AssetOperation operation)
+        private void RegisterOperation(List<AssetInfo> assets, AssetOperation operation)
         {
             if (operation.AssetType.Name == SeedFinanceData.STOCK_ASSET_TYPE)
             {
@@ -54,12 +54,30 @@ namespace Portfolio.Finance.Services.Services
 
             if (operation.AssetType.Name == SeedFinanceData.FOND_ASSET_TYPE)
             {
-                throw new NotImplementedException();
+                var asset = assets.FirstOrDefault(a => a.Ticket == operation.Ticket);
+
+                if (asset == null)
+                {
+                    var fondInfo = new FondInfo(_marketData, operation.Ticket);
+                    assets.Add(fondInfo);
+                    asset = fondInfo;
+                }
+
+                asset.RegisterOperation(operation);
             }
 
             if (operation.AssetType.Name == SeedFinanceData.BOND_ASSET_TYPE)
             {
-                throw new NotImplementedException();
+                var asset = assets.FirstOrDefault(a => a.Ticket == operation.Ticket);
+
+                if (asset == null)
+                {
+                    var bondInfo = new BondInfo(_marketData, operation.Ticket);
+                    assets.Add(bondInfo);
+                    asset = bondInfo;
+                }
+
+                asset.RegisterOperation(operation);
             }
         }
     }

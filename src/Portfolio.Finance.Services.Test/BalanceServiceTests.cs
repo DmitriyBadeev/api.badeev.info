@@ -29,7 +29,7 @@ namespace Portfolio.Finance.Services.Test
             var balance2 = _balanceService.GetBalance(2);
             var balance3 = _balanceService.GetBalance(3);
 
-            Assert.AreEqual(262710, balance1);
+            Assert.AreEqual(762710 - 81840 - 205621, balance1);
             Assert.AreEqual(28570, balance2);
             Assert.AreEqual(28570, balance3);
         }
@@ -40,7 +40,7 @@ namespace Portfolio.Finance.Services.Test
             var allUserBalance1 = _balanceService.GetAllBalanceUser(1);
             var allUserBalance2 = _balanceService.GetAllBalanceUser(2);
 
-            Assert.AreEqual(262710 + 28570, allUserBalance1);
+            Assert.AreEqual(762710 + 28570 - 81840 - 205621, allUserBalance1);
             Assert.AreEqual(28570, allUserBalance2);
         }
 
@@ -101,7 +101,7 @@ namespace Portfolio.Finance.Services.Test
         {
             var result = _balanceService.GetAllInvestSum(1);
 
-            Assert.AreEqual(1850000, result);
+            Assert.AreEqual(2350000, result);
         }
     }
 }

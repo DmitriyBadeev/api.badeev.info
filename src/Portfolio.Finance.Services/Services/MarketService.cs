@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities.Finance;
+using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Infrastructure.Services;
@@ -141,7 +142,7 @@ namespace Portfolio.Finance.Services.Services
         {
             return GetPortfoliosData(userId)
                 .Aggregate(0, (total, portfolio) => total + portfolio.Assets
-                    .Aggregate(0, (totalPortfolio, asset) => totalPortfolio + asset.GetPrice().Result * asset.Amount));
+                    .Aggregate(0, (totalPortfolio, asset) => totalPortfolio + asset.GetAllPrice().Result));
         }
 
         public int GetAllPaperProfit(int userId)
@@ -177,11 +178,24 @@ namespace Portfolio.Finance.Services.Services
             }
         }
 
+        public IEnumerable<FondInfo> GetFonds(int userId, int portfolioId)
+        {
+            var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
+
+            foreach (var asset in portfolio.Assets)
+            {
+                var type = asset.GetType();
+
+                if (type.Name == "FondInfo")
+                    yield return (FondInfo)asset;
+            }
+        }
+
         private bool HasAsset(int portfolioId, int amount, string ticket, int userId)
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
 
-            var asset = portfolio.Assets.Find(a => a.Ticket == ticket);
+            var asset = portfolio.Assets.FirstOrDefault(a => a.Ticket == ticket);
 
             if (asset == null) return false;
             if (asset.Amount < amount) return false;

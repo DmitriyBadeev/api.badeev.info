@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using NUnit.Framework;
+using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Services;
 using RichardSzalay.MockHttp;

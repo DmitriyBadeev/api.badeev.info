@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Text.Json;
-using Portfolio.Finance.Services.Entities;
+using Portfolio.Finance.Services.DTO;
 
 namespace Portfolio.Finance.Services
 {
@@ -13,11 +13,16 @@ namespace Portfolio.Finance.Services
             return whole + fraction;
         }
 
+        public static int GetPriceInt(double price)
+        {
+            return (int) Math.Round(price * 100);
+        }
+
         public static JsonElement GetValueOfColumnMarketdata(string column, AssetResponse data)
         {
             var index = data.marketdata.columns.IndexOf(column);
 
-            if (index != -1)
+            if (index != -1 && data.marketdata.data.Count > 0)
             {
                 return data.marketdata.data[0][index];
             }
@@ -29,7 +34,7 @@ namespace Portfolio.Finance.Services
         {
             var index = data.securities.columns.IndexOf(column);
 
-            if (index != -1)
+            if (index != -1 && data.securities.data.Count > 0)
             {
                 return data.securities.data[0][index];
             }

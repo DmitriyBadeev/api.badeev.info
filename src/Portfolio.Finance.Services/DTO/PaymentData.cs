@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Portfolio.Finance.Services.Entities
+namespace Portfolio.Finance.Services.DTO
 {
     public class PaymentData
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Portfolio.Finance.Services.Interfaces;
+using Portfolio.Finance.Services.Entities;
 
-namespace Portfolio.Finance.Services.Entities
+namespace Portfolio.Finance.Services.DTO
 {
     public class PortfolioData
     {
@@ -11,6 +11,6 @@ namespace Portfolio.Finance.Services.Entities
 
         public int UserId { get; set; }
 
-        public List<IAssetInfo> Assets { get; set; }
+        public IEnumerable<AssetInfo> Assets { get; set; }
     }
 }

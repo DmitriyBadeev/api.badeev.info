@@ -26,7 +26,11 @@ namespace Portfolio.Finance.Services.Test
             var stockMarketData = new StockMarketData(stockMarketAPI);
 
             TestHelpers.MockStockData(mockHttp);
+            TestHelpers.MockFondData(mockHttp);
+            TestHelpers.MockBondData(mockHttp);
+
             TestHelpers.MockDividendData(mockHttp);
+            TestHelpers.MockCouponsData(mockHttp);
 
             var context = TestHelpers.GetMockFinanceDbContext();
             TestHelpers.SeedOperations1(context);
@@ -37,11 +41,11 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
-        public void GetAllProfitTest()
+        public void GetAllPaperProfit()
         {
             var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var profit = marketService.GetAllPaperProfit(1);
-            Assert.AreEqual(-1010710, profit);
+            Assert.AreEqual(-1010710 + 20000 - 99338, profit);
         }
 
         [Test]
@@ -53,11 +57,11 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
-        public void GetAllPriceTest()
+        public void GetAllPaperPrice()
         {
             var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var price = marketService.GetAllPaperPrice(1);
-            Assert.AreEqual(548010, price);
+            Assert.AreEqual(548010 + 101840 + 106283, price);
         }
 
         [Test]
@@ -66,7 +70,7 @@ namespace Portfolio.Finance.Services.Test
             var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var profit = marketService.GetAllPaymentProfit(1);
 
-            Assert.AreEqual(11600, profit);
+            Assert.AreEqual(11600 + 117354, profit);
         }
 
         [Test]
@@ -78,6 +82,17 @@ namespace Portfolio.Finance.Services.Test
 
             Assert.AreEqual(2, stocks1.Count());
             Assert.AreEqual(1, stocks2.Count());
+        }
+
+        [Test]
+        public void GetFonds()
+        {
+            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
+            var fonds1 = marketService.GetFonds(1, 1);
+            var fonds2 = marketService.GetFonds(1, 2);
+
+            Assert.AreEqual(1, fonds1.Count());
+            Assert.AreEqual(0, fonds2.Count());
         }
 
         [Test]
@@ -182,7 +197,7 @@ namespace Portfolio.Finance.Services.Test
             var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var operations = marketService.GetAllAssetOperations(1);
 
-            Assert.AreEqual(4, operations.Count());
+            Assert.AreEqual(7, operations.Count());
             Assert.AreEqual("YNDX", operations.FirstOrDefault().Ticket);
         }
 
@@ -192,7 +207,7 @@ namespace Portfolio.Finance.Services.Test
             var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var allCost = marketService.GetAllCost(1);
 
-            Assert.AreEqual(850890, allCost);
+            Assert.AreEqual(756133 + 128954 + 503819, allCost);
         }
     }
 }

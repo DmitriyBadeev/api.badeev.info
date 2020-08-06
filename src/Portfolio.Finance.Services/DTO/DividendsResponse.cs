@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 
-namespace Portfolio.Finance.Services.Entities
+namespace Portfolio.Finance.Services.DTO
 {
     public class Dividends
     {

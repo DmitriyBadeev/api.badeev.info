@@ -20,6 +20,7 @@ namespace Portfolio.Finance.Services.Test
             var stockMarketData = new StockMarketData(stockMarketAPI);
 
             TestHelpers.MockStockData(mockHttp);
+            TestHelpers.MockFondData(mockHttp);
             TestHelpers.MockDividendData(mockHttp);
 
             var context = TestHelpers.GetMockFinanceDbContext();
@@ -34,7 +35,7 @@ namespace Portfolio.Finance.Services.Test
         {
             var assetList = _assetFactory.Create(1);
 
-            Assert.AreEqual(2, assetList.Count);
+            Assert.AreEqual(5, assetList.Count);
 
             Assert.AreEqual("YNDX", assetList[0].Ticket);
             Assert.AreEqual(624860 - 312430, assetList[0].BoughtPrice);
@@ -43,6 +44,15 @@ namespace Portfolio.Finance.Services.Test
             Assert.AreEqual("SBER", assetList[1].Ticket);
             Assert.AreEqual(4, assetList[1].Amount);
             Assert.AreEqual(1012430 + 212430, assetList[1].BoughtPrice);
+
+            Assert.AreEqual("FXGD", assetList[2].Ticket);
+            Assert.AreEqual(1, assetList[2].Amount);
+
+            Assert.AreEqual("SU26209RMFS5", assetList[3].Ticket);
+            Assert.AreEqual(1, assetList[3].Amount);
+
+            Assert.AreEqual("SU26210RMFS3", assetList[4].Ticket);
+            Assert.AreEqual(1, assetList[4].Amount);
         }
     }
 }

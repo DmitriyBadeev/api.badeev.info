@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities.Finance;
-using Portfolio.Finance.Services.Entities;
+using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Infrastructure.Services;
 

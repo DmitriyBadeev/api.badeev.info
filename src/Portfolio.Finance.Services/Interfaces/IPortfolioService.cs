@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Portfolio.Finance.Services.Entities;
+using Portfolio.Finance.Services.DTO;
 
 namespace Portfolio.Finance.Services.Interfaces
 {

@@ -32,7 +32,11 @@ namespace Portfolio.Finance.Services.Test
             seedService.Initialise();
             var buyAction = context.AssetActions.FirstOrDefault(a => a.Name == SeedFinanceData.BUY_ACTION);
             var sellAction = context.AssetActions.FirstOrDefault(a => a.Name == SeedFinanceData.SELL_ACTION);
+
             var stockType = context.AssetTypes.FirstOrDefault(a => a.Name == SeedFinanceData.STOCK_ASSET_TYPE);
+            var fondType = context.AssetTypes.FirstOrDefault(a => a.Name == SeedFinanceData.FOND_ASSET_TYPE);
+            var bondType = context.AssetTypes.FirstOrDefault(a => a.Name == SeedFinanceData.BOND_ASSET_TYPE);
+
             var refillAction = context.CurrencyActions.FirstOrDefault(a => a.Name == SeedFinanceData.REFILL_ACTION);
             var withdrawalAction = context.CurrencyActions.FirstOrDefault(a => a.Name == SeedFinanceData.WITHDRAWAL_ACTION);
 
@@ -116,6 +120,47 @@ namespace Portfolio.Finance.Services.Test
                     PortfolioId = portfolios[0].Id,
                     Portfolio = portfolios[0]
                 },
+                //price = 101840
+                //profit = 101840 - 81840 = 20000
+                new AssetOperation()
+                {
+                    Ticket = "FXGD",
+                    Amount = 1,
+                    PaymentPrice = 81840,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = fondType,
+                    AssetTypeId = fondType.Id,
+                    Date = new DateTime(2019, 4, 4),
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0]
+                },
+                new AssetOperation()
+                {
+                    Ticket = "SU26209RMFS5",
+                    Amount = 1,
+                    PaymentPrice = 103521,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = bondType,
+                    AssetTypeId = bondType.Id,
+                    Date = new DateTime(2020, 2, 7),
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0]
+                },
+                new AssetOperation()
+                {
+                    Ticket = "SU26210RMFS3",
+                    Amount = 1,
+                    PaymentPrice = 102100,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = bondType,
+                    AssetTypeId = bondType.Id,
+                    Date = new DateTime(2018, 2, 7),
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0]
+                },
                 //price = 21779
                 //profit = 21779 - 21430
                 new AssetOperation()
@@ -159,7 +204,7 @@ namespace Portfolio.Finance.Services.Test
                     CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
                     CurrencyAction = refillAction,
                     CurrencyActionId = refillAction.Id,
-                    Price = 2000000
+                    Price = 2500000
                 },
                 new CurrencyOperation()
                 {
@@ -206,7 +251,7 @@ namespace Portfolio.Finance.Services.Test
         {
             var jsonYNDX = File.ReadAllTextAsync("TestData/stock_response_YNDX.json").Result;
             var jsonSBER = File.ReadAllTextAsync("TestData/stock_response_SBER.json").Result;
-
+            
             mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/YNDX.json?iss.meta=off&iss.only=securities,marketdata")
                 .Respond("application/json", jsonYNDX);
@@ -214,6 +259,15 @@ namespace Portfolio.Finance.Services.Test
             mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/SBER.json?iss.meta=off&iss.only=securities,marketdata")
                 .Respond("application/json", jsonSBER);
+        }
+
+        public static void MockFondData(MockHttpMessageHandler mockHttp)
+        {
+            var jsonFXGD = File.ReadAllTextAsync("TestData/fond_response_FXGD.json").Result;
+
+            mockHttp
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQTF/securities/FXGD.json?iss.meta=off&iss.only=securities,marketdata")
+                .Respond("application/json", jsonFXGD);
         }
 
         public static void MockDividendData(MockHttpMessageHandler mockHttp)
@@ -228,6 +282,35 @@ namespace Portfolio.Finance.Services.Test
             mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/securities/YNDX/dividends.json?iss.meta=off")
                 .Respond("application/json", jsonDivsYNDX);
+        }
+
+        public static void MockBondData(MockHttpMessageHandler mockHttp)
+        {
+            var jsonBond = File.ReadAllTextAsync("TestData/bond_response_SU26209RMFS5.json").Result;
+            var jsonAmortizedBond = File.ReadAllTextAsync("TestData/bond_response_SU26210RMFS3_2019.json").Result;
+
+            mockHttp
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/bonds/boards/TQOB/securities/SU26209RMFS5.json?iss.meta=off&iss.only=securities,marketdata")
+                .Respond("application/json", jsonBond);
+
+            mockHttp
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/bonds/boards/TQOB/securities/SU26210RMFS3.json?iss.meta=off&iss.only=securities,marketdata")
+                .Respond("application/json", jsonAmortizedBond);
+        }
+
+        public static void MockCouponsData(MockHttpMessageHandler mockHttp)
+        {
+            var jsonCoupon = File.ReadAllTextAsync("TestData/coupons_response_RU000A0JSMA2.json").Result;
+            var jsonAmortizedCoupon = File.ReadAllTextAsync("TestData/coupons_response_RU000A0JTG59_2019.json").Result;
+
+            mockHttp
+                //.When(HttpMethod.Get, "https://iss.moex.com/iss/statistics/engines/stock/markets/bonds/bondization/SU26209RMFS5.json?from=2020-02-7&iss.only=coupons,amortizations&iss.meta=off")
+                .When(HttpMethod.Get, "https://iss.moex.com/iss/statistics/engines/stock/markets/bonds/bondization/SU26209RMFS5.json?from=2020-02-07&iss.only=coupons,amortizations&iss.meta=off")
+                .Respond("application/json", jsonCoupon);
+
+            mockHttp
+                .When(HttpMethod.Get, "https://iss.moex.com/iss/statistics/engines/stock/markets/bonds/bondization/SU26210RMFS3.json?from=2018-02-07&iss.only=coupons,amortizations&iss.meta=off")
+                .Respond("application/json", jsonAmortizedCoupon);
         }
     }
 }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Portfolio.Core.Entities.Finance;
+using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Entities;
-using Portfolio.Finance.Services.Services;
 
 namespace Portfolio.Finance.Services.Interfaces
 {
@@ -19,5 +19,6 @@ namespace Portfolio.Finance.Services.Interfaces
         Task<OperationResult> SellAsset(int portfolioId, string ticket, int price, int amount,
             int assetTypeId, DateTime date);
         IEnumerable<StockInfo> GetStocks(int portfolioId, int userId);
+        IEnumerable<FondInfo> GetFonds(int userId, int portfolioId);
     }
 }

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Portfolio.Finance.Services.Entities;
+using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Interfaces;
 
 namespace Portfolio.Finance.Services.Services

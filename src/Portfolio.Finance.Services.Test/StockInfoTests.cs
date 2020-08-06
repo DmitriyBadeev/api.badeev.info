@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Portfolio.Core.Entities.Finance;
+using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Finance.Services.Services;
 using Portfolio.Infrastructure.Services;
@@ -134,7 +135,7 @@ namespace Portfolio.Finance.Services.Test
             Assert.AreEqual(0, stockYNDXInfo.GetSumPayments());
         }
 
-        private IAssetInfo GetYNDXStock()
+        private AssetInfo GetYNDXStock()
         {
             var operations = new List<AssetOperation>()
             {
@@ -176,7 +177,7 @@ namespace Portfolio.Finance.Services.Test
             return stockInfo;
         }
 
-        private IAssetInfo GetSBERStock()
+        private AssetInfo GetSBERStock()
         {
             var operations = new List<AssetOperation>()
             {
