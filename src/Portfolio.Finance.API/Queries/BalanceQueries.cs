@@ -11,9 +11,9 @@ namespace Portfolio.Finance.API.Queries
     {
         [Authorize]
         public double GetCurrentUserBalance([CurrentUserIdGlobalState] int userId,
-            [Service] IBalanceService balanceService)
+            [Service] IMarketService marketService)
         {
-            return FinanceHelpers.GetPriceDouble(balanceService.GetAllBalanceUser(userId));
+            return FinanceHelpers.GetPriceDouble(marketService.GetUserBalanceWithPaidPayments(userId));
         }
     }
 }

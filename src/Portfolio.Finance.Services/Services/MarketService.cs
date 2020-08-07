@@ -42,7 +42,7 @@ namespace Portfolio.Finance.Services.Services
 
             if (!CommonValidate(price, amount, assetType, portfolio, out var message))
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     IsSuccess = false,
                     Message = message
@@ -52,14 +52,14 @@ namespace Portfolio.Finance.Services.Services
             var currentBalance = _balanceService.GetBalance(portfolioId);
             if (price > currentBalance)
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     IsSuccess = false,
                     Message = "Недостаточно средств"
                 };
             }
 
-            var assetOperation = new AssetOperation()
+            var assetOperation = new AssetOperation
             {
                 Portfolio = portfolio,
                 PortfolioId = portfolioId,
@@ -78,7 +78,7 @@ namespace Portfolio.Finance.Services.Services
 
             GetPortfoliosData(portfolio.UserId, true);
 
-            return new OperationResult()
+            return new OperationResult
             {
                 IsSuccess = true,
                 Message = "Актив куплен успешно"
@@ -96,7 +96,7 @@ namespace Portfolio.Finance.Services.Services
 
             if (!CommonValidate(price, amount, assetType, portfolio, out var message))
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     IsSuccess = false,
                     Message = message
@@ -105,14 +105,14 @@ namespace Portfolio.Finance.Services.Services
 
             if (!HasAsset(portfolioId, amount, ticket, portfolio.UserId))
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     IsSuccess = false,
                     Message = "Такого количества активов нет в наличии"
                 };
             }
 
-            var assetOperation = new AssetOperation()
+            var assetOperation = new AssetOperation
             {
                 Portfolio = portfolio,
                 PortfolioId = portfolioId,
@@ -131,7 +131,7 @@ namespace Portfolio.Finance.Services.Services
 
             GetPortfoliosData(portfolio.UserId, true);
 
-            return new OperationResult()
+            return new OperationResult
             {
                 IsSuccess = true,
                 Message = "Актив продан успешно"
@@ -163,6 +163,18 @@ namespace Portfolio.Finance.Services.Services
         {
             return GetAllPaperPrice(userId) + GetAllPaymentProfit(userId) +
                    _balanceService.GetAllBalanceUser(userId);
+        }
+
+        public double GetPercentOfPaperProfit(int userId)
+        {
+            return FinanceHelpers.DivWithOneDigitRound(GetAllPaperProfit(userId),
+                _balanceService.GetAllInvestSum(userId));
+        }
+
+        public double GetPercentOfPaymentProfit(int userId)
+        {
+            return FinanceHelpers.DivWithOneDigitRound(GetAllPaymentProfit(userId),
+                _balanceService.GetAllInvestSum(userId));
         }
 
         public IEnumerable<StockInfo> GetStocks(int userId, int portfolioId)
@@ -204,6 +216,11 @@ namespace Portfolio.Finance.Services.Services
             }
         }
 
+        public int GetUserBalanceWithPaidPayments(int userId)
+        {
+            return _balanceService.GetAllBalanceUser(userId) + GetAllPaymentProfit(userId);
+        }
+
         private bool HasAsset(int portfolioId, int amount, string ticket, int userId)
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
@@ -226,7 +243,7 @@ namespace Portfolio.Finance.Services.Services
 
                 foreach (var userPortfolio in userPortfolios)
                 {
-                    var portfolioData = new PortfolioData()
+                    var portfolioData = new PortfolioData
                     {
                         Id = userPortfolio.Id,
                         Name = userPortfolio.Name,

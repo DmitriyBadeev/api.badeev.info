@@ -18,6 +18,11 @@ namespace Portfolio.Finance.Services
             return (int) Math.Round(price * 100);
         }
 
+        public static double DivWithOneDigitRound(double number1, double number2)
+        {
+            return Math.Round(number1 / number2 * 100, 1);
+        }
+
         public static JsonElement GetValueOfColumnMarketdata(string column, AssetResponse data)
         {
             var index = data.marketdata.columns.IndexOf(column);

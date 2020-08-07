@@ -110,9 +110,9 @@ namespace Portfolio.Finance.Services.Test
             var stockSBERInfo = GetSBERStock();
             var stockYNDXInfo = GetYNDXStock();
 
-            Assert.AreEqual(1, stockSBERInfo.GetFuturePayment().Count);
-            Assert.AreEqual(1870, stockSBERInfo.GetFuturePayment()[0].PaymentValue);
-            Assert.AreEqual(0, stockYNDXInfo.GetFuturePayment().Count);
+            Assert.AreEqual(1, stockSBERInfo.GetFuturePayments().Count);
+            Assert.AreEqual(1870, stockSBERInfo.GetFuturePayments()[0].PaymentValue);
+            Assert.AreEqual(0, stockYNDXInfo.GetFuturePayments().Count);
         }
 
         [Test]
@@ -133,6 +133,46 @@ namespace Portfolio.Finance.Services.Test
 
             Assert.AreEqual(3600 + 6400, stockSBERInfo.GetSumPayments());
             Assert.AreEqual(0, stockYNDXInfo.GetSumPayments());
+        }
+
+        [Test]
+        public void GetPriceChange()
+        {
+            var stockSBERInfo = GetSBERStock();
+            var stockYNDXInfo = GetYNDXStock();
+
+            Assert.AreEqual(1, stockSBERInfo.GetPriceChange().Result);
+            Assert.AreEqual(-2, stockYNDXInfo.GetPriceChange().Result);
+        }
+
+        [Test]
+        public void GetPaperProfitPercent()
+        {
+            var stockSBERInfo = GetSBERStock();
+            var stockYNDXInfo = GetYNDXStock();
+
+            Assert.AreEqual(-92.6, stockSBERInfo.GetPaperProfitPercent().Result);
+            Assert.AreEqual(39.1, stockYNDXInfo.GetPaperProfitPercent().Result);
+        }
+
+        [Test]
+        public void GetUpdateTime()
+        {
+            var stockSBERInfo = GetSBERStock();
+            var stockYNDXInfo = GetYNDXStock();
+
+            Assert.AreEqual("16:14:14", stockSBERInfo.GetUpdateTime().Result);
+            Assert.AreEqual("16:03:39", stockYNDXInfo.GetUpdateTime().Result);
+        }
+
+        [Test]
+        public void GetNearestPayment()
+        {
+            var stockSBERInfo = GetSBERStock();
+            var stockYNDXInfo = GetYNDXStock();
+
+            Assert.AreEqual(1870, stockSBERInfo.GetNearestPayment().PaymentValue);
+            Assert.AreEqual(null, stockYNDXInfo.GetNearestPayment());
         }
 
         private AssetInfo GetYNDXStock()

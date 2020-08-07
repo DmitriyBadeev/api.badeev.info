@@ -12,9 +12,8 @@ namespace Portfolio.Finance.Services.Test
     [TestFixture]
     public class MarketServiceTests
     {
-        private AssetsFactory _assetFactory;
         private FinanceDataService _financeDataService;
-        private IBalanceService _balanceService;
+        private IMarketService _marketService;
 
         [SetUp]
         public void Setup()
@@ -34,41 +33,39 @@ namespace Portfolio.Finance.Services.Test
 
             var context = TestHelpers.GetMockFinanceDbContext();
             TestHelpers.SeedOperations1(context);
-            _financeDataService = new FinanceDataService(context);
 
-            _assetFactory = new AssetsFactory(_financeDataService, stockMarketData);
-            _balanceService = new BalanceService(_financeDataService);
+            _financeDataService = new FinanceDataService(context);
+            var assetFactory = new AssetsFactory(_financeDataService, stockMarketData);
+            var balanceService = new BalanceService(_financeDataService);
+
+            _marketService = new MarketService(_financeDataService, assetFactory, balanceService);
         }
 
         [Test]
         public void GetAllPaperProfit()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var profit = marketService.GetAllPaperProfit(1);
+            var profit = _marketService.GetAllPaperProfit(1);
             Assert.AreEqual(-1010710 + 20000 - 99338, profit);
         }
 
         [Test]
         public void GetAllProfitTest__otherUser()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var profit = marketService.GetAllPaperProfit(2);
+            var profit = _marketService.GetAllPaperProfit(2);
             Assert.AreEqual(22658 - 21430, profit);
         }
 
         [Test]
         public void GetAllPaperPrice()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var price = marketService.GetAllPaperPrice(1);
+            var price = _marketService.GetAllPaperPrice(1);
             Assert.AreEqual(548010 + 101840 + 106283, price);
         }
 
         [Test]
         public void GetAllPaymentProfitTest()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var profit = marketService.GetAllPaymentProfit(1);
+            var profit = _marketService.GetAllPaymentProfit(1);
 
             Assert.AreEqual(11600 + 117354, profit);
         }
@@ -76,9 +73,8 @@ namespace Portfolio.Finance.Services.Test
         [Test]
         public void GetStocksTest()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var stocks1 = marketService.GetStocks(1, 1);
-            var stocks2 = marketService.GetStocks(1, 2);
+            var stocks1 = _marketService.GetStocks(1, 1);
+            var stocks2 = _marketService.GetStocks(1, 2);
 
             Assert.AreEqual(2, stocks1.Count());
             Assert.AreEqual(1, stocks2.Count());
@@ -87,9 +83,8 @@ namespace Portfolio.Finance.Services.Test
         [Test]
         public void GetFonds()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var fonds1 = marketService.GetFonds(1, 1);
-            var fonds2 = marketService.GetFonds(1, 2);
+            var fonds1 = _marketService.GetFonds(1, 1);
+            var fonds2 = _marketService.GetFonds(1, 2);
 
             Assert.AreEqual(1, fonds1.Count());
             Assert.AreEqual(0, fonds2.Count());
@@ -98,9 +93,8 @@ namespace Portfolio.Finance.Services.Test
         [Test]
         public void GetBonds()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var bonds1 = marketService.GetBonds(1, 1);
-            var bonds2 = marketService.GetBonds(1, 2);
+            var bonds1 = _marketService.GetBonds(1, 1);
+            var bonds2 = _marketService.GetBonds(1, 2);
 
             Assert.AreEqual(2, bonds1.Count());
             Assert.AreEqual(0, bonds2.Count());
@@ -109,104 +103,99 @@ namespace Portfolio.Finance.Services.Test
         [Test]
         public async Task BuyAsset()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var stockType =
                 _financeDataService.EfContext.AssetTypes.FirstOrDefault(t => t.Name == SeedFinanceData.STOCK_ASSET_TYPE);
 
-            var result = await marketService.BuyAsset(1, "MTSS", 2000, 10,
+            var result = await _marketService.BuyAsset(1, "MTSS", 2000, 10,
                 stockType.Id, DateTime.Now);
             Assert.IsTrue(result.IsSuccess);
 
-            var stock = marketService.GetStocks(1, 1).FirstOrDefault(s => s.Ticket == "MTSS");
+            var stock = _marketService.GetStocks(1, 1).FirstOrDefault(s => s.Ticket == "MTSS");
             Assert.IsNotNull(stock);
         }
 
         [Test]
         public async Task BuyAsset__invalidData()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var stockType =
                 _financeDataService.EfContext.AssetTypes.FirstOrDefault(t => t.Name == SeedFinanceData.STOCK_ASSET_TYPE);
 
-            var result1 = await marketService.BuyAsset(-1, "MTSS", 2000, 10,
+            var result1 = await _marketService.BuyAsset(-1, "MTSS", 2000, 10,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result1.IsSuccess);
 
-            var result2 = await marketService.BuyAsset(1, "MTSS", 99999999, 10,
+            var result2 = await _marketService.BuyAsset(1, "MTSS", 99999999, 10,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result2.IsSuccess);
 
-            var result3 = await marketService.BuyAsset(1, "MTSS", 2000, -1,
+            var result3 = await _marketService.BuyAsset(1, "MTSS", 2000, -1,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result3.IsSuccess);
 
-            var result4 = await marketService.BuyAsset(1, "MTSS", 2000, 10,
+            var result4 = await _marketService.BuyAsset(1, "MTSS", 2000, 10,
                 -1, DateTime.Now);
             Assert.IsFalse(result4.IsSuccess);
 
-            var result5 = await marketService.BuyAsset(1, "MTSS", -1, 10,
+            var result5 = await _marketService.BuyAsset(1, "MTSS", -1, 10,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result5.IsSuccess);
 
-            var stock = marketService.GetStocks(1, 1).FirstOrDefault(s => s.Ticket == "MTSS");
+            var stock = _marketService.GetStocks(1, 1).FirstOrDefault(s => s.Ticket == "MTSS");
             Assert.IsNull(stock);
         }
 
         [Test]
         public async Task SellAsset()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var stockType =
                 _financeDataService.EfContext.AssetTypes.FirstOrDefault(t => t.Name == SeedFinanceData.STOCK_ASSET_TYPE);
 
-            var result = await marketService.SellAsset(1, "YNDX", 700000, 1,
+            var result = await _marketService.SellAsset(1, "YNDX", 700000, 1,
                 stockType.Id, DateTime.Now);
             Assert.IsTrue(result.IsSuccess);
 
-            var stock = marketService.GetStocks(1, 1).FirstOrDefault(s => s.Ticket == "YNDX");
+            var stock = _marketService.GetStocks(1, 1).FirstOrDefault(s => s.Ticket == "YNDX");
             Assert.IsNull(stock);
         }
 
         [Test]
         public async Task SellAsset__invalidData()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
             var stockType =
                 _financeDataService.EfContext.AssetTypes.FirstOrDefault(t => t.Name == SeedFinanceData.STOCK_ASSET_TYPE);
 
-            var result1 = await marketService.SellAsset(-1, "YNDX", 700000, 1,
+            var result1 = await _marketService.SellAsset(-1, "YNDX", 700000, 1,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result1.IsSuccess);
 
-            var result2 = await marketService.SellAsset(1, "YNDX", 700000, 2,
+            var result2 = await _marketService.SellAsset(1, "YNDX", 700000, 2,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result2.IsSuccess);
 
-            var result3 = await marketService.SellAsset(1, "YNDX", 700000, -1,
+            var result3 = await _marketService.SellAsset(1, "YNDX", 700000, -1,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result3.IsSuccess);
 
-            var result4 = await marketService.SellAsset(1, "YNDX", 700000, 1,
+            var result4 = await _marketService.SellAsset(1, "YNDX", 700000, 1,
                 -1, DateTime.Now);
             Assert.IsFalse(result4.IsSuccess);
 
-            var result5 = await marketService.SellAsset(1, "YNDX", -1, 1,
+            var result5 = await _marketService.SellAsset(1, "YNDX", -1, 1,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result5.IsSuccess);
 
-            var result6 = await marketService.SellAsset(1, "NONE", 700000, 1,
+            var result6 = await _marketService.SellAsset(1, "NONE", 700000, 1,
                 stockType.Id, DateTime.Now);
             Assert.IsFalse(result6.IsSuccess);
 
-            var stock = marketService.GetStocks(1, 1).FirstOrDefault(s => s.Ticket == "YNDX");
+            var stock = _marketService.GetStocks(1, 1).FirstOrDefault(s => s.Ticket == "YNDX");
             Assert.IsNotNull(stock);
         }
 
         [Test]
         public void GetAllAssetOperations()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var operations = marketService.GetAllAssetOperations(1);
+            var operations = _marketService.GetAllAssetOperations(1);
 
             Assert.AreEqual(7, operations.Count());
             Assert.AreEqual("YNDX", operations.FirstOrDefault().Ticket);
@@ -215,10 +204,33 @@ namespace Portfolio.Finance.Services.Test
         [Test]
         public void GetAllCost()
         {
-            var marketService = new MarketService(_financeDataService, _assetFactory, _balanceService);
-            var allCost = marketService.GetAllCost(1);
+            var allCost = _marketService.GetAllCost(1);
 
             Assert.AreEqual(756133 + 128954 + 503819, allCost);
+        }
+
+        [Test]
+        public void GetPercentPaperProfit()
+        {
+            var percent = _marketService.GetPercentOfPaperProfit(1);
+
+            Assert.AreEqual(-46.4, percent);
+        }
+
+        [Test]
+        public void GetPercentOfPaymentProfit()
+        {
+            var percent = _marketService.GetPercentOfPaymentProfit(1);
+
+            Assert.AreEqual(5.5, percent);
+        }
+
+        [Test]
+        public void GetUserBalanceWithPaidPayments()
+        {
+            var balance = _marketService.GetUserBalanceWithPaidPayments(1);
+
+            Assert.AreEqual(503819 + 128954, balance);
         }
     }
 }

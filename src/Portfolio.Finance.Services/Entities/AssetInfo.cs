@@ -51,12 +51,59 @@ namespace Portfolio.Finance.Services.Entities
             return FinanceHelpers.GetPriceInt(price);
         }
 
+        public async Task<int> GetPriceChange()
+        {
+            var data = await GetData();
+            var jsonPriceChange = FinanceHelpers.GetValueOfColumnMarketdata("LASTCHANGEPRCNT", data);
+
+            if (jsonPriceChange.ValueKind == JsonValueKind.Undefined)
+            {
+                return -1;
+            }
+
+            var changePercent = jsonPriceChange.GetDouble();
+            return FinanceHelpers.GetPriceInt(changePercent);
+        }
+
         public abstract Task<int> GetAllPrice();
 
         public async Task<int> GetPaperProfit()
         {
             var allPrice = await GetAllPrice();
             return allPrice - BoughtPrice;
+        }
+
+        public async Task<double> GetPaperProfitPercent()
+        {
+            var profit = await GetPaperProfit();
+            return FinanceHelpers.DivWithOneDigitRound(profit, BoughtPrice);
+        }
+
+        public async Task<string> GetUpdateTime()
+        {
+            var data = await GetData();
+            var jsonUpdateTime = FinanceHelpers.GetValueOfColumnMarketdata("TIME", data);
+
+            if (jsonUpdateTime.ValueKind == JsonValueKind.Undefined)
+            {
+                return "";
+            }
+
+            var updateTime = jsonUpdateTime.GetString();
+            return updateTime;
+        }
+
+        public PaymentData GetNearestPayment()
+        {
+            var futurePayments = GetFuturePayments();
+            futurePayments.Sort((p1, p2) => DateTime.Compare(p1.RegistryCloseDate, p2.RegistryCloseDate));
+
+            if (futurePayments.Count > 0)
+            {
+                return futurePayments[0];
+            }
+
+            return null;
         }
 
         public void RegisterOperation(AssetOperation operation)
@@ -101,7 +148,7 @@ namespace Portfolio.Finance.Services.Entities
             return paidPayments;
         }
 
-        public List<PaymentData> GetFuturePayment()
+        public List<PaymentData> GetFuturePayments()
         {
             return PaymentsData.FindAll(d => DateTime.Compare(DateTime.Now, d.RegistryCloseDate) <= 0);
         }
