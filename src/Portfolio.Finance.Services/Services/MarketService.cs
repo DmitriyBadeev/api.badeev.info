@@ -181,6 +181,11 @@ namespace Portfolio.Finance.Services.Services
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
 
+            if (portfolio == null)
+            {
+                yield break;
+            }
+
             foreach (var asset in portfolio.Assets)
             {
                 var type = asset.GetType();
@@ -194,6 +199,11 @@ namespace Portfolio.Finance.Services.Services
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
 
+            if (portfolio == null)
+            {
+                yield break;
+            }
+
             foreach (var asset in portfolio.Assets)
             {
                 var type = asset.GetType();
@@ -206,6 +216,11 @@ namespace Portfolio.Finance.Services.Services
         public IEnumerable<BondInfo> GetBonds(int userId, int portfolioId)
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
+
+            if (portfolio == null)
+            {
+                yield break;
+            }
 
             foreach (var asset in portfolio.Assets)
             {

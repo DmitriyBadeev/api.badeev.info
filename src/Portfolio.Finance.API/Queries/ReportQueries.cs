@@ -22,6 +22,7 @@ namespace Portfolio.Finance.API.Queries
             var allPaymentProfit = FinanceHelpers.GetPriceDouble(marketService.GetAllPaymentProfit(userId));
             var allPaymentProfitPercent = marketService.GetPercentOfPaymentProfit(userId);
             var allInvestSum = FinanceHelpers.GetPriceDouble(balanceService.GetAllInvestSum(userId));
+            var allBalance = FinanceHelpers.GetPriceDouble(marketService.GetUserBalanceWithPaidPayments(userId));
 
             return new AllPortfoliosReport()
             {
@@ -30,7 +31,8 @@ namespace Portfolio.Finance.API.Queries
                 AllPaperProfitPercent = allPaperProfitPercent,
                 AllPaymentProfit = allPaymentProfit,
                 AllPaymentProfitPercent = allPaymentProfitPercent,
-                AllInvestSum = allInvestSum
+                AllInvestSum = allInvestSum,
+                AllUserBalance = allBalance
             };
         }
 

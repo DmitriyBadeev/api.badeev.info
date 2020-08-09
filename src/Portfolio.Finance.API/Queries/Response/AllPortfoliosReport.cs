@@ -8,5 +8,6 @@
         public double AllPaymentProfitPercent { get; set; }
         public double AllPaymentProfit { get; set; }
         public double AllInvestSum { get; set; }
+        public double AllUserBalance { get; set; }
     }
 }

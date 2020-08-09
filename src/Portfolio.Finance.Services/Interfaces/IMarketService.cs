@@ -21,7 +21,7 @@ namespace Portfolio.Finance.Services.Interfaces
             int assetTypeId, DateTime date);
         Task<OperationResult> SellAsset(int portfolioId, string ticket, int price, int amount,
             int assetTypeId, DateTime date);
-        IEnumerable<StockInfo> GetStocks(int portfolioId, int userId);
+        IEnumerable<StockInfo> GetStocks(int userId, int portfolioId);
         IEnumerable<FondInfo> GetFonds(int userId, int portfolioId);
         IEnumerable<BondInfo> GetBonds(int userId, int portfolioId);
     }

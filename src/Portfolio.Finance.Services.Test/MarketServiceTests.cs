@@ -63,7 +63,7 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
-        public void GetAllPaymentProfitTest()
+        public void GetAllPaymentProfit()
         {
             var profit = _marketService.GetAllPaymentProfit(1);
 
@@ -71,13 +71,17 @@ namespace Portfolio.Finance.Services.Test
         }
 
         [Test]
-        public void GetStocksTest()
+        public void GetStocks()
         {
             var stocks1 = _marketService.GetStocks(1, 1);
             var stocks2 = _marketService.GetStocks(1, 2);
 
+            var stocksInvalid = _marketService.GetStocks(1, 10);
+
             Assert.AreEqual(2, stocks1.Count());
             Assert.AreEqual(1, stocks2.Count());
+
+            Assert.AreEqual(0, stocksInvalid.Count());
         }
 
         [Test]
@@ -86,8 +90,12 @@ namespace Portfolio.Finance.Services.Test
             var fonds1 = _marketService.GetFonds(1, 1);
             var fonds2 = _marketService.GetFonds(1, 2);
 
+            var fondsInvalid = _marketService.GetFonds(1, 10);
+
             Assert.AreEqual(1, fonds1.Count());
             Assert.AreEqual(0, fonds2.Count());
+
+            Assert.AreEqual(0, fondsInvalid.Count());
         }
 
         [Test]
@@ -96,8 +104,12 @@ namespace Portfolio.Finance.Services.Test
             var bonds1 = _marketService.GetBonds(1, 1);
             var bonds2 = _marketService.GetBonds(1, 2);
 
+            var bondsInvalid = _marketService.GetFonds(1, 10);
+
             Assert.AreEqual(2, bonds1.Count());
             Assert.AreEqual(0, bonds2.Count());
+
+            Assert.AreEqual(0, bondsInvalid.Count());
         }
 
         [Test]
