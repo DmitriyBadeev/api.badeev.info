@@ -10,7 +10,6 @@ namespace Portfolio.Finance.Services.Entities
     public class StockInfo : AssetInfo
     {
         private List<PaymentData> _paymentsData;
-        private AssetResponse _data;
 
         public StockInfo(IStockMarketData marketData, string ticket) : base(marketData, ticket)
         {

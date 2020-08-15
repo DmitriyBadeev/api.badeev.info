@@ -14,6 +14,7 @@ namespace Portfolio.Finance.Services.Entities
     {
         protected readonly IStockMarketData _marketData;
         protected readonly List<AssetOperation> _operations;
+        protected AssetResponse _data;
 
         protected AssetInfo(IStockMarketData marketData, string ticket)
         {

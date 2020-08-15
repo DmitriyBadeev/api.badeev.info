@@ -3,7 +3,6 @@ using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using Portfolio.Finance.Services.DTO;
-using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Interfaces;
 
 namespace Portfolio.Finance.API.Mutations

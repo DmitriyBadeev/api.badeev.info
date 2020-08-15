@@ -28,7 +28,7 @@ namespace Portfolio.Identity
             var apiPortfolio = Configuration["apiPortfolio"];
             var apiFinance = Configuration["apiFinance"];
 
-            var rsa = new RsaKeyService(_environment, TimeSpan.FromDays(30));
+            var rsa = new RsaKeyService(_environment, TimeSpan.FromDays(120));
             services.AddSingleton(provider => rsa);
 
             services.AddMvc();

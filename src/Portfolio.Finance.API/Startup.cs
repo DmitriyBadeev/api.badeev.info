@@ -1,16 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Interceptors;
+using HotChocolate.Subscriptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Finance.API.Mutations;
 using Portfolio.Finance.API.Queries;
+using Portfolio.Finance.API.Services;
+using Portfolio.Finance.API.Subscriptions;
 using Portfolio.Finance.Services;
 using Portfolio.Infrastructure.Services;
 
@@ -31,6 +32,9 @@ namespace Portfolio.Finance.API
             services.AddFinanceServices();
             services.AddHttpContextAccessor();
             services.AddCors();
+            services.AddInMemorySubscriptions();
+            services.AddTimerServices();
+
             services.AddGraphQL(s => SchemaBuilder.New()
                 .AddServices(s)
                 .AddAuthorizeDirectiveType()
@@ -43,6 +47,9 @@ namespace Portfolio.Finance.API
                 .AddType<AssetMutations>()
                 .AddType<PortfolioMutations>()
                 .AddType<BalanceMutations>()
+                .AddType<UpdateMutations>()
+                .AddSubscriptionType(d => d.Name("Subscriptions"))
+                .AddType<ReportSubscriptions>()
                 .Create());
 
             services.AddAuthentication("Bearer")
@@ -87,8 +94,15 @@ namespace Portfolio.Finance.API
 
             app.UseAuthentication();
 
-            app.UsePlayground();
-            app.UseGraphQL("/graphql");
+            app.UseWebSockets()
+                .UseGraphQL(new QueryMiddlewareOptions
+                {
+                    Path = "/graphql",
+                    SubscriptionPath = "/graphql/"
+                })
+                .UseGraphQL("/graphql");
+
+            app.UsePlayground("/graphql", "/playground");
         }
     }
 }

@@ -7,8 +7,6 @@ namespace Portfolio.Finance.Services.Entities
 {
     public class FondInfo : AssetInfo
     {
-        private AssetResponse _data;
-
         public FondInfo(IStockMarketData marketData, string ticket) : base(marketData, ticket)
         {
             PaymentsData = new List<PaymentData>();

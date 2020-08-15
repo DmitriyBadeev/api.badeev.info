@@ -8,6 +8,8 @@
     <PackageReference Include="HotChocolate.AspNetCore" Version="10.5.0" />
     <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="10.5.0" />
     <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.0" />
+    <PackageReference Include="HotChocolate.AspNetCore.Subscriptions" Version="10.5.2" />
+    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="10.5.2" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
