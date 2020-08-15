@@ -4,6 +4,7 @@ using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using Portfolio.Finance.API.Queries.Response;
+using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Interfaces;
 
 namespace Portfolio.Finance.API.Queries
@@ -37,6 +38,13 @@ namespace Portfolio.Finance.API.Queries
             [Service] IMarketService marketService, int portfolioId)
         {
             return await QueryGetters.GetBondReports(userId, marketService, portfolioId);
+        }
+
+        [Authorize]
+        public async Task<AssetPrices> GetAllAssetPricesReport([CurrentUserIdGlobalState] int userId,
+            [Service] IMarketService marketService)
+        {
+            return await QueryGetters.GetAllAssetPricesReport(userId, marketService);
         }
     }
 }

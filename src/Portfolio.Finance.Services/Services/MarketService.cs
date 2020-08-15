@@ -231,6 +231,35 @@ namespace Portfolio.Finance.Services.Services
             }
         }
 
+        public async Task<AssetPrices> GetAllAssetPrices(int userId)
+        {
+            var portfolios = GetPortfoliosData(userId);
+
+            var assetPrices = new AssetPrices();
+            foreach (var portfolio in portfolios)
+            {
+                foreach (var asset in portfolio.Assets)
+                {
+                    var type = asset.GetType();
+
+                    switch (type.Name)
+                    {
+                        case "StockInfo":
+                            assetPrices.StockPrice += await asset.GetAllPrice();
+                            break;
+                        case "FondInfo":
+                            assetPrices.FondPrice += await asset.GetAllPrice();
+                            break;
+                        case "BondInfo":
+                            assetPrices.BondPrice += await asset.GetAllPrice();
+                            break;
+                    }
+                }
+            }
+
+            return assetPrices;
+        }
+
         public int GetUserBalanceWithPaidPayments(int userId)
         {
             return _balanceService.GetAllBalanceUser(userId) + GetAllPaymentProfit(userId);

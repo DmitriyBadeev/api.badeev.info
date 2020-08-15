@@ -244,5 +244,35 @@ namespace Portfolio.Finance.Services.Test
 
             Assert.AreEqual(503819 + 128954, balance);
         }
+
+        [Test]
+        public async Task GetAllAssetPrices__CommonPath()
+        {
+            var assetPrices = await _marketService.GetAllAssetPrices(1);
+            
+            Assert.AreEqual(548010, assetPrices.StockPrice);
+            Assert.AreEqual(101840, assetPrices.FondPrice);
+            Assert.AreEqual(106283, assetPrices.BondPrice);
+        }
+
+        [Test]
+        public async Task GetAllAssetPrices__WithZeroSumPrices()
+        {
+            var assetPricesUser2 = await _marketService.GetAllAssetPrices(2);
+
+            Assert.AreEqual(22658, assetPricesUser2.StockPrice);
+            Assert.AreEqual(0, assetPricesUser2.FondPrice);
+            Assert.AreEqual(0, assetPricesUser2.BondPrice);
+        }
+
+        [Test]
+        public async Task GetAllAssetPrices__WrongUser()
+        {
+            var assetPricesUser3 = await _marketService.GetAllAssetPrices(3);
+
+            Assert.AreEqual(0, assetPricesUser3.StockPrice);
+            Assert.AreEqual(0, assetPricesUser3.FondPrice);
+            Assert.AreEqual(0, assetPricesUser3.BondPrice);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Portfolio.Finance.API.Queries.Response;
 using Portfolio.Finance.Services;
+using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Interfaces;
 
 namespace Portfolio.Finance.API.Queries
@@ -142,6 +143,11 @@ namespace Portfolio.Finance.API.Queries
             }
 
             return bondReports;
+        }
+
+        public static async Task<AssetPrices> GetAllAssetPricesReport(int userId, IMarketService marketService)
+        {
+            return await marketService.GetAllAssetPrices(userId);
         }
     }
 }

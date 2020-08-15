@@ -64,7 +64,7 @@ namespace Portfolio.Finance.Services.Test
 
             var operations = new List<AssetOperation>()
             {
-                //price = 407800
+                //price = 434720
                 //profit = 95370
                 new AssetOperation()
                 {
@@ -92,7 +92,7 @@ namespace Portfolio.Finance.Services.Test
                     PortfolioId = portfolios[0].Id,
                     Portfolio = portfolios[0]
                 },
-                //price = 21779
+                //price = 22658
                 //profit = -11 37744
                 new AssetOperation()
                 {
@@ -161,8 +161,8 @@ namespace Portfolio.Finance.Services.Test
                     PortfolioId = portfolios[0].Id,
                     Portfolio = portfolios[0]
                 },
-                //price = 21779
-                //profit = 21779 - 21430
+                //price = 22658
+                //profit = 22658 - 21430
                 new AssetOperation()
                 {
                     Ticket = "SBER",

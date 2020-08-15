@@ -16,6 +16,7 @@ namespace Portfolio.Finance.Services.Interfaces
         int GetAllPaperProfit(int userId);
         int GetAllCost(int userId);
         int GetAllPaymentProfit(int userId);
+        Task<AssetPrices> GetAllAssetPrices(int userId);
         int GetUserBalanceWithPaidPayments(int userId);
         Task<OperationResult> BuyAsset(int portfolioId, string ticket, int price, int amount,
             int assetTypeId, DateTime date);

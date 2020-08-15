@@ -17,11 +17,13 @@ namespace Portfolio.Finance.API.Mutations
             [CurrentUserIdGlobalState] int userId, [Service] ILogger<UpdateMutations> logger)
         {
             await eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdatePortfoliosReport), userId);
+            await eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdatePricesReport), userId);
 
             var handlerId = timerService.Subscribe((source, args) =>
             {
                 logger.LogInformation("Update portfolios report event");
                 eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdatePortfoliosReport), userId);
+                eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdatePricesReport), userId);
             });
 
             return handlerId;
@@ -29,24 +31,18 @@ namespace Portfolio.Finance.API.Mutations
 
         [Authorize]
         public async Task<string> StartAssetReportsUpdate([Service] ITopicEventSender eventSender, [Service] ITimerService timerService,
-            [CurrentUserIdGlobalState] int userId, [Service] ILogger<UpdateMutations> logger, int portfolioId)
+            [CurrentUserIdGlobalState] int userId, [Service] ILogger<UpdateMutations> logger)
         {
-            var userAndPortfolioIds = new UserAndPortfolioIds()
-            {
-                PortfolioId = portfolioId,
-                UserId = userId
-            };
-
-            await eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateStockReports), userAndPortfolioIds);
-            await eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateFondReports), userAndPortfolioIds);
-            await eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateBondReports), userAndPortfolioIds);
+            await eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateStockReports), userId);
+            await eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateFondReports), userId);
+            await eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateBondReports), userId);
 
             var handlerId = timerService.Subscribe((source, args) =>
             {
                 logger.LogInformation("Update asset reports event");
-                eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateStockReports), userAndPortfolioIds);
-                eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateFondReports), userAndPortfolioIds);
-                eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateBondReports), userAndPortfolioIds);
+                eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateStockReports), userId);
+                eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateFondReports), userId);
+                eventSender.SendAsync(nameof(ReportSubscriptions.OnUpdateBondReports), userId);
             });
 
             return handlerId;
@@ -58,11 +54,5 @@ namespace Portfolio.Finance.API.Mutations
             timerService.Unsubscribe(handlerId);
             return "Атписка";
         }
-    }
-
-    public class UserAndPortfolioIds
-    {
-        public int UserId { get; set; }
-        public int PortfolioId { get; set; }
     }
 }
