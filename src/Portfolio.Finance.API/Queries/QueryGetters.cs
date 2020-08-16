@@ -145,9 +145,16 @@ namespace Portfolio.Finance.API.Queries
             return bondReports;
         }
 
-        public static async Task<AssetPrices> GetAllAssetPricesReport(int userId, IMarketService marketService)
+        public static async Task<AssetPricesReport> GetAllAssetPricesReport(int userId, IMarketService marketService)
         {
-            return await marketService.GetAllAssetPrices(userId);
+            var assetPrices = await marketService.GetAllAssetPrices(userId);
+
+            return new AssetPricesReport()
+            {
+                StockPrice = FinanceHelpers.GetPriceDouble(assetPrices.StockPrice),
+                FondPrice = FinanceHelpers.GetPriceDouble(assetPrices.FondPrice),
+                BondPrice = FinanceHelpers.GetPriceDouble(assetPrices.BondPrice)
+            };
         }
     }
 }

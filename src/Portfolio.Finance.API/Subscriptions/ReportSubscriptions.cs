@@ -51,7 +51,7 @@ namespace Portfolio.Finance.API.Subscriptions
 
         [Subscribe]
         [Topic]
-        public async Task<AssetPrices> OnUpdatePricesReport(
+        public async Task<AssetPricesReport> OnUpdatePricesReport(
             [Service] IMarketService marketService,
             [EventMessage] int userId)
         {

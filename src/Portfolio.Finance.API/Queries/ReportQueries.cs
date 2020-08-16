@@ -41,7 +41,7 @@ namespace Portfolio.Finance.API.Queries
         }
 
         [Authorize]
-        public async Task<AssetPrices> GetAllAssetPricesReport([CurrentUserIdGlobalState] int userId,
+        public async Task<AssetPricesReport> GetAllAssetPricesReport([CurrentUserIdGlobalState] int userId,
             [Service] IMarketService marketService)
         {
             return await QueryGetters.GetAllAssetPricesReport(userId, marketService);
