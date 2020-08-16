@@ -46,5 +46,12 @@ namespace Portfolio.Finance.API.Queries
         {
             return await QueryGetters.GetAllAssetPricesReport(userId, marketService);
         }
+
+        [Authorize]
+        public IEnumerable<PaymentDataReport> GetAllFuturePaymentsReport([CurrentUserIdGlobalState] int userId,
+            [Service] IMarketService marketService)
+        {
+            return QueryGetters.GetAllFuturePaymentsReport(userId, marketService);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Portfolio.Finance.API.Queries.Response;
 using Portfolio.Finance.Services;
@@ -155,6 +156,24 @@ namespace Portfolio.Finance.API.Queries
                 FondPrice = FinanceHelpers.GetPriceDouble(assetPrices.FondPrice),
                 BondPrice = FinanceHelpers.GetPriceDouble(assetPrices.BondPrice)
             };
+        }
+
+        public static IEnumerable<PaymentDataReport> GetAllFuturePaymentsReport(int userId, IMarketService marketService)
+        {
+            var payments = marketService.GetAllFuturePayments(userId);
+
+            return payments
+                .Select(p => new PaymentDataReport()
+                {
+                    Name = p.Name,
+                    Ticket = p.Ticket,
+                    PaymentValue = FinanceHelpers.GetPriceDouble(p.PaymentValue),
+                    Amount = p.Amount,
+                    AllPayment = FinanceHelpers.GetPriceDouble(p.AllPayment),
+                    CurrencyId = p.CurrencyId,
+                    RegistryCloseDate = p.RegistryCloseDate
+                })
+                .OrderBy(p => p.RegistryCloseDate);
         }
     }
 }

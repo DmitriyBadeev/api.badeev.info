@@ -40,9 +40,12 @@ namespace Portfolio.Finance.Services.Entities
             {
                 var data = new PaymentData()
                 {
+                    Name = GetName().Result,
                     Ticket = dividendJsonData[ticketIndex].GetString(),
+                    Amount = Amount,
+                    PaymentValue = FinanceHelpers.GetPriceInt(dividendJsonData[valueIndex].GetDouble()),
+                    AllPayment = FinanceHelpers.GetPriceInt(dividendJsonData[valueIndex].GetDouble()) * Amount,
                     CurrencyId = dividendJsonData[currencyIndex].GetString(),
-                    PaymentValue = (int)(dividendJsonData[valueIndex].GetDouble() * 100),
                     RegistryCloseDate = DateTime.ParseExact(dividendJsonData[dateIndex].GetString(), 
                         "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None)
                 };

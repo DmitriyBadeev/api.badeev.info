@@ -177,6 +177,22 @@ namespace Portfolio.Finance.Services.Services
                 _balanceService.GetAllInvestSum(userId));
         }
 
+        public List<PaymentData> GetAllFuturePayments(int userId)
+        {
+            var portfolios = GetPortfoliosData(userId);
+            var payments = new List<PaymentData>();
+
+            foreach (var portfolio in portfolios)
+            {
+                foreach (var assetInfo in portfolio.Assets)
+                {
+                    payments.AddRange(assetInfo.GetFuturePayments());
+                }
+            }
+
+            return payments;
+        }
+
         public IEnumerable<StockInfo> GetStocks(int userId, int portfolioId)
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);

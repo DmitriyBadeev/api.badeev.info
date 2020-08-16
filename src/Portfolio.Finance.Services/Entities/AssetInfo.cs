@@ -32,8 +32,15 @@ namespace Portfolio.Finance.Services.Entities
         public async Task<string> GetName()
         {
             var data = await GetData();
-
-            return FinanceHelpers.GetValueOfColumnSecurities("SHORTNAME", data).GetString();
+            var result = FinanceHelpers.GetValueOfColumnSecurities("SHORTNAME", data);
+            try
+            {
+                return result.GetString();
+            }
+            catch (Exception)
+            {
+                return "";
+            }
         }
 
         public async Task<int> GetPrice()
@@ -136,10 +143,13 @@ namespace Portfolio.Finance.Services.Entities
                 {
                     var payment = new PaymentData()
                     {
-                        PaymentValue = paymentData.PaymentValue * assetInfoAtPaymentDay.Amount,
+                        Name = GetName().Result,
+                        Ticket = paymentData.Ticket,
+                        Amount = assetInfoAtPaymentDay.Amount,
+                        PaymentValue = paymentData.PaymentValue,
+                        AllPayment = paymentData.PaymentValue * assetInfoAtPaymentDay.Amount,
                         RegistryCloseDate = paymentData.RegistryCloseDate,
                         CurrencyId = paymentData.CurrencyId,
-                        Ticket = paymentData.Ticket
                     };
 
                     paidPayments.Add(payment);
@@ -156,7 +166,7 @@ namespace Portfolio.Finance.Services.Entities
 
         public int GetSumPayments()
         {
-            return GetPaidPayments().Aggregate(0, (total, payment) => total + payment.PaymentValue);
+            return GetPaidPayments().Aggregate(0, (total, payment) => total + payment.AllPayment);
         }
 
         private AssetInfo GetAssetInfoAt(DateTime date)

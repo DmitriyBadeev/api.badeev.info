@@ -1,18 +1,18 @@
 ﻿using System;
 
-namespace Portfolio.Finance.Services.DTO
+namespace Portfolio.Finance.API.Queries.Response
 {
-    public class PaymentData
+    public class PaymentDataReport
     {
         public string Name { get; set; }
 
         public string Ticket { get; set; }
 
-        public int PaymentValue { get; set; }
+        public double PaymentValue { get; set; }
 
         public int Amount { get; set; }
 
-        public int AllPayment { get; set; }
+        public double AllPayment { get; set; }
 
         public DateTime RegistryCloseDate { get; set; }
 

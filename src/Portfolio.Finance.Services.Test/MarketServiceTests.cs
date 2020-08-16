@@ -274,5 +274,21 @@ namespace Portfolio.Finance.Services.Test
             Assert.AreEqual(0, assetPricesUser3.FondPrice);
             Assert.AreEqual(0, assetPricesUser3.BondPrice);
         }
+
+        [Test]
+        public void GetAllFuturePayments()
+        {
+            var payments = _marketService.GetAllFuturePayments(1);
+
+            Assert.AreEqual(7, payments.Count);
+        }
+
+        [Test]
+        public void GetAllFuturePayments__otherUser()
+        {
+            var payments = _marketService.GetAllFuturePayments(2);
+
+            Assert.AreEqual(1, payments.Count);
+        }
     }
 }

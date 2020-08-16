@@ -59,11 +59,14 @@ namespace Portfolio.Finance.Services.Entities
             {
                 var data = new PaymentData()
                 {
+                    Name = GetName().Result,
                     Ticket = Ticket,
-                    CurrencyId = "RUB",
+                    Amount = Amount,
                     PaymentValue = FinanceHelpers.GetPriceInt(couponJsonData[valueIndex].GetDouble()),
+                    AllPayment = FinanceHelpers.GetPriceInt(couponJsonData[valueIndex].GetDouble()) * Amount,
                     RegistryCloseDate = DateTime.ParseExact(couponJsonData[dateIndex].GetString(),
-                        "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None)
+                        "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None),
+                    CurrencyId = "RUB",
                 };
 
                 paymentData.Add(data);
@@ -78,11 +81,14 @@ namespace Portfolio.Finance.Services.Entities
             {
                 var data = new PaymentData()
                 {
+                    Name = GetName().Result,
                     Ticket = Ticket,
-                    CurrencyId = "RUB",
+                    Amount = Amount,
                     PaymentValue = FinanceHelpers.GetPriceInt(amortizationData[amortizationValueIndex].GetDouble()),
+                    AllPayment = FinanceHelpers.GetPriceInt(amortizationData[amortizationValueIndex].GetDouble()) * Amount,
                     RegistryCloseDate = DateTime.ParseExact(amortizationDateString, "yyyy-MM-dd", 
-                        CultureInfo.InvariantCulture, DateTimeStyles.None)
+                        CultureInfo.InvariantCulture, DateTimeStyles.None),
+                    CurrencyId = "RUB",
                 };
 
                 paymentData.Add(data);
