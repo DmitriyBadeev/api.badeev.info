@@ -18,6 +18,13 @@ namespace Portfolio.Finance.Services
             return (int) Math.Round(price * 100);
         }
 
+        public static double NormalizeDouble(double value)
+        {
+            var intValue = GetPriceInt(value);
+
+            return GetPriceDouble(intValue);
+        }
+
         public static double DivWithOneDigitRound(double number1, double number2)
         {
             return Math.Round(number1 / number2 * 100, 1);

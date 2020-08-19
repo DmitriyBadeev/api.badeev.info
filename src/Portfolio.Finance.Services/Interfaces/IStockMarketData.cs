@@ -10,6 +10,9 @@ namespace Portfolio.Finance.Services.Interfaces
         Task<DividendsResponse> GetDividendsData(string codeStock);
         Task<AssetResponse> GetFondData(string codeFond);
         Task<AssetResponse> GetBondData(string codeBond);
+        Task<AssetResponse> GetIndexData(string codeIndex);
+        Task<AssetResponse> GetCurrencyData(string codeCurrency);
         Task<CouponsResponse> GetCouponsData(string codeBond, DateTime boughtDate);
+        Task<AssetResponse> GetBrentData();
     }
 }

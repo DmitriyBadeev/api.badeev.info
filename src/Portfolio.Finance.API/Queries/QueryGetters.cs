@@ -175,5 +175,10 @@ namespace Portfolio.Finance.API.Queries
                 })
                 .OrderBy(p => p.RegistryCloseDate);
         }
+
+        public static IEnumerable<CommonMarketQuote> GetMarketQuotes(IMarketQuotesService quotesService)
+        {
+            return quotesService.GetMarketQuotes();
+        }
     }
 }

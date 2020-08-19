@@ -20,61 +20,63 @@ namespace Portfolio.Finance.Services.Services
         {
             var response = await _stockMarketApi.FindStock(codeStock);
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var data = JsonSerializer.Deserialize<AssetResponse>(response.JsonContent);
-                return data;
-            }
-
-            return null;
+            return GetData<AssetResponse>(response);
         }
 
         public async Task<AssetResponse> GetFondData(string codeFond)
         {
             var response = await _stockMarketApi.FindFond(codeFond);
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var data = JsonSerializer.Deserialize<AssetResponse>(response.JsonContent);
-                return data;
-            }
-
-            return null;
+            return GetData<AssetResponse>(response);
         }
 
         public async Task<AssetResponse> GetBondData(string codeBond)
         {
             var response = await _stockMarketApi.FindBond(codeBond);
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var data = JsonSerializer.Deserialize<AssetResponse>(response.JsonContent);
-                return data;
-            }
+            return GetData<AssetResponse>(response);
+        }
 
-            return null;
+        public async Task<AssetResponse> GetIndexData(string codeIndex)
+        {
+            var response = await _stockMarketApi.FindIndex(codeIndex);
+
+            return GetData<AssetResponse>(response);
+        }
+
+        public async Task<AssetResponse> GetCurrencyData(string codeCurrency)
+        {
+            var response = await _stockMarketApi.FindCurrency(codeCurrency);
+
+            return GetData<AssetResponse>(response);
         }
 
         public async Task<DividendsResponse> GetDividendsData(string codeStock)
         {
             var response = await _stockMarketApi.FindDividends(codeStock);
-
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var data = JsonSerializer.Deserialize<DividendsResponse>(response.JsonContent);
-                return data;
-            }
-
-            return null;
+            
+            return GetData<DividendsResponse>(response);
         }
 
         public async Task<CouponsResponse> GetCouponsData(string codeBond, DateTime boughtDate)
         {
             var response = await _stockMarketApi.FindCoupons(codeBond, boughtDate);
 
+            return GetData<CouponsResponse>(response);
+        }
+
+        public async Task<AssetResponse> GetBrentData()
+        {
+            var response = await _stockMarketApi.FindBrent();
+
+            return GetData<AssetResponse>(response);
+        }
+
+        private TResponse GetData<TResponse>(ApiResponse response) where TResponse : class
+        {
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var data = JsonSerializer.Deserialize<CouponsResponse>(response.JsonContent);
+                var data = JsonSerializer.Deserialize<TResponse>(response.JsonContent);
                 return data;
             }
 

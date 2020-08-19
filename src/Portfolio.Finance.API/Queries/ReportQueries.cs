@@ -53,5 +53,11 @@ namespace Portfolio.Finance.API.Queries
         {
             return QueryGetters.GetAllFuturePaymentsReport(userId, marketService);
         }
+
+        [Authorize]
+        public IEnumerable<CommonMarketQuote> GetMarketQuotes([Service] IMarketQuotesService quotesService)
+        {
+            return QueryGetters.GetMarketQuotes(quotesService);
+        }
     }
 }
