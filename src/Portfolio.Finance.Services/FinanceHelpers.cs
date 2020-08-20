@@ -22,7 +22,7 @@ namespace Portfolio.Finance.Services
         {
             var intValue = GetPriceInt(value);
 
-            return GetPriceDouble(intValue);
+            return Math.Round(GetPriceDouble(intValue), 2);
         }
 
         public static double DivWithOneDigitRound(double number1, double number2)
