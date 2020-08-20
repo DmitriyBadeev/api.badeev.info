@@ -86,7 +86,7 @@ namespace Portfolio.Finance.Services.Services
             var currencyData = await _marketData.GetCurrencyData(ticket);
 
             var value = FinanceHelpers.GetValueOfColumnMarketdata("LAST", currencyData).GetDouble();
-            var change = FinanceHelpers.GetValueOfColumnMarketdata("LASTCNGTOLASTWAPRICE", currencyData).GetDouble();
+            var change = FinanceHelpers.GetValueOfColumnMarketdata("CHANGE", currencyData).GetDouble();
             var time = FinanceHelpers.GetValueOfColumnMarketdata("TIME", currencyData).GetString();
 
             return new CommonMarketQuote()

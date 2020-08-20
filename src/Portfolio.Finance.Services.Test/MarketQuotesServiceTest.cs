@@ -67,7 +67,7 @@ namespace Portfolio.Finance.Services.Test
             Assert.AreEqual("USD000UTSTOM", currency.Ticket);
             Assert.AreEqual("19:35:15", currency.Time);
             Assert.AreEqual(73.28, currency.Value);
-            Assert.AreEqual(-0.11, currency.Change);
+            Assert.AreEqual(-0.46, currency.Change);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Portfolio.Finance.Services.Test
             Assert.AreEqual("EUR_RUB__TOM", currency.Ticket);
             Assert.AreEqual("19:35:42", currency.Time);
             Assert.AreEqual(87.46, currency.Value);
-            Assert.AreEqual(0.46, currency.Change);
+            Assert.AreEqual(-0.04, currency.Change);
         }
 
         [Test]
