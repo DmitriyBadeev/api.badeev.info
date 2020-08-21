@@ -17,7 +17,8 @@ namespace Portfolio.Finance.Services.Entities
         public override async Task<int> GetAllPrice()
         {
             var price = await GetPrice();
-            return price * Amount;
+
+            return FinanceHelpers.GetPriceInt(price * Amount);
         }
 
         protected override async Task<AssetResponse> GetData()

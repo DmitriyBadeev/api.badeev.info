@@ -43,11 +43,12 @@ namespace Portfolio.Finance.Services.Entities
             }
         }
 
-        public async Task<int> GetPrice()
+        public async Task<double> GetPrice()
         {
             var data = await GetData();
 
             var jsonPrice = FinanceHelpers.GetValueOfColumnMarketdata("LAST", data);
+            var jsonDecimals = FinanceHelpers.GetValueOfColumnSecurities("DECIMALS", data);
 
             if (jsonPrice.ValueKind == JsonValueKind.Undefined)
             {
@@ -55,8 +56,9 @@ namespace Portfolio.Finance.Services.Entities
             }
 
             var price = jsonPrice.GetDouble();
+            var decimals = jsonDecimals.GetInt32();
 
-            return FinanceHelpers.GetPriceInt(price);
+            return Math.Round(price, decimals);
         }
 
         public async Task<int> GetPriceChange()
@@ -78,6 +80,7 @@ namespace Portfolio.Finance.Services.Entities
         public async Task<int> GetPaperProfit()
         {
             var allPrice = await GetAllPrice();
+
             return allPrice - BoughtPrice;
         }
 

@@ -50,7 +50,7 @@ namespace Portfolio.Finance.Services.Test
             var stockInfo = GetYNDXStock();
             var price = await stockInfo.GetPrice();
 
-            Assert.AreEqual(434720, price);
+            Assert.AreEqual(4347.20, price);
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Portfolio.Finance.Services.Test
             var stockInfo = GetSBERStock();
             var price = await stockInfo.GetPrice();
 
-            Assert.AreEqual(22658, price);
+            Assert.AreEqual(226.58, price);
         }
 
         [Test]

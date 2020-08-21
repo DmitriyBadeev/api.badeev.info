@@ -49,7 +49,7 @@ namespace Portfolio.Finance.Services.Services
 
             var name = "Нефть";
             var value = FinanceHelpers.GetValueOfColumnMarketdata("LAST", brentData).GetDouble();
-            var change = FinanceHelpers.GetValueOfColumnMarketdata("LASTCHANGE", brentData).GetDouble();
+            var change = FinanceHelpers.GetValueOfColumnMarketdata("SETTLETOPREVSETTLEPRC", brentData).GetDouble();
             var time = FinanceHelpers.GetValueOfColumnMarketdata("TIME", brentData).GetString();
 
             return new CommonMarketQuote()

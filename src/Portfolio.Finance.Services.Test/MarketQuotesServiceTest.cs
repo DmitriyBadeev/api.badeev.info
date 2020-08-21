@@ -91,7 +91,7 @@ namespace Portfolio.Finance.Services.Test
             Assert.AreEqual("BRU0", brent.Ticket);
             Assert.AreEqual("20:37:54", brent.Time);
             Assert.AreEqual(45.34, brent.Value);
-            Assert.AreEqual(-0.01, brent.Change);
+            Assert.AreEqual(-0.11, brent.Change);
         }
 
         private void MockData()

@@ -31,7 +31,7 @@ namespace Portfolio.Finance.Services.Entities
         {
             var price = await GetPrice();
             
-            if (price == -1)
+            if (Math.Abs(price - (-1)) < 0.1)
             {
                 return 0;
             }
@@ -39,7 +39,7 @@ namespace Portfolio.Finance.Services.Entities
             var nkd = FinanceHelpers.GetValueOfColumnSecurities("ACCRUEDINT", _data).GetDouble();
             var nominal = FinanceHelpers.GetValueOfColumnSecurities("FACEVALUE", _data).GetDouble();
             
-            return FinanceHelpers.GetPriceInt((FinanceHelpers.GetPriceDouble(price) / 100 * nominal + nkd) * Amount);
+            return FinanceHelpers.GetPriceInt((price / 100 * nominal + nkd) * Amount);
         }
 
         public override List<PaymentData> PaymentsData

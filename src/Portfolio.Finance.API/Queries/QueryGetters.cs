@@ -52,7 +52,7 @@ namespace Portfolio.Finance.API.Queries
                 {
                     Name = name,
                     Ticket = stockInfo.Ticket,
-                    Price = FinanceHelpers.GetPriceDouble(price),
+                    Price = price,
                     PriceChange = FinanceHelpers.GetPriceDouble(percentChange),
                     AllPrice = FinanceHelpers.GetPriceDouble(allPrice),
                     BoughtPrice = FinanceHelpers.GetPriceDouble(stockInfo.BoughtPrice),
@@ -90,7 +90,7 @@ namespace Portfolio.Finance.API.Queries
                 {
                     Name = name,
                     Ticket = fondInfo.Ticket,
-                    Price = FinanceHelpers.GetPriceDouble(price),
+                    Price = price,
                     PriceChange = FinanceHelpers.GetPriceDouble(percentChange),
                     AllPrice = FinanceHelpers.GetPriceDouble(allPrice),
                     BoughtPrice = FinanceHelpers.GetPriceDouble(fondInfo.BoughtPrice),
@@ -126,7 +126,7 @@ namespace Portfolio.Finance.API.Queries
                 {
                     Name = name,
                     Ticket = bondInfo.Ticket,
-                    Price = FinanceHelpers.GetPriceDouble(price),
+                    Price = price,
                     PriceChange = FinanceHelpers.GetPriceDouble(percentChange),
                     AllPrice = FinanceHelpers.GetPriceDouble(allPrice),
                     BoughtPrice = FinanceHelpers.GetPriceDouble(bondInfo.BoughtPrice),
