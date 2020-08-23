@@ -64,7 +64,7 @@ namespace Portfolio.Finance.Services.Entities
         public async Task<int> GetPriceChange()
         {
             var data = await GetData();
-            var jsonPriceChange = FinanceHelpers.GetValueOfColumnMarketdata("LASTCHANGEPRCNT", data);
+            var jsonPriceChange = FinanceHelpers.GetValueOfColumnMarketdata("LASTTOPREVPRICE", data);
 
             if (jsonPriceChange.ValueKind == JsonValueKind.Undefined)
             {

@@ -141,8 +141,8 @@ namespace Portfolio.Finance.Services.Test
             var stockSBERInfo = GetSBERStock();
             var stockYNDXInfo = GetYNDXStock();
 
-            Assert.AreEqual(1, stockSBERInfo.GetPriceChange().Result);
-            Assert.AreEqual(-2, stockYNDXInfo.GetPriceChange().Result);
+            Assert.AreEqual(-26, stockSBERInfo.GetPriceChange().Result);
+            Assert.AreEqual(82, stockYNDXInfo.GetPriceChange().Result);
         }
 
         [Test]
