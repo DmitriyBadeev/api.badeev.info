@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Portfolio.Finance.Services.DTO
+namespace Portfolio.Finance.Services.DTO.Responses
 {
     public class ApiResponse
     {

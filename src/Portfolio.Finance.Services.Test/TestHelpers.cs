@@ -249,8 +249,8 @@ namespace Portfolio.Finance.Services.Test
 
         public static void MockStockData(MockHttpMessageHandler mockHttp)
         {
-            var jsonYNDX = File.ReadAllTextAsync("TestData/stock_response_YNDX.json").Result;
-            var jsonSBER = File.ReadAllTextAsync("TestData/stock_response_SBER.json").Result;
+            var jsonYNDX = File.ReadAllTextAsync("TestData/AssetsData/stock_response_YNDX.json").Result;
+            var jsonSBER = File.ReadAllTextAsync("TestData/AssetsData/stock_response_SBER.json").Result;
             
             mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/YNDX.json?iss.meta=off&iss.only=securities,marketdata")
@@ -263,7 +263,7 @@ namespace Portfolio.Finance.Services.Test
 
         public static void MockFondData(MockHttpMessageHandler mockHttp)
         {
-            var jsonFXGD = File.ReadAllTextAsync("TestData/fond_response_FXGD.json").Result;
+            var jsonFXGD = File.ReadAllTextAsync("TestData/AssetsData/fond_response_FXGD.json").Result;
 
             mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQTF/securities/FXGD.json?iss.meta=off&iss.only=securities,marketdata")
@@ -272,8 +272,8 @@ namespace Portfolio.Finance.Services.Test
 
         public static void MockDividendData(MockHttpMessageHandler mockHttp)
         {
-            var jsonDivsSBER = File.ReadAllTextAsync("TestData/dividends_response_SBER.json").Result;
-            var jsonDivsYNDX = File.ReadAllTextAsync("TestData/dividends_response_YNDX.json").Result;
+            var jsonDivsSBER = File.ReadAllTextAsync("TestData/DividendsData/dividends_response_SBER.json").Result;
+            var jsonDivsYNDX = File.ReadAllTextAsync("TestData/DividendsData/dividends_response_YNDX.json").Result;
 
             mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/securities/SBER/dividends.json?iss.meta=off")
@@ -286,8 +286,8 @@ namespace Portfolio.Finance.Services.Test
 
         public static void MockBondData(MockHttpMessageHandler mockHttp)
         {
-            var jsonBond = File.ReadAllTextAsync("TestData/bond_response_SU26209RMFS5.json").Result;
-            var jsonAmortizedBond = File.ReadAllTextAsync("TestData/bond_response_SU26210RMFS3_2019.json").Result;
+            var jsonBond = File.ReadAllTextAsync("TestData/AssetsData/bond_response_SU26209RMFS5.json").Result;
+            var jsonAmortizedBond = File.ReadAllTextAsync("TestData/AssetsData/bond_response_SU26210RMFS3_2019.json").Result;
 
             mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/bonds/boards/TQOB/securities/SU26209RMFS5.json?iss.meta=off&iss.only=securities,marketdata")
@@ -300,11 +300,10 @@ namespace Portfolio.Finance.Services.Test
 
         public static void MockCouponsData(MockHttpMessageHandler mockHttp)
         {
-            var jsonCoupon = File.ReadAllTextAsync("TestData/coupons_response_RU000A0JSMA2.json").Result;
-            var jsonAmortizedCoupon = File.ReadAllTextAsync("TestData/coupons_response_RU000A0JTG59_2019.json").Result;
+            var jsonCoupon = File.ReadAllTextAsync("TestData/CouponsData/coupons_response_RU000A0JSMA2.json").Result;
+            var jsonAmortizedCoupon = File.ReadAllTextAsync("TestData/CouponsData/coupons_response_RU000A0JTG59_2019.json").Result;
 
             mockHttp
-                //.When(HttpMethod.Get, "https://iss.moex.com/iss/statistics/engines/stock/markets/bonds/bondization/SU26209RMFS5.json?from=2020-02-7&iss.only=coupons,amortizations&iss.meta=off")
                 .When(HttpMethod.Get, "https://iss.moex.com/iss/statistics/engines/stock/markets/bonds/bondization/SU26209RMFS5.json?from=2020-02-07&iss.only=coupons,amortizations&iss.meta=off")
                 .Respond("application/json", jsonCoupon);
 

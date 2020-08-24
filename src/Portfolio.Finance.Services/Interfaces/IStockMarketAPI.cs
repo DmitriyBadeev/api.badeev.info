@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Portfolio.Finance.Services.DTO;
+using Portfolio.Finance.Services.DTO.Responses;
 
 namespace Portfolio.Finance.Services.Interfaces
 {
@@ -14,5 +15,6 @@ namespace Portfolio.Finance.Services.Interfaces
         Task<ApiResponse> FindBrent();
         Task<ApiResponse> FindDividends(string codeStock);
         Task<ApiResponse> FindCoupons(string codeBond, DateTime boughtDate);
+        Task<ApiResponse> Search(string code);
     }
 }

@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Portfolio.Finance.Services.DTO;
+using Portfolio.Finance.Services.DTO.Responses;
 using Portfolio.Finance.Services.Interfaces;
 
 namespace Portfolio.Finance.Services.Services
@@ -62,6 +63,12 @@ namespace Portfolio.Finance.Services.Services
         public async Task<ApiResponse> FindBrent()
         {
             var url = "http://iss.moex.com/iss/engines/futures/markets/forts/securities/BRU0.json?iss.meta=off&iss.only=securities,marketdata";
+            return await RequestTo(url);
+        }
+
+        public async Task<ApiResponse> Search(string code)
+        {
+            var url = $"https://iss.moex.com/iss/securities/{code}.json?iss.meta=off&iss.only=description&description.columns=name,value";
             return await RequestTo(url);
         }
 

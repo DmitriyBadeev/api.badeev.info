@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Portfolio.Finance.Services.DTO;
+using Portfolio.Finance.Services.DTO.Responses;
 using Portfolio.Finance.Services.Interfaces;
 
 namespace Portfolio.Finance.Services.Services
@@ -70,6 +70,13 @@ namespace Portfolio.Finance.Services.Services
             var response = await _stockMarketApi.FindBrent();
 
             return GetData<AssetResponse>(response);
+        }
+
+        public async Task<SearchResponse> GetSearchData(string code)
+        {
+            var response = await _stockMarketApi.Search(code);
+
+            return GetData<SearchResponse>(response);
         }
 
         private TResponse GetData<TResponse>(ApiResponse response) where TResponse : class

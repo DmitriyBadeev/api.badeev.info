@@ -180,5 +180,15 @@ namespace Portfolio.Finance.API.Queries
         {
             return quotesService.GetMarketQuotes();
         }
+
+        public static async Task<AssetData> AssetReport(ISearchService searchService, string ticket, int userId)
+        {
+            return await searchService.GetAssetData(ticket, userId);
+        }
+
+        public static async Task<SearchData> SearchAsset(ISearchService searchService, string ticket)
+        {
+            return await searchService.Search(ticket);
+        }
     }
 }

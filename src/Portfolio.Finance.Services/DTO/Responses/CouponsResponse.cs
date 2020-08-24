@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 
-namespace Portfolio.Finance.Services.DTO
+namespace Portfolio.Finance.Services.DTO.Responses
 {
     public class Coupons
     {

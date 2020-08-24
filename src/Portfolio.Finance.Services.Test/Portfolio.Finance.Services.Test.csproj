@@ -20,46 +20,58 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestData\bond_response_SU26210RMFS3_2019.json">
+    <None Update="TestData\AssetsData\bond_response_SU26210RMFS3_2019.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\BRENT_response.json">
+    <None Update="TestData\QuotesData\BRENT_response.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\coupons_response_RU000A0JTG59_2019.json">
+    <None Update="TestData\CouponsData\coupons_response_RU000A0JTG59_2019.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\coupons_response_RU000A0JSMA2.json">
+    <None Update="TestData\CouponsData\coupons_response_RU000A0JSMA2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\dividends_response_SBER.json">
+    <None Update="TestData\DividendsData\dividends_response_SBER.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\dividends_response_YNDX.json">
+    <None Update="TestData\DividendsData\dividends_response_YNDX.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\fond_response_FXGD.json">
+    <None Update="TestData\AssetsData\fond_response_FXGD.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\bond_response_SU26209RMFS5.json">
+    <None Update="TestData\AssetsData\bond_response_SU26209RMFS5.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\IMOEX_response.json">
+    <None Update="TestData\QuotesData\IMOEX_response.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\RTSI_response.json">
+    <None Update="TestData\QuotesData\RTSI_response.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\stock_response_SBER.json">
+    <None Update="TestData\SearchServiceData\BLABLA_search_response.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\stock_response_YNDX.json">
+    <None Update="TestData\SearchServiceData\SU26209RMFS5_search_response.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\EURO_response.json">
+    <None Update="TestData\SearchServiceData\FXGD_search_response.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\USD_response.json">
+    <None Update="TestData\SearchServiceData\SBER_search_response.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\AssetsData\stock_response_SBER.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\AssetsData\stock_response_YNDX.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\QuotesData\EURO_response.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\QuotesData\USD_response.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

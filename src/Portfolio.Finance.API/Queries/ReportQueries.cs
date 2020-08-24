@@ -59,5 +59,18 @@ namespace Portfolio.Finance.API.Queries
         {
             return QueryGetters.GetMarketQuotes(quotesService);
         }
+
+        [Authorize]
+        public async Task<SearchData> SearchAsset([Service] ISearchService searchService, string ticket)
+        {
+            return await QueryGetters.SearchAsset(searchService, ticket);
+        }
+
+        [Authorize]
+        public async Task<AssetData> AssetReport([CurrentUserIdGlobalState] int userId, 
+            [Service] ISearchService searchService, string ticket)
+        {
+            return  await QueryGetters.AssetReport(searchService, ticket, userId);
+        }
     }
 }

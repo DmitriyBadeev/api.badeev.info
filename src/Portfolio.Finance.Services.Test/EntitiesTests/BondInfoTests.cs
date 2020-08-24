@@ -9,7 +9,7 @@ using Portfolio.Finance.Services.Services;
 using Portfolio.Infrastructure.Services;
 using RichardSzalay.MockHttp;
 
-namespace Portfolio.Finance.Services.Test
+namespace Portfolio.Finance.Services.Test.EntitiesTests
 {
     [TestFixture]
     public class BondInfoTests

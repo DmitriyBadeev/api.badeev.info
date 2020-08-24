@@ -6,7 +6,7 @@ using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Finance.Services.Services;
 using RichardSzalay.MockHttp;
 
-namespace Portfolio.Finance.Services.Test
+namespace Portfolio.Finance.Services.Test.ServicesTests
 {
     [TestFixture]
     public class StockMarketAPITests

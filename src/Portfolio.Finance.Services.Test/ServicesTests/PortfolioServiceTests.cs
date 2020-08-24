@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Portfolio.Finance.Services.Services;
 using Portfolio.Infrastructure.Services;
 
-namespace Portfolio.Finance.Services.Test
+namespace Portfolio.Finance.Services.Test.ServicesTests
 {
     [TestFixture]
     public class PortfolioServiceTests

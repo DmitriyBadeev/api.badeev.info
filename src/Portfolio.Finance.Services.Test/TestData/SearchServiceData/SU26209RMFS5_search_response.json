@@ -1,0 +1,32 @@
+{
+  "description": {
+    "columns": [ "name", "value" ],
+    "data": [
+      [ "SECID", "SU26209RMFS5" ],
+      [ "NAME", "Œ‘«-œƒ 26209 20\/07\/22" ],
+      [ "SHORTNAME", "Œ‘« 26209" ],
+      [ "REGNUMBER", "26209RMFS" ],
+      [ "ISIN", "RU000A0JSMA2" ],
+      [ "ISSUEDATE", "2012-08-01" ],
+      [ "MATDATE", "2022-07-20" ],
+      [ "INITIALFACEVALUE", "1000" ],
+      [ "FACEUNIT", "SUR" ],
+      [ "LATNAME", "OFZ-PD 26209" ],
+      [ "STARTDATEMOEX", "2012-08-01" ],
+      [ "LISTLEVEL", "1" ],
+      [ "DAYSTOREDEMPTION", "695" ],
+      [ "ISSUESIZE", "403881815" ],
+      [ "FACEVALUE", "1000" ],
+      [ "ISQUALIFIEDINVESTORS", "0" ],
+      [ "COUPONFREQUENCY", "2" ],
+      [ "COUPONDATE", "2021-01-20" ],
+      [ "COUPONPERCENT", "7.6" ],
+      [ "COUPONVALUE", "37.9" ],
+      [ "TYPENAME", "Œ‘«" ],
+      [ "GROUP", "stock_bonds" ],
+      [ "TYPE", "ofz_bond" ],
+      [ "GROUPNAME", "Œ·ÎË„‡ˆËË" ],
+      [ "EMITTER_ID", "1374788" ]
+    ]
+  }
+}

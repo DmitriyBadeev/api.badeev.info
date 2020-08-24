@@ -16,6 +16,7 @@ namespace Portfolio.Finance.Services
             services.AddScoped<IMarketService, MarketService>();
             services.AddScoped<IPortfolioService, PortfolioService>();
             services.AddScoped<IMarketQuotesService, MarketQuotesService>();
+            services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<HttpClient>();
             return services;
         }

@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.DTO;
+using Portfolio.Finance.Services.DTO.Responses;
 using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Infrastructure.Services;
 

@@ -1,0 +1,27 @@
+{
+  "description": {
+    "columns": [ "name", "value" ],
+    "data": [
+      [ "SECID", "SBER" ],
+      [ "NAME", "Сбербанк России ПАО ао" ],
+      [ "SHORTNAME", "Сбербанк" ],
+      [ "ISIN", "RU0009029540" ],
+      [ "REGNUMBER", "10301481B" ],
+      [ "ISSUESIZE", "21586948000" ],
+      [ "FACEVALUE", "3" ],
+      [ "FACEUNIT", "SUR" ],
+      [ "ISSUEDATE", "2007-07-20" ],
+      [ "LATNAME", "Sberbank" ],
+      [ "HASPROSPECTUS", "1" ],
+      [ "DECISIONDATE", "2007-07-16" ],
+      [ "LISTLEVEL", "1" ],
+      [ "ISQUALIFIEDINVESTORS", "0" ],
+      [ "EVENINGSESSION", "1" ],
+      [ "TYPENAME", "Акция обыкновенная" ],
+      [ "GROUP", "stock_shares" ],
+      [ "TYPE", "common_share" ],
+      [ "GROUPNAME", "Акции" ],
+      [ "EMITTER_ID", "1199" ]
+    ]
+  }
+}

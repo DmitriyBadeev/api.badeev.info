@@ -1,0 +1,20 @@
+{
+  "description": {
+    "columns": [ "name", "value" ],
+    "data": [
+      [ "SECID", "FXGD" ],
+      [ "NAME", "FinEx Gold ETF USD" ],
+      [ "SHORTNAME", "FXGD ETF" ],
+      [ "ISIN", "IE00B8XB7377" ],
+      [ "ISSUEDATE", "2013-10-17" ],
+      [ "LATNAME", "FinEx Gold ETF USD" ],
+      [ "LISTLEVEL", "1" ],
+      [ "ISQUALIFIEDINVESTORS", "0" ],
+      [ "TYPENAME", "ETF" ],
+      [ "GROUP", "stock_etf" ],
+      [ "TYPE", "etf_ppif" ],
+      [ "GROUPNAME", "Биржевые фонды" ],
+      [ "EMITTER_ID", "2679" ]
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using Portfolio.Finance.Services.DTO;
+using Portfolio.Finance.Services.DTO.Responses;
 
 namespace Portfolio.Finance.Services
 {
@@ -27,6 +28,11 @@ namespace Portfolio.Finance.Services
 
         public static double DivWithOneDigitRound(double number1, double number2)
         {
+            if (Math.Abs(number2) < 0.0001)
+            {
+                return 0;
+            }
+
             return Math.Round(number1 / number2 * 100, 1);
         }
 

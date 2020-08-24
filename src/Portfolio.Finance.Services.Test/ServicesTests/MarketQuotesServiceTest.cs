@@ -7,7 +7,7 @@ using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Finance.Services.Services;
 using RichardSzalay.MockHttp;
 
-namespace Portfolio.Finance.Services.Test
+namespace Portfolio.Finance.Services.Test.ServicesTests
 {
     [TestFixture]
     public class MarketQuotesServiceTest
@@ -96,13 +96,13 @@ namespace Portfolio.Finance.Services.Test
 
         private void MockData()
         {
-            var jsonIMOEX = File.ReadAllTextAsync("TestData/IMOEX_response.json").Result;
-            var jsonRTSI = File.ReadAllTextAsync("TestData/RTSI_response.json").Result;
+            var jsonIMOEX = File.ReadAllTextAsync("TestData/QuotesData/IMOEX_response.json").Result;
+            var jsonRTSI = File.ReadAllTextAsync("TestData/QuotesData/RTSI_response.json").Result;
 
-            var jsonUSD = File.ReadAllTextAsync("TestData/USD_response.json").Result;
-            var jsonEURO = File.ReadAllTextAsync("TestData/EURO_response.json").Result;
+            var jsonUSD = File.ReadAllTextAsync("TestData/QuotesData/USD_response.json").Result;
+            var jsonEURO = File.ReadAllTextAsync("TestData/QuotesData/EURO_response.json").Result;
 
-            var jsonBrent = File.ReadAllTextAsync("TestData/BRENT_response.json").Result;
+            var jsonBrent = File.ReadAllTextAsync("TestData/QuotesData/BRENT_response.json").Result;
 
             _mockHttp
                 .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/index/securities/IMOEX.json?iss.meta=off&iss.only=securities,marketdata")
