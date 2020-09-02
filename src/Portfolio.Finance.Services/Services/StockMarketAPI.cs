@@ -62,7 +62,7 @@ namespace Portfolio.Finance.Services.Services
 
         public async Task<ApiResponse> FindBrent()
         {
-            var url = "http://iss.moex.com/iss/engines/futures/markets/forts/securities/BRU0.json?iss.meta=off&iss.only=securities,marketdata";
+            var url = "http://iss.moex.com/iss/engines/futures/markets/forts/securities/BRV0.json?iss.meta=off&iss.only=securities,marketdata";
             return await RequestTo(url);
         }
 

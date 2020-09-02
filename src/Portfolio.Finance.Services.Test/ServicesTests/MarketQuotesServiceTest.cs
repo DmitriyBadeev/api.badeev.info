@@ -121,7 +121,7 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
                 .Respond("application/json", jsonEURO);
 
             _mockHttp
-                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/futures/markets/forts/securities/BRU0.json?iss.meta=off&iss.only=securities,marketdata")
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/futures/markets/forts/securities/BRV0.json?iss.meta=off&iss.only=securities,marketdata")
                 .Respond("application/json", jsonBrent);
         }
     }
