@@ -23,6 +23,9 @@
     <None Update="TestData\AssetsData\bond_response_SU26210RMFS3_2019.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\GraphsData\stock_candle_response_2020-06-02_24.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\QuotesData\BRENT_response.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

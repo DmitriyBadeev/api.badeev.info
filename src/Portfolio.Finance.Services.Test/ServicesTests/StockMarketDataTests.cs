@@ -113,6 +113,16 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         }
 
         [Test]
+        public async Task GetStockCandleData()
+        {
+            TestHelpers.MockCandles(_mockHttp);
+
+            var response = await _stockMarketData.GetStockCandleData("YNDX", new DateTime(2020, 6, 2), CandleInterval.Day);
+
+            Assert.AreEqual(64, response.candles.data.Count);
+        }
+
+        [Test]
         public async Task HandleErrorStock()
         {
             _mockHttp

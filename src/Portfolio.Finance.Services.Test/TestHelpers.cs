@@ -311,5 +311,14 @@ namespace Portfolio.Finance.Services.Test
                 .When(HttpMethod.Get, "https://iss.moex.com/iss/statistics/engines/stock/markets/bonds/bondization/SU26210RMFS3.json?from=2018-02-07&iss.only=coupons,amortizations&iss.meta=off")
                 .Respond("application/json", jsonAmortizedCoupon);
         }
+
+        public static void MockCandles(MockHttpMessageHandler mockHttp)
+        {
+            var json = File.ReadAllTextAsync("TestData/GraphsData/stock_candle_response_2020-06-02_24.json").Result;
+
+            mockHttp
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/securities/YNDX/candles.json?from=2020-06-02&interval=24&iss.meta=off")
+                .Respond("application/json", json);
+        }
     }
 }

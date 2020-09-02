@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Portfolio.Finance.Services.DTO.Responses;
+using Portfolio.Finance.Services.Services;
 
 namespace Portfolio.Finance.Services.Interfaces
 {
@@ -14,6 +15,7 @@ namespace Portfolio.Finance.Services.Interfaces
         Task<AssetResponse> GetCurrencyData(string codeCurrency);
         Task<CouponsResponse> GetCouponsData(string codeBond, DateTime boughtDate);
         Task<AssetResponse> GetBrentData();
+        Task<StockCandleResponse> GetStockCandleData(string code, DateTime from, CandleInterval interval);
         Task<SearchResponse> GetSearchData(string code);
     }
 }

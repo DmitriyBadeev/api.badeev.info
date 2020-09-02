@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Portfolio.Finance.API.Queries.Response;
 using Portfolio.Finance.Services;
 using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Interfaces;
+using Portfolio.Finance.Services.Services;
 
 namespace Portfolio.Finance.API.Queries
 {

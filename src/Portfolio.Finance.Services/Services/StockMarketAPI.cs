@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.DTO.Responses;
 using Portfolio.Finance.Services.Interfaces;
 
@@ -72,6 +71,13 @@ namespace Portfolio.Finance.Services.Services
             return await RequestTo(url);
         }
 
+        public async Task<ApiResponse> StockCandles(string code, DateTime from, CandleInterval interval)
+        {
+            var dateString = from.ToString("yyyy-MM-dd");
+            var url = $"http://iss.moex.com/iss/engines/stock/markets/shares/securities/{code}/candles.json?from={dateString}&interval={(int)interval}&iss.meta=off";
+            return await RequestTo(url);
+        }
+
         private async Task<ApiResponse> RequestTo(string url)
         {
             var response = await _client.GetAsync(url);
@@ -92,5 +98,13 @@ namespace Portfolio.Finance.Services.Services
                 StatusCode = response.StatusCode
             };
         }
+    }
+
+    public enum CandleInterval
+    {
+        Week = 7,
+        Day = 24,
+        Month = 31,
+        Hour = 60
     }
 }

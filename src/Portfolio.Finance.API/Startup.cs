@@ -42,6 +42,7 @@ namespace Portfolio.Finance.API
                 .AddType<ReportQueries>()
                 .AddType<BalanceQueries>()
                 .AddType<OperationQueries>()
+                .AddType<GraphQueries>()
                 .AddMutationType(d => d.Name("Mutations"))
                 .AddType<AssetMutations>()
                 .AddType<PortfolioMutations>()

@@ -79,6 +79,13 @@ namespace Portfolio.Finance.Services.Services
             return GetData<SearchResponse>(response);
         }
 
+        public async Task<StockCandleResponse> GetStockCandleData(string code, DateTime from, CandleInterval interval)
+        {
+            var response = await _stockMarketApi.StockCandles(code, from, interval);
+
+            return GetData<StockCandleResponse>(response);
+        }
+
         private TResponse GetData<TResponse>(ApiResponse response) where TResponse : class
         {
             if (response.StatusCode == HttpStatusCode.OK)
