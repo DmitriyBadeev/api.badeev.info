@@ -32,6 +32,7 @@ namespace Portfolio.Identity
                     RequireClientSecret = false,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AccessTokenLifetime = 3600 * 5,
+                    RequireConsent = false,
                     AllowedCorsOrigins = 
                     { 
                         "http://localhost:3000", 
