@@ -31,7 +31,7 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         {
             var quotes = _marketQuotesService.GetMarketQuotes();
 
-            Assert.AreEqual(5, quotes.Count());
+            Assert.AreEqual(4, quotes.Count());
         }
 
         [Test]

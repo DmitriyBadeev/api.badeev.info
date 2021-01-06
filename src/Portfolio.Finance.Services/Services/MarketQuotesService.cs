@@ -20,7 +20,7 @@ namespace Portfolio.Finance.Services.Services
             yield return GetEURO().Result;
             yield return GetIMOEX().Result;
             yield return GetRTSI().Result;
-            yield return GetBrent().Result;
+            //yield return GetBrent().Result;
         }
 
         public async Task<CommonMarketQuote> GetIMOEX()
