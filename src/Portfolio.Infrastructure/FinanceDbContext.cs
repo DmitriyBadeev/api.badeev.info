@@ -11,8 +11,9 @@ namespace Portfolio.Infrastructure
         public DbSet<AssetType> AssetTypes { get; set; }
         public DbSet<CurrencyOperation> CurrencyOperations { get; set; }
         public DbSet<CurrencyAction> CurrencyActions { get; set; }
-
-        public FinanceDbContext(DbContextOptions options) : base(options)
+    
+        public DbSet<Payment> Payments { get; set; }
+        public FinanceDbContext(DbContextOptions<FinanceDbContext> options) : base(options)
         {
         }
     }

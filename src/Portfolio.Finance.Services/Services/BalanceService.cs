@@ -40,13 +40,17 @@ namespace Portfolio.Finance.Services.Services
                 .Include(o => o.Portfolio)
                 .Where(o => o.Portfolio.UserId == userId);
 
-            var sum = 0;
-            foreach (var currencyOperation in operations)
-            {
-                sum = ApplyCurrencyOperation(currencyOperation, sum);
-            }
+            return GetOperationsSum(operations);
+        }
 
-            return sum;
+        public int GetInvestSum(int portfolioId, int userId)
+        {
+            var operations = _financeDataService.EfContext.CurrencyOperations
+                .Include(o => o.CurrencyAction)
+                .Include(o => o.Portfolio)
+                .Where(o => o.Portfolio.UserId == userId && o.Portfolio.Id == portfolioId);
+            
+            return GetOperationsSum(operations);
         }
 
         public int GetBalance(int portfolioId)
@@ -73,7 +77,8 @@ namespace Portfolio.Finance.Services.Services
 
             return balance;
         }
-
+        
+        //TODO Проверка на нужного пользователя
         public async Task<OperationResult> RefillBalance(int portfolioId, int price, DateTime date)
         {
             var portfolio = await _financeDataService.EfContext.Portfolios.FindAsync(portfolioId);
@@ -178,6 +183,17 @@ namespace Portfolio.Finance.Services.Services
             };
         }
 
+        private int GetOperationsSum(IQueryable<CurrencyOperation> operations)
+        {
+            var sum = 0;
+            foreach (var currencyOperation in operations)
+            {
+                sum = ApplyCurrencyOperation(currencyOperation, sum);
+            }
+
+            return sum;
+        }
+        
         private int ApplyCurrencyOperation(CurrencyOperation operation, int balance)
         {
             if (operation.CurrencyAction.Name == SeedFinanceData.REFILL_ACTION)

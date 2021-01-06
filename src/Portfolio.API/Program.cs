@@ -11,7 +11,7 @@ namespace Portfolio.API
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
+            var host = BuildWebHost(args).Build();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -32,7 +32,7 @@ namespace Portfolio.API
             host.Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        public static IWebHostBuilder BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureLogging(builder => builder
                     .AddConsole()

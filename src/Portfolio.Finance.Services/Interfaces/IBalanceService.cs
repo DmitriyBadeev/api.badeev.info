@@ -19,5 +19,7 @@ namespace Portfolio.Finance.Services.Interfaces
         Task<OperationResult> RefillBalance(int portfolioId, int price, DateTime date);
 
         Task<OperationResult> WithdrawalBalance(int portfolioId, int price, DateTime date);
+
+        int GetInvestSum(int portfolioId, int userId);
     }
 }

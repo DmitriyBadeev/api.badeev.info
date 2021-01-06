@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Portfolio.Infrastructure;
 
 namespace Portfolio.Infrastructure.Migrations.FinanceDb
 {
     [DbContext(typeof(FinanceDbContext))]
-    partial class FinanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210105121345_AddPayment")]
+    partial class AddPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,13 +130,9 @@ namespace Portfolio.Infrastructure.Migrations.FinanceDb
 
                     b.Property<int>("PaymentValue");
 
-                    b.Property<int>("PortfolioId");
-
                     b.Property<string>("Ticket");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PortfolioId");
 
                     b.ToTable("Payments");
                 });
@@ -181,14 +179,6 @@ namespace Portfolio.Infrastructure.Migrations.FinanceDb
 
                     b.HasOne("Portfolio.Core.Entities.Finance.Portfolio", "Portfolio")
                         .WithMany()
-                        .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Portfolio.Core.Entities.Finance.Payment", b =>
-                {
-                    b.HasOne("Portfolio.Core.Entities.Finance.Portfolio", "Portfolio")
-                        .WithMany("Payments")
                         .HasForeignKey("PortfolioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

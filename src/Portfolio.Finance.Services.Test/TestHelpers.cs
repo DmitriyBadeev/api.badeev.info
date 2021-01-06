@@ -24,12 +24,17 @@ namespace Portfolio.Finance.Services.Test
             return new FinanceDbContext(options);
         }
 
-        public static void SeedOperations1(FinanceDbContext context)
+        public static void SeedApp(FinanceDbContext context)
         {
             var mockLogger = new Mock<ILogger<SeedFinanceDataService>>();
             var seedService = new SeedFinanceDataService(mockLogger.Object, context);
 
             seedService.Initialise();
+        }
+        
+        public static void SeedOperations1(FinanceDbContext context)
+        {
+            SeedApp(context);
             var buyAction = context.AssetActions.FirstOrDefault(a => a.Name == SeedFinanceData.BUY_ACTION);
             var sellAction = context.AssetActions.FirstOrDefault(a => a.Name == SeedFinanceData.SELL_ACTION);
 

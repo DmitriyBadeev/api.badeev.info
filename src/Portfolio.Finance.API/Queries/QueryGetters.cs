@@ -12,7 +12,8 @@ namespace Portfolio.Finance.API.Queries
 {
     public static class QueryGetters
     {
-        public static AllPortfoliosReport GetAllPortfoliosReport(int userId, IMarketService marketService, IBalanceService balanceService)
+        public static AllPortfoliosReport GetAllPortfoliosReport(int userId, IMarketService marketService, 
+            IBalanceService balanceService)
         {
             var allCost = FinanceHelpers.GetPriceDouble(marketService.GetAllCost(userId));
             var allPaperProfit = FinanceHelpers.GetPriceDouble(marketService.GetAllPaperProfit(userId));

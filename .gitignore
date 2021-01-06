@@ -1,6 +1,7 @@
 .git
 .vs
 .editorconfig
+.idea
 Logs/
 .config
 

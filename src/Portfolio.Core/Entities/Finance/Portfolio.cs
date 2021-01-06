@@ -12,5 +12,7 @@ namespace Portfolio.Core.Entities.Finance
         public string Name { get; set; }
 
         public List<AssetOperation> AssetOperations { get; set; }
+        
+        public List<Payment> Payments { get; set; }
     }
 }

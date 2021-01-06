@@ -42,7 +42,8 @@ namespace Portfolio.Finance.Services.Services
         {
             return await GetCurrency("EUR_RUB__TOM", "EURO");
         }
-
+        
+        //TODO Удалить или найти нормальную замену
         public async Task<CommonMarketQuote> GetBrent()
         {
             var brentData = await _marketData.GetBrentData();

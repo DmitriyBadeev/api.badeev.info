@@ -103,5 +103,21 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
 
             Assert.AreEqual(2350000, result);
         }
+
+        [Test]
+        public void GetInvestSum()
+        {
+            var sum1 = _balanceService.GetInvestSum(1, 1);
+            var sum2 = _balanceService.GetInvestSum(2, 1);
+            var sum3 = _balanceService.GetInvestSum(3, 2);
+            
+            var sum4 = _balanceService.GetInvestSum(3, 3);
+            
+            Assert.AreEqual(2300000, sum1);
+            Assert.AreEqual(50000, sum2);
+            Assert.AreEqual(50000, sum3);
+            
+            Assert.AreEqual(0, sum4);
+        }
     }
 }
