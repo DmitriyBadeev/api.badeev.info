@@ -17,9 +17,10 @@ namespace Portfolio.Finance.API.Subscriptions
         public AllPortfoliosReport OnUpdatePortfoliosReport(
             [Service] IMarketService marketService,
             [Service] IBalanceService balanceService,
-            [EventMessage] int userId)
+            [EventMessage] int userId,
+            [Service] IAggregatePortfolioService aggregatePortfolioService)
         {
-            return QueryGetters.GetAllPortfoliosReport(userId, marketService, balanceService);
+            return QueryGetters.GetAllPortfoliosReport(userId, marketService, balanceService, aggregatePortfolioService);
         }
 
         [Subscribe]

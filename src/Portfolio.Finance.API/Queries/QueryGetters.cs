@@ -13,13 +13,17 @@ namespace Portfolio.Finance.API.Queries
     public static class QueryGetters
     {
         public static AllPortfoliosReport GetAllPortfoliosReport(int userId, IMarketService marketService, 
-            IBalanceService balanceService)
+            IBalanceService balanceService, IAggregatePortfolioService aggregatePortfolioService)
         {
             var allCost = FinanceHelpers.GetPriceDouble(marketService.GetAllCost(userId));
             var allPaperProfit = FinanceHelpers.GetPriceDouble(marketService.GetAllPaperProfit(userId));
             var allPaperProfitPercent = marketService.GetPercentOfPaperProfit(userId);
-            var allPaymentProfit = FinanceHelpers.GetPriceDouble(marketService.GetAllPaymentProfit(userId));
-            var allPaymentProfitPercent = marketService.GetPercentOfPaymentProfit(userId);
+            
+            var allPaymentProfit = FinanceHelpers.GetPriceDouble(
+                aggregatePortfolioService.AggregatePaymentProfit(new []{ 1, 2 }, userId).Result.Result);
+            var allPaymentProfitPercent =
+                aggregatePortfolioService.AggregatePaymentProfitPercent(new []{ 1, 2 }, userId).Result.Result;
+            
             var allInvestSum = FinanceHelpers.GetPriceDouble(balanceService.GetAllInvestSum(userId));
             var allBalance = FinanceHelpers.GetPriceDouble(marketService.GetUserBalanceWithPaidPayments(userId));
 

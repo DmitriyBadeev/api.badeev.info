@@ -13,10 +13,13 @@ namespace Portfolio.Finance.API.Queries
     public class ReportQueries
     {
         [Authorize]
-        public AllPortfoliosReport GetAllPortfoliosReport([CurrentUserIdGlobalState] int userId, 
-            [Service] IMarketService marketService, [Service] IBalanceService balanceService)
+        public AllPortfoliosReport GetAllPortfoliosReport(
+            [CurrentUserIdGlobalState] int userId, 
+            [Service] IMarketService marketService, 
+            [Service] IBalanceService balanceService, 
+            [Service] IAggregatePortfolioService aggregatePortfolioService)
         {
-            return QueryGetters.GetAllPortfoliosReport(userId, marketService, balanceService);
+            return QueryGetters.GetAllPortfoliosReport(userId, marketService, balanceService, aggregatePortfolioService);
         }
 
         [Authorize]
