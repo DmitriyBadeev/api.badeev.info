@@ -18,13 +18,14 @@ namespace Portfolio.Identity
             };
         }
 
-        public static IEnumerable<Client> GetSpaClient(string clientId, List<string> redirects, string apiPortfolio, string apiFinance)
+        public static IEnumerable<Client> GetSpaClient(string commonClientId, string financeClientId, 
+            List<string> redirects, List<string> financeRedirects, string apiPortfolio, string apiFinance)
         {
             return new List<Client>
             {
                 new Client
                 {
-                    ClientId = clientId,
+                    ClientId = commonClientId,
                     ClientName = "Тайный бункер",
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
@@ -53,6 +54,36 @@ namespace Portfolio.Identity
                         apiPortfolio,
                         apiFinance
                     }
+                },
+                new Client
+                {
+                    ClientId = financeClientId,
+                    ClientName = "InvestIn",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireClientSecret = false,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AccessTokenLifetime = 3600 * 5,
+                    RequireConsent = false,
+                    AllowedCorsOrigins = 
+                    { 
+                        "http://localhost:3000", 
+                        "http://localhost:3001", 
+                        "https://investin.badeev.info"
+                    },
+                    PostLogoutRedirectUris = new List<string> 
+                    {
+                        "https://investin.badeev.info/signout",
+                        "http://localhost:3000/signout"
+                    },
+                    RedirectUris = financeRedirects,
+                    AllowedScopes = 
+                    { 
+                        IdentityServerConstants.StandardScopes.OpenId, 
+                        IdentityServerConstants.StandardScopes.Profile,
+                        apiFinance
+                    }
                 }
             };
         }
@@ -73,6 +104,20 @@ namespace Portfolio.Identity
                         new Claim(JwtClaimTypes.Email, "mail@badeev.info"),
                         new Claim(JwtClaimTypes.Role, "Создатель"),
                         new Claim(JwtClaimTypes.Picture, "https://storage.badeev.info/avatar-min.png")
+                    }
+                },
+                new TestUser
+                {
+                    SubjectId = "2",
+                    Username = "test@mail.com",
+                    Password = "test",
+                    Claims = new List<Claim>
+                    {
+                        new Claim(JwtClaimTypes.Name, "Тестовый"),
+                        new Claim(JwtClaimTypes.FamilyName, "пользователь"),
+                        new Claim(JwtClaimTypes.Email, "test@mail.com"),
+                        new Claim(JwtClaimTypes.Role, "Тестовый пользователь InvestIn"),
+                        new Claim(JwtClaimTypes.Picture, "https://storage.badeev.info/avatar.png")
                     }
                 }
             };
