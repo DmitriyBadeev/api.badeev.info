@@ -56,21 +56,21 @@ namespace Portfolio.Finance.Services.Services
 
             if (AssetTypes.STOCK == searchData.Type)
             {
-                var stockInfo = new StockInfo(_marketData, ticket);
+                var stockInfo = new StockInfo(_marketData, _financeData, ticket);
                 RegisterAllOperations(stockInfo, userId);
                 return await GetAssetData(stockInfo);
             }
 
             if (AssetTypes.ETF == searchData.Type)
             {
-                var fondInfo = new FondInfo(_marketData, ticket);
+                var fondInfo = new FondInfo(_marketData, _financeData, ticket);
                 RegisterAllOperations(fondInfo, userId);
                 return await GetAssetData(fondInfo);
             }
 
             if (AssetTypes.OFZ == searchData.Type)
             {
-                var bondInfo = new BondInfo(_marketData, ticket);
+                var bondInfo = new BondInfo(_marketData, _financeData, ticket);
                 RegisterAllOperations(bondInfo, userId);
                 return await GetAssetData(bondInfo);
             }

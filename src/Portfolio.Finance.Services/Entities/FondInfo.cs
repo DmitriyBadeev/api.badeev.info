@@ -3,12 +3,14 @@ using System.Threading.Tasks;
 using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.DTO.Responses;
 using Portfolio.Finance.Services.Interfaces;
+using Portfolio.Infrastructure.Services;
 
 namespace Portfolio.Finance.Services.Entities
 {
     public class FondInfo : AssetInfo
     {
-        public FondInfo(IStockMarketData marketData, string ticket) : base(marketData, ticket)
+        public FondInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket) 
+            : base(marketData, financeDataService, ticket)
         {
             PaymentsData = new List<PaymentData>();
         }
@@ -24,7 +26,7 @@ namespace Portfolio.Finance.Services.Entities
 
         protected override async Task<AssetResponse> GetData()
         {
-            return _data ?? (_data = await _marketData.GetFondData(Ticket));
+            return Data ?? (Data = await MarketData.GetFondData(Ticket));
         }
     }
 }

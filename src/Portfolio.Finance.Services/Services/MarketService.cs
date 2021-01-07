@@ -154,9 +154,11 @@ namespace Portfolio.Finance.Services.Services
 
         public int GetAllPaymentProfit(int userId)
         {
-            return GetPortfoliosData(userId)
-                .Aggregate(0, (total, portfolio) => total + portfolio.Assets
-                    .Aggregate(0, (totalPortfolio, asset) => totalPortfolio + asset.GetSumPayments()));
+            return _financeDataService.EfContext.Payments
+                .Include(p => p.Portfolio)
+                .Where(p => p.Portfolio.UserId == userId)
+                .ToList()
+                .Aggregate(0, (total, payment) => total + payment.PaymentValue);
         }
 
         public int GetAllCost(int userId)
@@ -295,30 +297,28 @@ namespace Portfolio.Finance.Services.Services
 
         private List<PortfolioData> GetPortfoliosData(int userId, bool isForceUpdate = false)
         {
-            if (_portfolios == null || isForceUpdate)
+            if (_portfolios != null && !isForceUpdate) return _portfolios;
+            
+            var portfolios = new List<PortfolioData>();
+            var userPortfolios = _financeDataService.EfContext.Portfolios
+                .Where(p => p.UserId == userId);
+
+            foreach (var userPortfolio in userPortfolios)
             {
-                var portfolios = new List<PortfolioData>();
-                var userPortfolios = _financeDataService.EfContext.Portfolios
-                    .Where(p => p.UserId == userId);
-
-                foreach (var userPortfolio in userPortfolios)
+                var portfolioData = new PortfolioData
                 {
-                    var portfolioData = new PortfolioData
-                    {
-                        Id = userPortfolio.Id,
-                        Name = userPortfolio.Name,
-                        UserId = userPortfolio.UserId,
-                        Assets = _assetsFactory.Create(userPortfolio.Id)
-                    };
+                    Id = userPortfolio.Id,
+                    Name = userPortfolio.Name,
+                    UserId = userPortfolio.UserId,
+                    Assets = _assetsFactory.Create(userPortfolio.Id)
+                };
 
-                    portfolios.Add(portfolioData);
-                }
-
-                _portfolios = portfolios;
-                return portfolios;
+                portfolios.Add(portfolioData);
             }
 
-            return _portfolios;
+            _portfolios = portfolios;
+            return portfolios;
+
         }
 
         private static bool CommonValidate(int price, int amount, AssetType assetType,

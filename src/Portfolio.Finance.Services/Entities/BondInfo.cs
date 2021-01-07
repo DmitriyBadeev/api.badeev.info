@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.DTO.Responses;
 using Portfolio.Finance.Services.Interfaces;
+using Portfolio.Infrastructure.Services;
 
 namespace Portfolio.Finance.Services.Entities
 {
@@ -13,7 +14,8 @@ namespace Portfolio.Finance.Services.Entities
     {
         private List<PaymentData> _paymentsData;
 
-        public BondInfo(IStockMarketData marketData, string ticket) : base(marketData, ticket)
+        public BondInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket) 
+            : base(marketData, financeDataService, ticket)
         {
         }
 
@@ -37,8 +39,8 @@ namespace Portfolio.Finance.Services.Entities
                 return 0;
             }
 
-            var nkd = FinanceHelpers.GetValueOfColumnSecurities("ACCRUEDINT", _data).GetDouble();
-            var nominal = FinanceHelpers.GetValueOfColumnSecurities("FACEVALUE", _data).GetDouble();
+            var nkd = FinanceHelpers.GetValueOfColumnSecurities("ACCRUEDINT", Data).GetDouble();
+            var nominal = FinanceHelpers.GetValueOfColumnSecurities("FACEVALUE", Data).GetDouble();
             
             return FinanceHelpers.GetPriceInt((price / 100 * nominal + nkd) * Amount);
         }
@@ -100,7 +102,7 @@ namespace Portfolio.Finance.Services.Entities
 
         protected override async Task<AssetResponse> GetData()
         {
-            return _data ?? (_data = await _marketData.GetBondData(Ticket));
+            return Data ?? (Data = await MarketData.GetBondData(Ticket));
         }
 
         private async Task<List<PaymentData>> GetCouponsData()
@@ -108,7 +110,7 @@ namespace Portfolio.Finance.Services.Entities
             if (_paymentsData == null)
             {
                 var firstDate = GetMostEarlyOperationDate();
-                var dividendsResponse = await _marketData.GetCouponsData(Ticket, firstDate);
+                var dividendsResponse = await MarketData.GetCouponsData(Ticket, firstDate);
                 PaymentsData = GetPaymentData(dividendsResponse);
             }
 
@@ -117,7 +119,7 @@ namespace Portfolio.Finance.Services.Entities
 
         private DateTime GetMostEarlyOperationDate()
         {
-            return _operations.Aggregate(DateTime.MaxValue, (mostEarly, operation) =>
+            return Operations.Aggregate(DateTime.MaxValue, (mostEarly, operation) =>
             {
                 if (DateTime.Compare(operation.Date, mostEarly) <= 0)
                 {

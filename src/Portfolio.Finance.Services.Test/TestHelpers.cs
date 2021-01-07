@@ -245,10 +245,55 @@ namespace Portfolio.Finance.Services.Test
                     Price = 50000
                 }
             };
+            
+            var payments = new List<Payment>()
+            {
+                new Payment()
+                {
+                    PortfolioId = 1,
+                    Ticket = "SBER",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 10000
+                },
+                new Payment()
+                {
+                    PortfolioId = 1,
+                    Ticket = "SBERP",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 5000
+                },
+                new Payment()
+                {
+                    PortfolioId = 1,
+                    Ticket = "SBERP",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 5000
+                },
+                new Payment()
+                {
+                    PortfolioId = 2,
+                    Ticket = "SBERP",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 5000
+                },
+                new Payment()
+                {
+                    PortfolioId = 3,
+                    Ticket = "SBERP",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 10000
+                }
+            };
 
             context.Portfolios.AddRange(portfolios);
             context.CurrencyOperations.AddRange(currencyOperations);
             context.AssetOperations.AddRange(operations);
+            context.Payments.AddRange(payments);
             context.SaveChanges();
         }
 

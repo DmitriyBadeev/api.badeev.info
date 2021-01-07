@@ -13,17 +13,20 @@ namespace Portfolio.Finance.Services.Entities
 {
     public abstract class AssetInfo
     {
-        protected readonly IStockMarketData _marketData;
-        protected readonly List<AssetOperation> _operations;
-        protected AssetResponse _data;
+        protected readonly IStockMarketData MarketData;
+        protected readonly List<AssetOperation> Operations;
+        protected AssetResponse Data;
+        
+        private readonly FinanceDataService _financeDataService;
 
-        protected AssetInfo(IStockMarketData marketData, string ticket)
+        protected AssetInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket)
         {
             Ticket = ticket;
             Amount = 0;
             BoughtPrice = 0;
-            _marketData = marketData;
-            _operations = new List<AssetOperation>();
+            MarketData = marketData;
+            _financeDataService = financeDataService;
+            Operations = new List<AssetOperation>();
         }
 
         public string Ticket { get; }
@@ -132,35 +135,39 @@ namespace Portfolio.Finance.Services.Entities
                 BoughtPrice -= operation.PaymentPrice;
             }
 
-            _operations.Add(operation);
+            Operations.Add(operation);
         }
 
-        public List<PaymentData> GetPaidPayments()
+        public List<Payment> GetPaidPayments()
         {
-            var paidPayments = new List<PaymentData>();
-
-            foreach (var paymentData in PaymentsData)
-            {
-                var assetInfoAtPaymentDay = GetAssetInfoAt(paymentData.RegistryCloseDate);
-
-                if (assetInfoAtPaymentDay != null && assetInfoAtPaymentDay.Amount > 0)
-                {
-                    var payment = new PaymentData()
-                    {
-                        Name = GetName().Result,
-                        Ticket = paymentData.Ticket,
-                        Amount = assetInfoAtPaymentDay.Amount,
-                        PaymentValue = paymentData.PaymentValue,
-                        AllPayment = paymentData.PaymentValue * assetInfoAtPaymentDay.Amount,
-                        RegistryCloseDate = paymentData.RegistryCloseDate,
-                        CurrencyId = paymentData.CurrencyId,
-                    };
-
-                    paidPayments.Add(payment);
-                }
-            }
-
-            return paidPayments;
+            return _financeDataService.EfContext.Payments
+                .Where(p => p.Ticket == Ticket)
+                .ToList();
+            
+            // var paidPayments = new List<PaymentData>();
+            //
+            // foreach (var paymentData in PaymentsData)
+            // {
+            //     var assetInfoAtPaymentDay = GetAssetInfoAt(paymentData.RegistryCloseDate);
+            //
+            //     if (assetInfoAtPaymentDay != null && assetInfoAtPaymentDay.Amount > 0)
+            //     {
+            //         var payment = new PaymentData()
+            //         {
+            //             Name = GetName().Result,
+            //             Ticket = paymentData.Ticket,
+            //             Amount = assetInfoAtPaymentDay.Amount,
+            //             PaymentValue = paymentData.PaymentValue,
+            //             AllPayment = paymentData.PaymentValue * assetInfoAtPaymentDay.Amount,
+            //             RegistryCloseDate = paymentData.RegistryCloseDate,
+            //             CurrencyId = paymentData.CurrencyId,
+            //         };
+            //
+            //         paidPayments.Add(payment);
+            //     }
+            // }
+            //
+            // return paidPayments;
         }
 
         public List<PaymentData> GetFuturePayments()
@@ -170,27 +177,27 @@ namespace Portfolio.Finance.Services.Entities
 
         public int GetSumPayments()
         {
-            return GetPaidPayments().Aggregate(0, (total, payment) => total + payment.AllPayment);
+            return GetPaidPayments().Aggregate(0, (total, payment) => total + payment.PaymentValue);
         }
 
-        private AssetInfo GetAssetInfoAt(DateTime date)
-        {
-            if (DateTime.Compare(DateTime.Now, date) <= 0)
-            {
-                return null;
-            }
-
-            var assetInfo = new StockInfo(_marketData, Ticket);
-
-            var operations = _operations.FindAll(o => DateTime.Compare(o.Date, date) <= 0);
-
-            foreach (var operation in operations)
-            {
-                assetInfo.RegisterOperation(operation);
-            }
-
-            return assetInfo;
-        }
+        // private AssetInfo GetAssetInfoAt(DateTime date)
+        // {
+        //     if (DateTime.Compare(DateTime.Now, date) <= 0)
+        //     {
+        //         return null;
+        //     }
+        //
+        //     var assetInfo = new StockInfo(MarketData, _financeDataService, Ticket);
+        //
+        //     var operations = Operations.FindAll(o => DateTime.Compare(o.Date, date) <= 0);
+        //
+        //     foreach (var operation in operations)
+        //     {
+        //         assetInfo.RegisterOperation(operation);
+        //     }
+        //
+        //     return assetInfo;
+        // }
 
         public abstract List<PaymentData> PaymentsData { get; protected set; }
 

@@ -15,6 +15,8 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
     public class StockInfoTests
     {
         private IStockMarketData _stockMarketData;
+        private FinanceDataService _financeDataService;
+        
         private AssetAction _buyAction = new AssetAction()
         {
             Id = 1,
@@ -42,6 +44,9 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
             TestHelpers.MockDividendData(mockHttp);
             var stockMarketAPI = new StockMarketAPI(client);
             _stockMarketData = new StockMarketData(stockMarketAPI);
+            
+            var context = TestHelpers.GetMockFinanceDbContext(); 
+            _financeDataService = new FinanceDataService(context);
         }
 
         [Test]
@@ -207,7 +212,7 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                 },
             };
 
-            var stockInfo = new StockInfo(_stockMarketData, "YNDX");
+            var stockInfo = new StockInfo(_stockMarketData, _financeDataService, "YNDX");
 
             foreach (var assetOperation in operations)
             {
@@ -229,6 +234,7 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                     PaymentPrice = 1012430,
                     AssetAction = _buyAction,
                     AssetActionId = _buyAction.Id,
+                    PortfolioId = 1,
                     AssetType = _stockType,
                     AssetTypeId = _stockType.Id,
                     Date = new DateTime(2018, 1, 4)
@@ -238,6 +244,7 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                     Id = 4,
                     Ticket = "SBER",
                     Amount = 1,
+                    PortfolioId = 1,
                     PaymentPrice = 212430,
                     AssetAction = _buyAction,
                     AssetActionId = _buyAction.Id,
@@ -247,7 +254,30 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                 }
             };
             
-            var stockInfo = new StockInfo(_stockMarketData, "SBER");
+            var payments = new List<Payment>()
+            {
+                new Payment()
+                {
+                    PortfolioId = 1,
+                    Ticket = "SBER",
+                    Amount = 3,
+                    Date = DateTime.Now,
+                    PaymentValue = 3600
+                },
+                new Payment()
+                {
+                    PortfolioId = 1,
+                    Ticket = "SBER",
+                    Amount = 4,
+                    Date = DateTime.Now,
+                    PaymentValue = 6400
+                },
+            };
+            
+            _financeDataService.EfContext.Payments.AddRange(payments);
+            _financeDataService.EfContext.SaveChanges();
+            
+            var stockInfo = new StockInfo(_stockMarketData, _financeDataService,"SBER");
             foreach (var assetOperation in operations)
             {
                 stockInfo.RegisterOperation(assetOperation);

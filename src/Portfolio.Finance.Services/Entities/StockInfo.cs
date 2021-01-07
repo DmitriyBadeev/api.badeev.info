@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.DTO.Responses;
 using Portfolio.Finance.Services.Interfaces;
+using Portfolio.Infrastructure.Services;
 
 namespace Portfolio.Finance.Services.Entities
 {
@@ -12,7 +13,8 @@ namespace Portfolio.Finance.Services.Entities
     {
         private List<PaymentData> _paymentsData;
 
-        public StockInfo(IStockMarketData marketData, string ticket) : base(marketData, ticket)
+        public StockInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket) 
+            : base(marketData, financeDataService, ticket)
         {
         }
 
@@ -60,14 +62,14 @@ namespace Portfolio.Finance.Services.Entities
 
         protected override async Task<AssetResponse> GetData()
         {
-            return _data ?? (_data = await _marketData.GetStockData(Ticket));
+            return Data ?? (Data = await MarketData.GetStockData(Ticket));
         }
 
         private async Task<List<PaymentData>> GetDividendData()
         {
             if (_paymentsData == null)
             {
-                var dividendsResponse = await _marketData.GetDividendsData(Ticket);
+                var dividendsResponse = await MarketData.GetDividendsData(Ticket);
                 PaymentsData = GetPaymentData(dividendsResponse);
             }
 

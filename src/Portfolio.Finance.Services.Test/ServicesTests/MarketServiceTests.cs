@@ -67,7 +67,7 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         {
             var profit = _marketService.GetAllPaymentProfit(1);
 
-            Assert.AreEqual(11600 + 117354, profit);
+            Assert.AreEqual(25000, profit);
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         {
             var allCost = _marketService.GetAllCost(1);
 
-            Assert.AreEqual(756133 + 128954 + 503819, allCost);
+            Assert.AreEqual(756133 + 25000 + 503819, allCost);
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         {
             var percent = _marketService.GetPercentOfPaymentProfit(1);
 
-            Assert.AreEqual(5.5, percent);
+            Assert.AreEqual(1.1, percent);
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         {
             var balance = _marketService.GetUserBalanceWithPaidPayments(1);
 
-            Assert.AreEqual(503819 + 128954, balance);
+            Assert.AreEqual(503819 + 25000, balance);
         }
 
         [Test]

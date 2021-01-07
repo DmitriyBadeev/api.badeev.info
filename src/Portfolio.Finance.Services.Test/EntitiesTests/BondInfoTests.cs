@@ -15,6 +15,7 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
     public class BondInfoTests
     {
         private IStockMarketData _stockMarketData;
+        private FinanceDataService _financeDataService;
         private AssetAction _buyAction = new AssetAction()
         {
             Id = 1,
@@ -42,6 +43,9 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
             TestHelpers.MockCouponsData(mockHttp);
             var stockMarketAPI = new StockMarketAPI(client);
             _stockMarketData = new StockMarketData(stockMarketAPI);
+            
+            var context = TestHelpers.GetMockFinanceDbContext(); 
+            _financeDataService = new FinanceDataService(context);
         }
 
         [Test]
@@ -104,6 +108,7 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                     Ticket = "SU26209RMFS5",
                     Amount = 2,
                     PaymentPrice = 103180,
+                    PortfolioId = 1,
                     AssetAction = _buyAction,
                     AssetActionId = _buyAction.Id,
                     AssetType = _bondType,
@@ -115,6 +120,7 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                     Id = 2,
                     Ticket = "SU26209RMFS5",
                     Amount = 1,
+                    PortfolioId = 1,
                     PaymentPrice = 103230,
                     AssetAction = _buyAction,
                     AssetActionId = _buyAction.Id,
@@ -123,8 +129,22 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                     Date = new DateTime(2020, 4, 4)
                 }
             };
-
-            var stockInfo = new BondInfo(_stockMarketData, "SU26209RMFS5");
+            
+            var payments = new List<Payment>()
+            {
+                new Payment()
+                {
+                    PortfolioId = 1,
+                    Ticket = "SU26209RMFS5",
+                    Amount = 3,
+                    Date = DateTime.Now,
+                    PaymentValue = 11370
+                },
+            };
+            _financeDataService.EfContext.Payments.AddRange(payments);
+            _financeDataService.EfContext.SaveChanges();
+            
+            var stockInfo = new BondInfo(_stockMarketData, _financeDataService, "SU26209RMFS5");
             foreach (var assetOperation in operations)
             {
                 stockInfo.RegisterOperation(assetOperation);
@@ -141,6 +161,7 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                 {
                     Id = 1,
                     Ticket = "SU26210RMFS3",
+                    PortfolioId = 1,
                     Amount = 2,
                     PaymentPrice = 101180,
                     AssetAction = _buyAction,
@@ -150,8 +171,22 @@ namespace Portfolio.Finance.Services.Test.EntitiesTests
                     Date = new DateTime(2018, 2, 7)
                 },
             };
-
-            var stockInfo = new BondInfo(_stockMarketData, "SU26210RMFS3");
+            
+            var payments = new List<Payment>()
+            {
+                new Payment()
+                {
+                    PortfolioId = 1,
+                    Ticket = "SU26210RMFS3",
+                    Amount = 2,
+                    Date = DateTime.Now,
+                    PaymentValue = 227128
+                },
+            };
+            _financeDataService.EfContext.Payments.AddRange(payments);
+            _financeDataService.EfContext.SaveChanges();
+            
+            var stockInfo = new BondInfo(_stockMarketData, _financeDataService,"SU26210RMFS3");
             foreach (var assetOperation in operations)
             {
                 stockInfo.RegisterOperation(assetOperation);
