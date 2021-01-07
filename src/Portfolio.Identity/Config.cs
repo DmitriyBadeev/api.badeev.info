@@ -39,11 +39,13 @@ namespace Portfolio.Identity
                         "http://localhost:3000", 
                         "http://localhost:3001", 
                         "https://badeev.info",
-                        "https://cabinet.badeev.info"
+                        "https://cabinet.badeev.info",
+                        "https://investin.badeev.info"
                     },
                     PostLogoutRedirectUris = new List<string> 
                     {
                         "https://cabinet.badeev.info/signout",
+                        "https://investin.badeev.info/signout",
                         "http://localhost:3000/signout"
                     },
                     RedirectUris = redirects,
