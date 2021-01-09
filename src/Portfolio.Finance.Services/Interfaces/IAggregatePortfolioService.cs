@@ -10,5 +10,7 @@ namespace Portfolio.Finance.Services.Interfaces
         Task<OperationResult<List<Payment>>> AggregatePayments(IEnumerable<int> portfolioIds, int userId);
 
         Task<OperationResult<ValuePercent>> AggregatePaymentProfit(IEnumerable<int> portfolioIds, int userId);
+
+        Task<OperationResult<int>> AggregatePaperProfit(IEnumerable<int> portfolioIds, int userId);
     }
 }

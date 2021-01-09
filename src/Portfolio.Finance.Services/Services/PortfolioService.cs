@@ -14,11 +14,15 @@ namespace Portfolio.Finance.Services.Services
     {
         private readonly FinanceDataService _financeData;
         private readonly IBalanceService _balanceService;
-
-        public PortfolioService(FinanceDataService financeData, IBalanceService balanceService)
+        private readonly IAssetsFactory _assetsFactory;
+        private List<PortfolioData> _portfolios;
+        
+        public PortfolioService(FinanceDataService financeData, IBalanceService balanceService, 
+            IAssetsFactory assetsFactory)
         {
             _financeData = financeData;
             _balanceService = balanceService;
+            _assetsFactory = assetsFactory;
         }
 
         public IEnumerable<Core.Entities.Finance.Portfolio> GetPortfolios(int userId)
@@ -109,6 +113,34 @@ namespace Portfolio.Finance.Services.Services
             };
         }
 
+        public async Task<OperationResult<int>> GetPaperProfit(int portfolioId, int userId)
+        {
+            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
+            
+            var validationResult = CommonValidate<int>(portfolioId, userId, portfolio);
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
+            var portfolioData = GetPortfolioData(portfolioId);
+
+            var sumProfit = 0;
+            foreach (var asset in portfolioData.Assets)
+            {
+                var profit = await asset.GetPaperProfit();
+
+                sumProfit += profit;
+            }
+
+            return new OperationResult<int>()
+            {
+                IsSuccess = true,
+                Message = $"Бумажная прибыль портфеля {portfolio.Name}",
+                Result = sumProfit
+            };
+        }
+
         public async Task<OperationResult<ValuePercent>> GetPortfolioPaymentProfit(int portfolioId, int userId)
         {
             var result = await GetPortfolioPayments(portfolioId, userId);
@@ -140,6 +172,22 @@ namespace Portfolio.Finance.Services.Services
                     Percent = percent
                 }
             };
+        }
+        
+        private PortfolioData GetPortfolioData(int portfolioId)
+        {
+            var userPortfolio = _financeData.EfContext.Portfolios
+                .Find(portfolioId);
+            
+            var portfolioData = new PortfolioData
+            {
+                Id = userPortfolio.Id,
+                Name = userPortfolio.Name,
+                UserId = userPortfolio.UserId,
+                Assets = _assetsFactory.Create(portfolioId)
+            };
+
+            return portfolioData;
         }
 
         private OperationResult CommonValidate(int portfolioId, int userId,

@@ -103,7 +103,7 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         {
             var bonds1 = _marketService.GetBonds(1, 1);
             var bonds2 = _marketService.GetBonds(1, 2);
-
+            
             var bondsInvalid = _marketService.GetFonds(1, 10);
 
             Assert.AreEqual(2, bonds1.Count());

@@ -98,7 +98,7 @@ namespace Portfolio.Finance.Services.Test
                     Portfolio = portfolios[0]
                 },
                 //price = 22658
-                //profit = -11 37744
+                //profit = -1137744
                 new AssetOperation()
                 {
                     Ticket = "SBER",
@@ -296,10 +296,321 @@ namespace Portfolio.Finance.Services.Test
             context.Payments.AddRange(payments);
             context.SaveChanges();
         }
+        
+        /*
+            PortfolioId = 10
+            balance = 6000.0 - 818.4 + 1150.0
+            profit = 347.2 * 2 + 265.8 * 2 + 200.0 + 62.83 - 1000.0
+            invest = 20000.0
+            paymentProfit = 1150.0
+            
+            PortfolioId = 11
+            balance = 8000.0 + 50.0
+            profit = 265.8
+            invest = 10000.0
+            paymentProfit = 50.0
+            
+            PortfolioId = 12
+            balance = 11000.0 + 100.0
+            profit = 347.2
+            invest = 15000.0
+            paymentProfit = 100.0
+        */
+        
+        public static void SeedOperations2(FinanceDbContext context)
+        {
+            var buyAction = context.AssetActions.FirstOrDefault(a => a.Name == SeedFinanceData.BUY_ACTION);
+            var sellAction = context.AssetActions.FirstOrDefault(a => a.Name == SeedFinanceData.SELL_ACTION);
+
+            var stockType = context.AssetTypes.FirstOrDefault(a => a.Name == SeedFinanceData.STOCK_ASSET_TYPE);
+            var fondType = context.AssetTypes.FirstOrDefault(a => a.Name == SeedFinanceData.FOND_ASSET_TYPE);
+            var bondType = context.AssetTypes.FirstOrDefault(a => a.Name == SeedFinanceData.BOND_ASSET_TYPE);
+
+            var refillAction = context.CurrencyActions.FirstOrDefault(a => a.Name == SeedFinanceData.REFILL_ACTION);
+            var withdrawalAction = context.CurrencyActions.FirstOrDefault(a => a.Name == SeedFinanceData.WITHDRAWAL_ACTION);
+            
+            var portfolios = new List<Core.Entities.Finance.Portfolio>()
+            {
+                new Core.Entities.Finance.Portfolio()
+                {
+                    Id = 10,
+                    Name = "Тестовый портфель",
+                    UserId = 1,
+                },
+                new Core.Entities.Finance.Portfolio()
+                {
+                    Id = 11,
+                    Name = "Другой тестовый портфель",
+                    UserId = 1,
+                },
+                new Core.Entities.Finance.Portfolio()
+                {
+                    Id = 12,
+                    Name = "Тестовый портфель другого пользователя",
+                    UserId = 2,
+                },
+            };
+            
+            context.Portfolios.AddRange(portfolios);
+            context.SaveChanges();
+
+            //PortfolioId = 10
+            //balance = 6000.0 - 818.4 + 1150.0
+            //invest = 20000.0
+            
+            //PortfolioId = 11
+            //balance = 8000.0 + 50.0
+            //invest = 10000.0
+            
+            //PortfolioId = 12
+            //balance = 11000.0 + 100.0
+            //invest = 15000.0
+            var currencyOperations = new List<CurrencyOperation>()
+            {
+                new CurrencyOperation()
+                {
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0],
+                    Date = new DateTime(2018, 1, 8),
+                    CurrencyId = SeedFinanceData.RUB_CURRENCY_ID,
+                    CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
+                    CurrencyAction = refillAction,
+                    CurrencyActionId = refillAction.Id,
+                    Price = 2500000
+                },
+                new CurrencyOperation()
+                {
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0],
+                    Date = new DateTime(2018, 1, 8),
+                    CurrencyId = SeedFinanceData.RUB_CURRENCY_ID,
+                    CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
+                    CurrencyAction = withdrawalAction,
+                    CurrencyActionId = withdrawalAction.Id,
+                    Price = 500000
+                },
+                new CurrencyOperation()
+                {
+                    PortfolioId = portfolios[1].Id,
+                    Portfolio = portfolios[1],
+                    Date = new DateTime(2018, 1, 10),
+                    CurrencyId = SeedFinanceData.RUB_CURRENCY_ID,
+                    CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
+                    CurrencyAction = refillAction,
+                    CurrencyActionId = refillAction.Id,
+                    Price = 1000000
+                },
+                new CurrencyOperation()
+                {
+                    PortfolioId = portfolios[2].Id,
+                    Portfolio = portfolios[2],
+                    Date = new DateTime(2018, 1, 10),
+                    CurrencyId = SeedFinanceData.RUB_CURRENCY_ID,
+                    CurrencyName = SeedFinanceData.RUB_CURRENCY_NAME,
+                    CurrencyAction = refillAction,
+                    CurrencyActionId = refillAction.Id,
+                    Price = 1500000
+                }
+            };
+            
+            context.CurrencyOperations.AddRange(currencyOperations);
+            context.SaveChanges();
+            
+            // portfolioId = 10
+            // profit = 347.2 * 2 + 265.8 * 2 + 200.0 + 62.83 - 1000.0
+            
+            //portfolioId = 11
+            //profit = 265.8
+            
+            //portfolioId = 12
+            //profit = 347.2
+            var assetOperations = new List<AssetOperation>()
+            {
+                //price = 4347.2
+                //profit = 347.2 * 2
+                new AssetOperation()
+                {
+                    Ticket = "YNDX",
+                    Amount = 2,
+                    PaymentPrice = 800000,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = stockType,
+                    AssetTypeId = stockType.Id,
+                    Date = new DateTime(2019, 11, 18),
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0]
+                },
+                
+                //price = 226.58
+                //profit = 265.8 * 2
+                new AssetOperation()
+                {
+                    Ticket = "SBER",
+                    Amount = 20,
+                    PaymentPrice = 400000,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = stockType,
+                    AssetTypeId = stockType.Id,
+                    Date = new DateTime(2019, 11, 18),
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0]
+                },
+                
+                //price = 1018.4
+                //profit = 1018.4 - 818.4 = 200.0
+                new AssetOperation()
+                {
+                    Ticket = "FXGD",
+                    Amount = 1,
+                    PaymentPrice = 81840,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = fondType,
+                    AssetTypeId = fondType.Id,
+                    Date = new DateTime(2019, 4, 4),
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0]
+                },
+                
+                //price = 1062.83
+                //profit = 62.83
+                new AssetOperation()
+                {
+                    Ticket = "SU26209RMFS5",
+                    Amount = 1,
+                    PaymentPrice = 100000,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = bondType,
+                    AssetTypeId = bondType.Id,
+                    Date = new DateTime(2020, 2, 7),
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0]
+                },
+                
+                //price = 0
+                //profit = -100000
+                new AssetOperation()
+                {
+                    Ticket = "SU26210RMFS3",
+                    Amount = 1,
+                    PaymentPrice = 100000,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = bondType,
+                    AssetTypeId = bondType.Id,
+                    Date = new DateTime(2018, 2, 7),
+                    PortfolioId = portfolios[0].Id,
+                    Portfolio = portfolios[0]
+                },
+                
+                //portfolioId = 11
+                //price = 226.58
+                //profit = 2265.8 - 2000.0 = 265.8
+                new AssetOperation()
+                {
+                    Ticket = "SBER",
+                    Amount = 10,
+                    PaymentPrice = 200000,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = stockType,
+                    AssetTypeId = stockType.Id,
+                    Date = new DateTime(2019, 1, 4),
+                    PortfolioId = portfolios[1].Id,
+                    Portfolio = portfolios[1]
+                },
+                
+                //portfolioId = 12
+                //price = 4347.2
+                //profit = 347.2
+                new AssetOperation()
+                {
+                    Ticket = "YNDX",
+                    Amount = 1,
+                    PaymentPrice = 400000,
+                    AssetAction = buyAction,
+                    AssetActionId = buyAction.Id,
+                    AssetType = stockType,
+                    AssetTypeId = stockType.Id,
+                    Date = new DateTime(2019, 1, 4),
+                    PortfolioId = portfolios[2].Id,
+                    Portfolio = portfolios[2]
+                }
+            };
+            
+            context.AssetOperations.AddRange(assetOperations);
+            context.SaveChanges();
+            
+            // portfolioId = 10
+            // paymentProfit = 1150.0
+            
+            // portfolioId = 11
+            // paymentProfit = 50.0
+            
+            // portfolioId = 12
+            // paymentProfit = 100.0
+            var payments = new List<Payment>()
+            {
+                new Payment()
+                {
+                    Id = 10,
+                    PortfolioId = 10,
+                    Ticket = "SBER",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 10000
+                },
+                new Payment()
+                {
+                    Id = 11,
+                    PortfolioId = 10,
+                    Ticket = "SBERP",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 5000
+                },
+                new Payment()
+                {
+                    Id = 14,
+                    PortfolioId = 10,
+                    Ticket = "SU26210RMFS3",
+                    Amount = 1,
+                    Date = DateTime.Now,
+                    PaymentValue = 100000
+                },
+                new Payment()
+                {
+                    Id = 12,
+                    PortfolioId = 11,
+                    Ticket = "SBERP",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 5000
+                },
+                new Payment()
+                {
+                    Id = 13,
+                    PortfolioId = 12,
+                    Ticket = "SBERP",
+                    Amount = 10,
+                    Date = DateTime.Now,
+                    PaymentValue = 10000
+                }
+            };
+            
+            context.Payments.AddRange(payments);
+            context.SaveChanges();
+        }
 
         public static void MockStockData(MockHttpMessageHandler mockHttp)
         {
+            //price = 4347.2
             var jsonYNDX = File.ReadAllTextAsync("TestData/AssetsData/stock_response_YNDX.json").Result;
+            
+            //price = 226.58
             var jsonSBER = File.ReadAllTextAsync("TestData/AssetsData/stock_response_SBER.json").Result;
             
             mockHttp
@@ -313,6 +624,7 @@ namespace Portfolio.Finance.Services.Test
 
         public static void MockFondData(MockHttpMessageHandler mockHttp)
         {
+            //price = 1018.4
             var jsonFXGD = File.ReadAllTextAsync("TestData/AssetsData/fond_response_FXGD.json").Result;
 
             mockHttp
@@ -336,6 +648,7 @@ namespace Portfolio.Finance.Services.Test
 
         public static void MockBondData(MockHttpMessageHandler mockHttp)
         {
+            //price = 1062.83
             var jsonBond = File.ReadAllTextAsync("TestData/AssetsData/bond_response_SU26209RMFS5.json").Result;
             var jsonAmortizedBond = File.ReadAllTextAsync("TestData/AssetsData/bond_response_SU26210RMFS3_2019.json").Result;
 

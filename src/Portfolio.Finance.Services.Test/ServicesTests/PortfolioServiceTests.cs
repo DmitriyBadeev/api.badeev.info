@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.Services;
 using Portfolio.Infrastructure.Services;
+using RichardSzalay.MockHttp;
 
 namespace Portfolio.Finance.Services.Test.ServicesTests
 {
@@ -20,15 +19,25 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         [SetUp]
         public async Task Setup()
         {
-            var context = TestHelpers.GetMockFinanceDbContext(); 
+            var mockHttp = new MockHttpMessageHandler();
+            var client = mockHttp.ToHttpClient();
+
+            var stockMarketApi = new StockMarketAPI(client);
+            var stockMarketData = new StockMarketData(stockMarketApi);
+            
+            var context = TestHelpers.GetMockFinanceDbContext();
             _financeDataService = new FinanceDataService(context);
+          
+            var assetFactory = new AssetsFactory(_financeDataService, stockMarketData);
             _balanceService = new BalanceService(_financeDataService);
             TestHelpers.SeedApp(context);
-            _portfolioService = new PortfolioService(_financeDataService, _balanceService);
+            _portfolioService = new PortfolioService(_financeDataService, _balanceService, assetFactory);
+
+            TestHelpers.MockStockData(mockHttp);
+            TestHelpers.MockFondData(mockHttp);
+            TestHelpers.MockBondData(mockHttp);
             
-            await MockData();
-            await _balanceService.RefillBalance(10, 100000, DateTime.Now);
-            await _balanceService.RefillBalance(11, 200000, DateTime.Now);
+            TestHelpers.SeedOperations2(context);
         }
 
         [Test]
@@ -100,7 +109,7 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
             
             Assert.IsTrue(result1.IsSuccess, "Неуспешное выполнение операции");
             Assert.IsFalse(result2.IsSuccess, "Получение выплат у чужого пользователя");
-            Assert.AreEqual(2, result1.Result.Count, "Неверное количество выплат");
+            Assert.AreEqual(3, result1.Result.Count, "Неверное количество выплат");
         }
 
         [Test]
@@ -108,76 +117,38 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         {
             var profit1 = await _portfolioService.GetPortfolioPaymentProfit(10, 1);
             var profit2 = await _portfolioService.GetPortfolioPaymentProfit(11, 1);
-            
             var profit3 = await _portfolioService.GetPortfolioPaymentProfit(13, 1);
-            var profit4 = await _portfolioService.GetPortfolioPaymentProfit(10, 2);
 
             Assert.IsTrue(profit1.IsSuccess, "Неуспешное выполнение операции");
-            Assert.AreEqual(15000, profit1.Result.Value, "Неверная прибыль");
-            Assert.AreEqual(15, profit1.Result.Percent, "Неверный процент");
+            Assert.AreEqual(115000, profit1.Result.Value, "Неверная прибыль");
+            Assert.AreEqual(5.8, profit1.Result.Percent, "Неверный процент");
             
             Assert.IsTrue(profit2.IsSuccess, "Неуспешное выполнение операции");
             Assert.AreEqual(5000, profit2.Result.Value, "Неверная прибыль");
-            Assert.AreEqual(2.5, profit2.Result.Percent, "Неверный процент");
+            Assert.AreEqual(0.5, profit2.Result.Percent, "Неверный процент");
             
-            Assert.IsFalse(profit3.IsSuccess, "Прибыль в несуществующем портфеле");
-            Assert.IsFalse(profit4.IsSuccess, "Прибыль у несуществующего пользователя");
+            Assert.IsFalse(profit3.IsSuccess, "Прибыль в чужом портфеле");
         }
 
-        private async Task MockData()
+        [Test]
+        public async Task GetPaperProfit()
         {
-            var portfolios = new List<Core.Entities.Finance.Portfolio>()
-            {
-                new Core.Entities.Finance.Portfolio()
-                {
-                    Id = 10,
-                    Name = "Тестовый портфель",
-                    UserId = 1,
-                },
-                new Core.Entities.Finance.Portfolio()
-                {
-                    Id = 11,
-                    Name = "Другой тестовый портфель",
-                    UserId = 1,
-                },
-            };
+            var profit1 = await _portfolioService.GetPaperProfit(10, 1);
+            var profit2 = await _portfolioService.GetPaperProfit(11, 1);
+            var profit3 = await _portfolioService.GetPaperProfit(12, 2);
             
-            await _financeDataService.EfContext.Portfolios.AddRangeAsync(portfolios);
-            await _financeDataService.EfContext.SaveChangesAsync();
+            var profit4 = await _portfolioService.GetPaperProfit(12, 1);
             
-            var payments = new List<Payment>()
-            {
-                new Payment()
-                {
-                    Id = 10,
-                    PortfolioId = 10,
-                    Ticket = "SBER",
-                    Amount = 10,
-                    Date = DateTime.Now,
-                    PaymentValue = 10000
-                },
-                new Payment()
-                {
-                    Id = 11,
-                    PortfolioId = 10,
-                    Ticket = "SBERP",
-                    Amount = 10,
-                    Date = DateTime.Now,
-                    PaymentValue = 5000
-                },
-                new Payment()
-                {
-                    Id = 12,
-                    PortfolioId = 11,
-                    Ticket = "SBERP",
-                    Amount = 10,
-                    Date = DateTime.Now,
-                    PaymentValue = 5000
-                }
-            };
+            Assert.IsTrue(profit1.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(34720 * 2 + 26580 * 2 + 20000 + 6283 - 100000, profit1.Result, "Неверная прибыль");
             
-            await _financeDataService.EfContext.Payments.AddRangeAsync(payments);
-            await _financeDataService.EfContext.SaveChangesAsync();
+            Assert.IsTrue(profit2.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(26580, profit2.Result, "Неверная прибыль");
+            
+            Assert.IsTrue(profit3.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(34720, profit3.Result, "Неверная прибыль");
+            
+            Assert.IsFalse(profit4.IsSuccess, "Прибыль в чужом портфеле");
         }
     }
 }

@@ -43,8 +43,7 @@ namespace Portfolio.Finance.Services.Services
             };
         }
 
-        public async Task<OperationResult<ValuePercent>> AggregatePaymentProfit(
-            IEnumerable<int> portfolioIds, int userId)
+        public async Task<OperationResult<ValuePercent>> AggregatePaymentProfit(IEnumerable<int> portfolioIds, int userId)
         {
             var sumProfit = 0;
             var sumInvest = 0;
@@ -75,6 +74,31 @@ namespace Portfolio.Finance.Services.Services
                     Value = sumProfit,
                     Percent = percent
                 }
+            };
+        }
+
+        public async Task<OperationResult<int>> AggregatePaperProfit(IEnumerable<int> portfolioIds, int userId)
+        {
+            var sumProfit = 0;
+            
+            var ids = portfolioIds.ToList();
+            foreach (var portfolioId in ids)
+            {
+                var resultProfit = await _portfolioService.GetPaperProfit(portfolioId, userId);
+                
+                if (!resultProfit.IsSuccess)
+                {
+                    return resultProfit;
+                }
+
+                sumProfit += resultProfit.Result;
+            }
+
+            return new OperationResult<int>()
+            {
+                IsSuccess = true,
+                Message = $"Суммарная бумажная прибыль портфелей(я) c id={string.Join(", ", ids)}",
+                Result = sumProfit
             };
         }
     }

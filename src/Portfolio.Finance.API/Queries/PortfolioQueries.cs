@@ -45,6 +45,15 @@ namespace Portfolio.Finance.API.Queries
         {
             return await aggregatePortfolioService.AggregatePaymentProfit(portfolioIds, userId);
         }
+        
+        [Authorize]
+        public async Task<OperationResult<int>> AggregatePortfolioPaperProfit(
+            [CurrentUserIdGlobalState] int userId,
+            [Service] IAggregatePortfolioService aggregatePortfolioService, 
+            IEnumerable<int> portfolioIds)
+        {
+            return await aggregatePortfolioService.AggregatePaperProfit(portfolioIds, userId);
+        }
 
         [Authorize]
         public string SecretData()
