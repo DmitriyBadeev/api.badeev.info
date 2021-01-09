@@ -113,34 +113,17 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
             var profit4 = await _portfolioService.GetPortfolioPaymentProfit(10, 2);
 
             Assert.IsTrue(profit1.IsSuccess, "Неуспешное выполнение операции");
-            Assert.AreEqual(15000, profit1.Result, "Неверная прибыль");
+            Assert.AreEqual(15000, profit1.Result.Value, "Неверная прибыль");
+            Assert.AreEqual(15, profit1.Result.Percent, "Неверный процент");
             
             Assert.IsTrue(profit2.IsSuccess, "Неуспешное выполнение операции");
-            Assert.AreEqual(5000, profit2.Result, "Неверная прибыль");
+            Assert.AreEqual(5000, profit2.Result.Value, "Неверная прибыль");
+            Assert.AreEqual(2.5, profit2.Result.Percent, "Неверный процент");
             
             Assert.IsFalse(profit3.IsSuccess, "Прибыль в несуществующем портфеле");
             Assert.IsFalse(profit4.IsSuccess, "Прибыль у несуществующего пользователя");
         }
 
-        [Test]
-        public async Task GetPortfolioPaymentProfitPercent()
-        {
-            var percent1 = await _portfolioService.GetPortfolioPaymentProfitPercent(10, 1);
-            var percent2 = await _portfolioService.GetPortfolioPaymentProfitPercent(11, 1);
-            
-            Assert.IsTrue(percent1.IsSuccess, "Неуспешное выполнение операции");
-            Assert.AreEqual(15, percent1.Result, "Неверный процент");
-            
-            Assert.IsTrue(percent2.IsSuccess, "Неуспешное выполнение операции");
-            Assert.AreEqual(2.5, percent2.Result, "Неверный процент");
-            
-            var percent3 = await _portfolioService.GetPortfolioPaymentProfitPercent(13, 1);
-            var percent4 = await _portfolioService.GetPortfolioPaymentProfitPercent(10, 2);
-            
-            Assert.IsFalse(percent3.IsSuccess, "Несуществующий портфель");
-            Assert.IsFalse(percent4.IsSuccess, "Несуществующий пользователь");
-        }
-        
         private async Task MockData()
         {
             var portfolios = new List<Core.Entities.Finance.Portfolio>()

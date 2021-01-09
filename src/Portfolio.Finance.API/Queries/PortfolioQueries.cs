@@ -38,21 +38,12 @@ namespace Portfolio.Finance.API.Queries
         }
         
         [Authorize]
-        public async Task<OperationResult<int>> AggregatePortfolioPaymentProfit(
+        public async Task<OperationResult<ValuePercent>> AggregatePortfolioPaymentProfit(
             [CurrentUserIdGlobalState] int userId,
             [Service] IAggregatePortfolioService aggregatePortfolioService, 
             IEnumerable<int> portfolioIds)
         {
             return await aggregatePortfolioService.AggregatePaymentProfit(portfolioIds, userId);
-        }
-        
-        [Authorize]
-        public async Task<OperationResult<double>> AggregatePortfolioPaymentProfitPercent(
-            [CurrentUserIdGlobalState] int userId,
-            [Service] IAggregatePortfolioService aggregatePortfolioService, 
-            IEnumerable<int> portfolioIds)
-        {
-            return await aggregatePortfolioService.AggregatePaymentProfitPercent(portfolioIds, userId);
         }
 
         [Authorize]

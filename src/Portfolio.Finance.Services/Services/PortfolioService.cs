@@ -109,56 +109,36 @@ namespace Portfolio.Finance.Services.Services
             };
         }
 
-        public async Task<OperationResult<int>> GetPortfolioPaymentProfit(int portfolioId, int userId)
+        public async Task<OperationResult<ValuePercent>> GetPortfolioPaymentProfit(int portfolioId, int userId)
         {
             var result = await GetPortfolioPayments(portfolioId, userId);
 
             if (!result.IsSuccess)
             {
-                return new OperationResult<int>()
+                return new OperationResult<ValuePercent>()
                 {
                     IsSuccess = result.IsSuccess,
                     Message = result.Message,
-                    Result = 0
+                    Result = null
                 };
             }
 
             var payments = result.Result;
 
             var profit = payments.Aggregate(0, (sum, payment) => sum + payment.PaymentValue);
+            var investingSum = _balanceService.GetInvestSum(portfolioId, userId);
             
-            return new OperationResult<int>()
+            var percent = FinanceHelpers.DivWithOneDigitRound(profit, investingSum);
+            
+            return new OperationResult<ValuePercent>()
             {
                 IsSuccess = true,
                 Message = "Дивидендная прибыль",
-                Result = profit
-            };
-        }
-
-        public async Task<OperationResult<double>> GetPortfolioPaymentProfitPercent(int portfolioId, int userId)
-        {
-            var result = await GetPortfolioPaymentProfit(portfolioId, userId);
-            
-            if (!result.IsSuccess)
-            {
-                return new OperationResult<double>()
+                Result = new ValuePercent()
                 {
-                    IsSuccess = result.IsSuccess,
-                    Message = result.Message,
-                    Result = 0
-                };
-            }
-
-            var profit = result.Result;
-            var investingSum = _balanceService.GetInvestSum(portfolioId, userId);
-
-            var percent = FinanceHelpers.DivWithOneDigitRound(profit, investingSum);
-            
-            return new OperationResult<double>()
-            {
-                IsSuccess = true,
-                Message = "Процент дивидендной прибыли",
-                Result = percent
+                    Value = profit,
+                    Percent = percent
+                }
             };
         }
 

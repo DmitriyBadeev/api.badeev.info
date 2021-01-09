@@ -18,11 +18,11 @@ namespace Portfolio.Finance.API.Queries
             var allCost = FinanceHelpers.GetPriceDouble(marketService.GetAllCost(userId));
             var allPaperProfit = FinanceHelpers.GetPriceDouble(marketService.GetAllPaperProfit(userId));
             var allPaperProfitPercent = marketService.GetPercentOfPaperProfit(userId);
-            
-            var allPaymentProfit = FinanceHelpers.GetPriceDouble(
-                aggregatePortfolioService.AggregatePaymentProfit(new []{ 1, 2 }, userId).Result.Result);
-            var allPaymentProfitPercent =
-                aggregatePortfolioService.AggregatePaymentProfitPercent(new []{ 1, 2 }, userId).Result.Result;
+
+            var paymentProfitResult =
+                aggregatePortfolioService.AggregatePaymentProfit(new[] {1, 2}, userId).Result.Result;
+            var allPaymentProfit = FinanceHelpers.GetPriceDouble(paymentProfitResult.Value);
+            var allPaymentProfitPercent = paymentProfitResult.Percent;
             
             var allInvestSum = FinanceHelpers.GetPriceDouble(balanceService.GetAllInvestSum(userId));
             var allBalance = FinanceHelpers.GetPriceDouble(marketService.GetUserBalanceWithPaidPayments(userId));

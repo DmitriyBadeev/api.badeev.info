@@ -63,40 +63,21 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
             var result5 = await _aggregatePortfolioService.AggregatePaymentProfit(new[] {12}, 1);
             
             Assert.IsTrue(result1.IsSuccess);
-            Assert.AreEqual(20000, result1.Result);
+            Assert.AreEqual(20000, result1.Result.Value);
+            Assert.AreEqual(6.7, result1.Result.Percent);
             
             Assert.IsTrue(result3.IsSuccess);
-            Assert.AreEqual(15000, result3.Result);
-
+            Assert.AreEqual(15000, result3.Result.Value);
+            Assert.AreEqual(15, result3.Result.Percent);
+            
             Assert.IsTrue(result4.IsSuccess);
-            Assert.AreEqual(10000, result4.Result);
+            Assert.AreEqual(10000, result4.Result.Value);
+            Assert.AreEqual(10, result4.Result.Percent);
             
             Assert.IsFalse(result2.IsSuccess, "Считается портфель чужого пользователя");
             Assert.IsFalse(result5.IsSuccess, "Считается портфель чужого пользователя");
         }
 
-        [Test]
-        public async Task AggregatePaymentProfitPercent()
-        {
-            var result1 = await _aggregatePortfolioService.AggregatePaymentProfitPercent(new[] {10, 11}, 1);
-            var result2 = await _aggregatePortfolioService.AggregatePaymentProfitPercent(new[] {10, 11, 12}, 1);
-            var result3 = await _aggregatePortfolioService.AggregatePaymentProfitPercent(new[] {10}, 1);
-            var result4 = await _aggregatePortfolioService.AggregatePaymentProfitPercent(new[] {12}, 2);
-            var result5 = await _aggregatePortfolioService.AggregatePaymentProfitPercent(new[] {12}, 1);
-            
-            Assert.IsTrue(result1.IsSuccess);
-            Assert.AreEqual(6.7, result1.Result);
-            
-            Assert.IsTrue(result3.IsSuccess);
-            Assert.AreEqual(15, result3.Result);
-
-            Assert.IsTrue(result4.IsSuccess);
-            Assert.AreEqual(10, result4.Result);
-            
-            Assert.IsFalse(result2.IsSuccess, "Считается портфель чужого пользователя");
-            Assert.IsFalse(result5.IsSuccess, "Считается портфель чужого пользователя");
-        }
-        
         private async Task MockData()
         {
             var portfolios = new List<Core.Entities.Finance.Portfolio>()
