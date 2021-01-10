@@ -21,5 +21,7 @@ namespace Portfolio.Finance.Services.Interfaces
         Task<OperationResult> WithdrawalBalance(int portfolioId, int price, DateTime date);
 
         int GetInvestSum(int portfolioId, int userId);
+
+        int GetAggregateInvestSum(IEnumerable<int> portfolioIds, int userId);
     }
 }

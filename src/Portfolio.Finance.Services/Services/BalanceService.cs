@@ -42,7 +42,17 @@ namespace Portfolio.Finance.Services.Services
 
             return GetOperationsSum(operations);
         }
-
+        
+        public int GetAggregateInvestSum(IEnumerable<int> portfolioIds, int userId)
+        {
+            var operations = _financeDataService.EfContext.CurrencyOperations
+                .Include(o => o.CurrencyAction)
+                .Include(o => o.Portfolio)
+                .Where(o => portfolioIds.Any(id => id == o.Portfolio.Id) && o.Portfolio.UserId == userId);
+            
+            return GetOperationsSum(operations);
+        }
+        
         public int GetInvestSum(int portfolioId, int userId)
         {
             var operations = _financeDataService.EfContext.CurrencyOperations

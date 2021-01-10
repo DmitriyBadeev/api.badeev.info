@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using Portfolio.Core.Entities.Finance;
+using Portfolio.Finance.API.Queries.Response;
 using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Interfaces;
 
@@ -47,12 +49,54 @@ namespace Portfolio.Finance.API.Queries
         }
         
         [Authorize]
-        public async Task<OperationResult<int>> AggregatePortfolioPaperProfit(
+        public async Task<OperationResult<ValuePercent>> AggregatePortfolioPaperProfit(
             [CurrentUserIdGlobalState] int userId,
             [Service] IAggregatePortfolioService aggregatePortfolioService, 
             IEnumerable<int> portfolioIds)
         {
             return await aggregatePortfolioService.AggregatePaperProfit(portfolioIds, userId);
+        }
+        
+        [Authorize]
+        public async Task<OperationResult<int>> AggregatePortfolioCost(
+            [CurrentUserIdGlobalState] int userId,
+            [Service] IAggregatePortfolioService aggregatePortfolioService, 
+            IEnumerable<int> portfolioIds)
+        {
+            return await aggregatePortfolioService.AggregateCost(portfolioIds, userId);
+        }
+        
+        [Authorize]
+        public async Task<OperationResult<CostWithInvestSum>> AggregatePortfolioCostWithInvestSum(
+            [CurrentUserIdGlobalState] int userId,
+            [Service] IAggregatePortfolioService aggregatePortfolioService, 
+            [Service] IBalanceService balanceService, 
+            IEnumerable<int> portfolioIds)
+        {
+            var ids = portfolioIds.ToList();
+            var cost = await aggregatePortfolioService.AggregateCost(ids, userId);
+
+            if (!cost.IsSuccess)
+            {
+                return new OperationResult<CostWithInvestSum>()
+                {
+                    IsSuccess = cost.IsSuccess,
+                    Message = cost.Message
+                };
+            }
+
+            var investSum = balanceService.GetAggregateInvestSum(ids, userId);
+
+            return new OperationResult<CostWithInvestSum>()
+            {
+                IsSuccess = true,
+                Message = "Суммарная стоимость и суммарнаые инвестиции",
+                Result = new CostWithInvestSum()
+                {
+                    Cost = cost.Result,
+                    InvestSum = investSum
+                }
+            };
         }
 
         [Authorize]

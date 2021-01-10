@@ -303,18 +303,21 @@ namespace Portfolio.Finance.Services.Test
             profit = 347.2 * 2 + 265.8 * 2 + 200.0 + 62.83 - 1000.0
             invest = 20000.0
             paymentProfit = 1150.0
+            paperPrice = 4347.2 * 2 + 226.58 * 20 + 1018.4 + 1062.83
             
             PortfolioId = 11
             balance = 8000.0 + 50.0
             profit = 265.8
             invest = 10000.0
             paymentProfit = 50.0
+            paperPrice = 226.58 * 10
             
             PortfolioId = 12
             balance = 11000.0 + 100.0
             profit = 347.2
             invest = 15000.0
             paymentProfit = 100.0
+            paperPrice = 4347.2
         */
         
         public static void SeedOperations2(FinanceDbContext context)
@@ -361,7 +364,7 @@ namespace Portfolio.Finance.Services.Test
             //PortfolioId = 11
             //balance = 8000.0 + 50.0
             //invest = 10000.0
-            
+
             //PortfolioId = 12
             //balance = 11000.0 + 100.0
             //invest = 15000.0
@@ -418,12 +421,15 @@ namespace Portfolio.Finance.Services.Test
             
             // portfolioId = 10
             // profit = 347.2 * 2 + 265.8 * 2 + 200.0 + 62.83 - 1000.0
+            // paperPrice = 4347.2 * 2 + 226.58 * 20 + 1018.4 + 1062.83
             
-            //portfolioId = 11
-            //profit = 265.8
+            // portfolioId = 11
+            // profit = 265.8
+            // paperPrice = 226.58 * 10
             
-            //portfolioId = 12
-            //profit = 347.2
+            // portfolioId = 12
+            // profit = 347.2
+            // paperPrice = 4347.2
             var assetOperations = new List<AssetOperation>()
             {
                 //price = 4347.2

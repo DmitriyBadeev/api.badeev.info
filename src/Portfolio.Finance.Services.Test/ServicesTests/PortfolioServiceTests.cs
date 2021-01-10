@@ -140,15 +140,63 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
             var profit4 = await _portfolioService.GetPaperProfit(12, 1);
             
             Assert.IsTrue(profit1.IsSuccess, "Неуспешное выполнение операции");
-            Assert.AreEqual(34720 * 2 + 26580 * 2 + 20000 + 6283 - 100000, profit1.Result, "Неверная прибыль");
+            Assert.AreEqual(34720 * 2 + 26580 * 2 + 20000 + 6283 - 100000, profit1.Result.Value, "Неверная прибыль");
+            Assert.AreEqual(FinanceHelpers.DivWithOneDigitRound(34720 * 2 + 26580 * 2 + 20000 + 6283 - 100000, 2000000), 
+                profit1.Result.Percent, "Неверный процент");
             
             Assert.IsTrue(profit2.IsSuccess, "Неуспешное выполнение операции");
-            Assert.AreEqual(26580, profit2.Result, "Неверная прибыль");
+            Assert.AreEqual(26580, profit2.Result.Value, "Неверная прибыль");
+            Assert.AreEqual(FinanceHelpers.DivWithOneDigitRound(26580, 1000000), 
+                profit2.Result.Percent, "Неверный процент");
             
             Assert.IsTrue(profit3.IsSuccess, "Неуспешное выполнение операции");
-            Assert.AreEqual(34720, profit3.Result, "Неверная прибыль");
+            Assert.AreEqual(34720, profit3.Result.Value, "Неверная прибыль");
+            Assert.AreEqual(FinanceHelpers.DivWithOneDigitRound(34720, 1500000), profit3.Result.Percent, "Неверный процент");
             
             Assert.IsFalse(profit4.IsSuccess, "Прибыль в чужом портфеле");
         }
+
+        [Test]
+        public async Task GetPaperPrice()
+        {
+            var paperPrice1 = await _portfolioService.GetPaperPrice(10, 1);
+            var paperPrice2 = await _portfolioService.GetPaperPrice(11, 1);
+            var paperPrice3 = await _portfolioService.GetPaperPrice(12, 2);
+            
+            var paperPrice4 = await _portfolioService.GetPaperPrice(12, 1);
+            
+            Assert.IsTrue(paperPrice1.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(434720 * 2 + 22658 * 20 + 101840 + 106283, paperPrice1.Result, "Неверная оценка");
+
+            Assert.IsTrue(paperPrice2.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(22658 * 10, paperPrice2.Result, "Неверная оценка");
+
+            Assert.IsTrue(paperPrice3.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(434720, paperPrice3.Result, "Неверная оценка");
+            
+            Assert.IsFalse(paperPrice4.IsSuccess, "Прибыль в чужом портфеле");
+        }
+
+        [Test]
+        public async Task GetCost()
+        {
+            var cost1 = await _portfolioService.GetCost(10, 1);
+            var cost2 = await _portfolioService.GetCost(11, 1);
+            var cost3 = await _portfolioService.GetCost(12, 2);
+            
+            var cost4 = await _portfolioService.GetCost(12, 1);
+            
+            Assert.IsTrue(cost1.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(434720 * 2 + 22658 * 20 + 101840 + 106283 + 115000 + 600000 - 81840, 
+                cost1.Result, "Неверная оценка");
+
+            Assert.IsTrue(cost2.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(22658 * 10 + 5000 + 800000, cost2.Result, "Неверная оценка");
+
+            Assert.IsTrue(cost3.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(434720 + 10000 + 1100000, cost3.Result, "Неверная оценка");
+            
+            Assert.IsFalse(cost4.IsSuccess, "Прибыль в чужом портфеле");
+        }  
     }
 }

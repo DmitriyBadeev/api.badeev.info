@@ -19,6 +19,10 @@ namespace Portfolio.Finance.Services.Interfaces
 
         Task<OperationResult<ValuePercent>> GetPortfolioPaymentProfit(int portfolioId, int userId);
 
-        Task<OperationResult<int>> GetPaperProfit(int portfolioId, int userId);
+        Task<OperationResult<ValuePercent>> GetPaperProfit(int portfolioId, int userId);
+
+        Task<OperationResult<int>> GetCost(int portfolioId, int userId);
+
+        Task<OperationResult<int>> GetPaperPrice(int portfolioId, int userId);
     }
 }

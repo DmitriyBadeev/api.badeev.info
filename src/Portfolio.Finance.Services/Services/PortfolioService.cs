@@ -15,7 +15,6 @@ namespace Portfolio.Finance.Services.Services
         private readonly FinanceDataService _financeData;
         private readonly IBalanceService _balanceService;
         private readonly IAssetsFactory _assetsFactory;
-        private List<PortfolioData> _portfolios;
         
         public PortfolioService(FinanceDataService financeData, IBalanceService balanceService, 
             IAssetsFactory assetsFactory)
@@ -60,6 +59,107 @@ namespace Portfolio.Finance.Services.Services
             };
         }
 
+        public async Task<OperationResult<int>> GetCost(int portfolioId, int userId)
+        {
+            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
+            
+            var validationResult = CommonValidate<int>(portfolioId, userId, portfolio);
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
+            var paperPriceResult = await GetPaperPrice(portfolioId, userId);
+            if (!paperPriceResult.IsSuccess)
+            {
+                return paperPriceResult;
+            }
+
+            var paymentProfitResult = await GetPortfolioPaymentProfit(portfolioId, userId);
+            if (!paymentProfitResult.IsSuccess)
+            {
+                return new OperationResult<int>()
+                {
+                    Message = paymentProfitResult.Message,
+                    IsSuccess = paymentProfitResult.IsSuccess
+                };
+            }
+
+            var portfolioBalance = _balanceService.GetBalance(portfolioId);
+
+            var cost = paperPriceResult.Result + paymentProfitResult.Result.Value + portfolioBalance;
+
+            return new OperationResult<int>()
+            {
+                IsSuccess = true,
+                Message = "Суммарная стоимость портфеля",
+                Result = cost
+            };
+        }
+
+        public async Task<OperationResult<int>> GetPaperPrice(int portfolioId, int userId)
+        {
+            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
+            
+            var validationResult = CommonValidate<int>(portfolioId, userId, portfolio);
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+            
+            var portfolioData = GetPortfolioData(portfolioId);
+
+            var sumPrice = 0;
+            foreach (var asset in portfolioData.Assets)
+            {
+                var price = await asset.GetAllPrice();
+
+                sumPrice += price;
+            }
+            
+            return new OperationResult<int>()
+            {
+                IsSuccess = true,
+                Message = $"Бумажная стоимость портфеля {portfolio.Name}",
+                Result = sumPrice
+            };
+        }
+        
+        public async Task<OperationResult<ValuePercent>> GetPaperProfit(int portfolioId, int userId)
+        {
+            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
+            
+            var validationResult = CommonValidate<ValuePercent>(portfolioId, userId, portfolio);
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
+            var portfolioData = GetPortfolioData(portfolioId);
+
+            var sumProfit = 0;
+            foreach (var asset in portfolioData.Assets)
+            {
+                var profit = await asset.GetPaperProfit();
+
+                sumProfit += profit;
+            }
+
+            var investingSum = _balanceService.GetInvestSum(portfolioId, userId);
+            var percent = FinanceHelpers.DivWithOneDigitRound(sumProfit, investingSum);
+
+            return new OperationResult<ValuePercent>()
+            {
+                IsSuccess = true,
+                Message = $"Бумажная прибыль портфеля {portfolio.Name}",
+                Result = new ValuePercent()
+                {
+                    Value = sumProfit,
+                    Percent = percent
+                }
+            };
+        }
+        
         public async Task<OperationResult> AddPaymentInPortfolio(int portfolioId, int userId, string ticket, int amount, 
             int paymentValue, DateTime date)
         {
@@ -110,34 +210,6 @@ namespace Portfolio.Finance.Services.Services
                 IsSuccess = true,
                 Message = $"Выплаты для портфеля {portfolio.Name}",
                 Result = payments
-            };
-        }
-
-        public async Task<OperationResult<int>> GetPaperProfit(int portfolioId, int userId)
-        {
-            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
-            
-            var validationResult = CommonValidate<int>(portfolioId, userId, portfolio);
-            if (validationResult != null)
-            {
-                return validationResult;
-            }
-
-            var portfolioData = GetPortfolioData(portfolioId);
-
-            var sumProfit = 0;
-            foreach (var asset in portfolioData.Assets)
-            {
-                var profit = await asset.GetPaperProfit();
-
-                sumProfit += profit;
-            }
-
-            return new OperationResult<int>()
-            {
-                IsSuccess = true,
-                Message = $"Бумажная прибыль портфеля {portfolio.Name}",
-                Result = sumProfit
             };
         }
 

@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using System.Collections.Generic;
+using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using Portfolio.Finance.Services;
@@ -14,6 +15,13 @@ namespace Portfolio.Finance.API.Queries
             [Service] IMarketService marketService)
         {
             return FinanceHelpers.GetPriceDouble(marketService.GetUserBalanceWithPaidPayments(userId));
+        }
+        
+        [Authorize]
+        public int GetAggregateInvestSum([CurrentUserIdGlobalState] int userId,
+            [Service] IBalanceService balanceService, IEnumerable<int> portfolioIds)
+        {
+            return balanceService.GetAggregateInvestSum(portfolioIds, userId);
         }
     }
 }

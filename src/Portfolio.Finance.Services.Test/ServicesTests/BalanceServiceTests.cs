@@ -119,5 +119,19 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
             
             Assert.AreEqual(0, sum4);
         }
+
+        [Test]
+        public void GetAggregateInvestSum()
+        {
+            var sum1 = _balanceService.GetAggregateInvestSum(new [] {1, 2}, 1);
+            var sum2 = _balanceService.GetAggregateInvestSum(new [] {1, 2, 3}, 1);
+            var sum3 = _balanceService.GetAggregateInvestSum(new [] {3}, 2);
+            var sum4 = _balanceService.GetInvestSum(3, 3);
+            
+            Assert.AreEqual(2350000, sum1);
+            Assert.AreEqual(2350000, sum2);
+            Assert.AreEqual(50000, sum3);
+            Assert.AreEqual(0, sum4);
+        }
     }
 }

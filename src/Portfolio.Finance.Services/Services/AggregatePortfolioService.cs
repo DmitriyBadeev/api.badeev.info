@@ -77,28 +77,62 @@ namespace Portfolio.Finance.Services.Services
             };
         }
 
-        public async Task<OperationResult<int>> AggregatePaperProfit(IEnumerable<int> portfolioIds, int userId)
+        public async Task<OperationResult<ValuePercent>> AggregatePaperProfit(IEnumerable<int> portfolioIds, int userId)
         {
             var sumProfit = 0;
+            var sumInvest = 0;
             
             var ids = portfolioIds.ToList();
             foreach (var portfolioId in ids)
             {
                 var resultProfit = await _portfolioService.GetPaperProfit(portfolioId, userId);
+                var resultInvestSum = _balanceService.GetInvestSum(portfolioId, userId);
                 
                 if (!resultProfit.IsSuccess)
                 {
                     return resultProfit;
                 }
 
-                sumProfit += resultProfit.Result;
+                sumProfit += resultProfit.Result.Value;
+                sumInvest += resultInvestSum;
             }
+            
+            var percent = FinanceHelpers.DivWithOneDigitRound(sumProfit, sumInvest);
 
-            return new OperationResult<int>()
+            return new OperationResult<ValuePercent>()
             {
                 IsSuccess = true,
                 Message = $"Суммарная бумажная прибыль портфелей(я) c id={string.Join(", ", ids)}",
-                Result = sumProfit
+                Result = new ValuePercent()
+                {
+                    Value = sumProfit,
+                    Percent = percent
+                }
+            };
+        }
+
+        public async Task<OperationResult<int>> AggregateCost(IEnumerable<int> portfolioIds, int userId)
+        {
+            var cost = 0;
+            
+            var ids = portfolioIds.ToList();
+            foreach (var portfolioId in ids)
+            {
+                var resultCost = await _portfolioService.GetCost(portfolioId, userId);
+                
+                if (!resultCost.IsSuccess)
+                {
+                    return resultCost;
+                }
+
+                cost += resultCost.Result;
+            }
+            
+            return new OperationResult<int>()
+            {
+                IsSuccess = true,
+                Message = $"Суммарная стоимость портфелей(я) c id={string.Join(", ", ids)}",
+                Result = cost
             };
         }
     }
