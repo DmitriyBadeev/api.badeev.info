@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Finance.Services.Services;
@@ -135,6 +136,54 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
             
             Assert.IsFalse(result2.IsSuccess, "Считается портфель чужого пользователя");
             Assert.IsFalse(result5.IsSuccess, "Считается портфель чужого пользователя");
+        }
+
+        [Test]
+        public void AggregateStocks()
+        {
+            var stocks1 = _aggregatePortfolioService.AggregateStocks(new[] {10, 11}, 1).Count();
+            var stocks2 = _aggregatePortfolioService.AggregateStocks(new[] {10, 11, 12}, 1).Count();
+            var stocks3 = _aggregatePortfolioService.AggregateStocks(new[] {10}, 1).Count();
+            var stocks4 = _aggregatePortfolioService.AggregateStocks(new[] {12}, 2).Count();
+            var stocks5 = _aggregatePortfolioService.AggregateStocks(new[] {12}, 1).Count();
+            
+            Assert.AreEqual(3, stocks1);
+            Assert.AreEqual(3, stocks2);
+            Assert.AreEqual(2, stocks3);
+            Assert.AreEqual(1, stocks4);
+            Assert.AreEqual(0, stocks5);
+        }
+        
+        [Test]
+        public void AggregateFonds()
+        {
+            var fonds1 = _aggregatePortfolioService.AggregateFonds(new[] {10, 11}, 1).Count();
+            var fonds2 = _aggregatePortfolioService.AggregateFonds(new[] {10, 11, 12}, 1).Count();
+            var fonds3 = _aggregatePortfolioService.AggregateFonds(new[] {10}, 1).Count();
+            var fonds4 = _aggregatePortfolioService.AggregateFonds(new[] {12}, 2).Count();
+            var fonds5 = _aggregatePortfolioService.AggregateFonds(new[] {12}, 1).Count();
+            
+            Assert.AreEqual(1, fonds1);
+            Assert.AreEqual(1, fonds2);
+            Assert.AreEqual(1, fonds3);
+            Assert.AreEqual(0, fonds4);
+            Assert.AreEqual(0, fonds5);
+        }
+        
+        [Test]
+        public void AggregateBonds()
+        {
+            var bonds1 = _aggregatePortfolioService.AggregateBonds(new[] {10, 11}, 1).Count();
+            var bonds2 = _aggregatePortfolioService.AggregateBonds(new[] {10, 11, 12}, 1).Count();
+            var bonds3 = _aggregatePortfolioService.AggregateBonds(new[] {10}, 1).Count();
+            var bonds4 = _aggregatePortfolioService.AggregateBonds(new[] {12}, 2).Count();
+            var bonds5 = _aggregatePortfolioService.AggregateBonds(new[] {12}, 1).Count();
+            
+            Assert.AreEqual(2, bonds1);
+            Assert.AreEqual(2, bonds2);
+            Assert.AreEqual(2, bonds3);
+            Assert.AreEqual(0, bonds4);
+            Assert.AreEqual(0, bonds5);
         }
     }
 }

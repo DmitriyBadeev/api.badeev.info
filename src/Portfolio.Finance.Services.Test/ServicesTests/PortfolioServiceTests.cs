@@ -197,6 +197,51 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
             Assert.AreEqual(434720 + 10000 + 1100000, cost3.Result, "Неверная оценка");
             
             Assert.IsFalse(cost4.IsSuccess, "Прибыль в чужом портфеле");
-        }  
+        }
+
+        [Test]
+        public void GetStocks()
+        {
+            var stocks1 = _portfolioService.GetStocks(10, 1).Count();
+            var stocks2 = _portfolioService.GetStocks(11, 1).Count();
+            var stocks3 = _portfolioService.GetStocks(12, 2).Count();
+            
+            var stocks4 = _portfolioService.GetStocks(12, 1).Count();
+
+            Assert.AreEqual(2, stocks1);
+            Assert.AreEqual(1, stocks2);
+            Assert.AreEqual(1, stocks3);
+            Assert.AreEqual(0, stocks4);
+        }
+        
+        [Test]
+        public void GetFonds()
+        {
+            var stocks1 = _portfolioService.GetFonds(10, 1).Count();
+            var stocks2 = _portfolioService.GetFonds(11, 1).Count();
+            var stocks3 = _portfolioService.GetFonds(12, 2).Count();
+            
+            var stocks4 = _portfolioService.GetFonds(12, 1).Count();
+
+            Assert.AreEqual(1, stocks1);
+            Assert.AreEqual(0, stocks2);
+            Assert.AreEqual(0, stocks3);
+            Assert.AreEqual(0, stocks4);
+        }
+        
+        [Test]
+        public void GetBonds()
+        {
+            var stocks1 = _portfolioService.GetBonds(10, 1).Count();
+            var stocks2 = _portfolioService.GetBonds(11, 1).Count();
+            var stocks3 = _portfolioService.GetBonds(12, 2).Count();
+            
+            var stocks4 = _portfolioService.GetBonds(12, 1).Count();
+
+            Assert.AreEqual(2, stocks1);
+            Assert.AreEqual(0, stocks2);
+            Assert.AreEqual(0, stocks3);
+            Assert.AreEqual(0, stocks4);
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.DTO;
+using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Infrastructure.Services;
 
@@ -246,10 +247,69 @@ namespace Portfolio.Finance.Services.Services
             };
         }
         
+        public IEnumerable<StockInfo> GetStocks(int portfolioId, int userId)
+        {
+            var portfolio = GetPortfolioData(portfolioId);
+
+            if (portfolio == null || portfolio.UserId != userId)
+            {
+                yield break;
+            }
+
+            foreach (var asset in portfolio.Assets)
+            {
+                var type = asset.GetType();
+
+                if (type.Name == "StockInfo")
+                    yield return (StockInfo)asset;
+            }
+        }
+
+        public IEnumerable<FondInfo> GetFonds(int portfolioId, int userId)
+        {
+            var portfolio = GetPortfolioData(portfolioId);
+
+            if (portfolio == null || portfolio.UserId != userId)
+            {
+                yield break;
+            }
+
+            foreach (var asset in portfolio.Assets)
+            {
+                var type = asset.GetType();
+
+                if (type.Name == "FondInfo")
+                    yield return (FondInfo)asset;
+            }
+        }
+
+        public IEnumerable<BondInfo> GetBonds(int portfolioId, int userId)
+        {
+            var portfolio = GetPortfolioData(portfolioId);
+
+            if (portfolio == null || portfolio.UserId != userId)
+            {
+                yield break;
+            }
+
+            foreach (var asset in portfolio.Assets)
+            {
+                var type = asset.GetType();
+
+                if (type.Name == "BondInfo")
+                    yield return (BondInfo)asset;
+            }
+        }
+        
         private PortfolioData GetPortfolioData(int portfolioId)
         {
             var userPortfolio = _financeData.EfContext.Portfolios
                 .Find(portfolioId);
+
+            if (userPortfolio == null)
+            {
+                return null;
+            }
             
             var portfolioData = new PortfolioData
             {

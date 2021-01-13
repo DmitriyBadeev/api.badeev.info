@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.DTO;
+using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Interfaces;
 
 namespace Portfolio.Finance.Services.Services
@@ -134,6 +135,21 @@ namespace Portfolio.Finance.Services.Services
                 Message = $"Суммарная стоимость портфелей(я) c id={string.Join(", ", ids)}",
                 Result = cost
             };
+        }
+
+        public IEnumerable<StockInfo> AggregateStocks(IEnumerable<int> portfolioIds, int userId)
+        {
+            return portfolioIds.SelectMany(portfolioId => _portfolioService.GetStocks(portfolioId, userId));
+        }
+        
+        public IEnumerable<FondInfo> AggregateFonds(IEnumerable<int> portfolioIds, int userId)
+        {
+            return portfolioIds.SelectMany(portfolioId => _portfolioService.GetFonds(portfolioId, userId));
+        }
+        
+        public IEnumerable<BondInfo> AggregateBonds(IEnumerable<int> portfolioIds, int userId)
+        {
+            return portfolioIds.SelectMany(portfolioId => _portfolioService.GetBonds(portfolioId, userId));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.DTO;
+using Portfolio.Finance.Services.Entities;
 
 namespace Portfolio.Finance.Services.Interfaces
 {
@@ -24,5 +25,11 @@ namespace Portfolio.Finance.Services.Interfaces
         Task<OperationResult<int>> GetCost(int portfolioId, int userId);
 
         Task<OperationResult<int>> GetPaperPrice(int portfolioId, int userId);
+
+        IEnumerable<StockInfo> GetStocks(int portfolioId, int userId);
+        
+        IEnumerable<FondInfo> GetFonds(int portfolioId, int userId);
+        
+        IEnumerable<BondInfo> GetBonds(int portfolioId, int userId);
     }
 }
