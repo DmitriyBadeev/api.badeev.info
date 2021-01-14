@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using Portfolio.Finance.Services;
+using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Interfaces;
 
 namespace Portfolio.Finance.API.Queries
@@ -11,10 +12,10 @@ namespace Portfolio.Finance.API.Queries
     public class BalanceQueries
     {
         [Authorize]
-        public double GetCurrentUserBalance([CurrentUserIdGlobalState] int userId,
-            [Service] IMarketService marketService)
+        public async Task<OperationResult<int>> AggregateBalance([CurrentUserIdGlobalState] int userId,
+            [Service] IBalanceService balanceService, IEnumerable<int> portfolioIds)
         {
-            return FinanceHelpers.GetPriceDouble(marketService.GetUserBalanceWithPaidPayments(userId));
+            return await balanceService.AggregateBalance(portfolioIds, userId);
         }
         
         [Authorize]

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Entities.Finance;
 using Portfolio.Finance.Services.DTO;
-using Portfolio.Finance.Services.Entities;
 using Portfolio.Finance.Services.Interfaces;
 using Portfolio.Infrastructure.Services;
 
@@ -49,8 +48,8 @@ namespace Portfolio.Finance.Services.Services
                 };
             }
 
-            var currentBalance = _balanceService.GetBalance(portfolioId);
-            if (price > currentBalance)
+            var currentBalanceResult = await _balanceService.GetBalance(portfolioId, portfolio.UserId);
+            if (price > currentBalanceResult.Result)
             {
                 return new OperationResult
                 {
@@ -138,47 +137,6 @@ namespace Portfolio.Finance.Services.Services
             };
         }
 
-        public int GetAllPaperPrice(int userId)
-        {
-            return GetPortfoliosData(userId)
-                .Aggregate(0, (total, portfolio) => total + portfolio.Assets
-                    .Aggregate(0, (totalPortfolio, asset) => totalPortfolio + asset.GetAllPrice().Result));
-        }
-
-        public int GetAllPaperProfit(int userId)
-        {
-            return GetPortfoliosData(userId)
-                .Aggregate(0, (total, portfolio) => total + portfolio.Assets
-                    .Aggregate(0, (totalPortfolio, asset) => totalPortfolio + asset.GetPaperProfit().Result));
-        }
-
-        public int GetAllPaymentProfit(int userId)
-        {
-            return _financeDataService.EfContext.Payments
-                .Include(p => p.Portfolio)
-                .Where(p => p.Portfolio.UserId == userId)
-                .ToList()
-                .Aggregate(0, (total, payment) => total + payment.PaymentValue);
-        }
-
-        public int GetAllCost(int userId)
-        {
-            return GetAllPaperPrice(userId) + GetAllPaymentProfit(userId) +
-                   _balanceService.GetAllBalanceUser(userId);
-        }
-
-        public double GetPercentOfPaperProfit(int userId)
-        {
-            return FinanceHelpers.DivWithOneDigitRound(GetAllPaperProfit(userId),
-                _balanceService.GetAllInvestSum(userId));
-        }
-
-        public double GetPercentOfPaymentProfit(int userId)
-        {
-            return FinanceHelpers.DivWithOneDigitRound(GetAllPaymentProfit(userId),
-                _balanceService.GetAllInvestSum(userId));
-        }
-
         public List<PaymentData> GetAllFuturePayments(int userId)
         {
             var portfolios = GetPortfoliosData(userId);
@@ -194,61 +152,7 @@ namespace Portfolio.Finance.Services.Services
 
             return payments;
         }
-
-        public IEnumerable<StockInfo> GetStocks(int userId, int portfolioId)
-        {
-            var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
-
-            if (portfolio == null)
-            {
-                yield break;
-            }
-
-            foreach (var asset in portfolio.Assets)
-            {
-                var type = asset.GetType();
-
-                if (type.Name == "StockInfo")
-                    yield return (StockInfo)asset;
-            }
-        }
-
-        public IEnumerable<FondInfo> GetFonds(int userId, int portfolioId)
-        {
-            var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
-
-            if (portfolio == null)
-            {
-                yield break;
-            }
-
-            foreach (var asset in portfolio.Assets)
-            {
-                var type = asset.GetType();
-
-                if (type.Name == "FondInfo")
-                    yield return (FondInfo)asset;
-            }
-        }
-
-        public IEnumerable<BondInfo> GetBonds(int userId, int portfolioId)
-        {
-            var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);
-
-            if (portfolio == null)
-            {
-                yield break;
-            }
-
-            foreach (var asset in portfolio.Assets)
-            {
-                var type = asset.GetType();
-
-                if (type.Name == "BondInfo")
-                    yield return (BondInfo)asset;
-            }
-        }
-
+        
         public async Task<AssetPrices> GetAllAssetPrices(int userId)
         {
             var portfolios = GetPortfoliosData(userId);
@@ -276,11 +180,6 @@ namespace Portfolio.Finance.Services.Services
             }
 
             return assetPrices;
-        }
-
-        public int GetUserBalanceWithPaidPayments(int userId)
-        {
-            return _balanceService.GetAllBalanceUser(userId) + GetAllPaymentProfit(userId);
         }
 
         private bool HasAsset(int portfolioId, int amount, string ticket, int userId)

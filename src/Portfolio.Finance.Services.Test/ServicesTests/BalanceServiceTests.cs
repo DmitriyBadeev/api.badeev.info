@@ -23,36 +23,46 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         }
 
         [Test]
-        public void GetBalance()
+        public async Task GetBalance()
         {
-            var balance1 = _balanceService.GetBalance(1);
-            var balance2 = _balanceService.GetBalance(2);
-            var balance3 = _balanceService.GetBalance(3);
-
-            Assert.AreEqual(762710 - 81840 - 205621, balance1);
-            Assert.AreEqual(28570, balance2);
-            Assert.AreEqual(28570, balance3);
+            var balance1 = await _balanceService.GetBalance(1, 1);
+            var balance2 = await _balanceService.GetBalance(2, 1);
+            var balance3 = await _balanceService.GetBalance(3, 2);
+            var balance4 = await _balanceService.GetBalance(3, 1);
+            
+            Assert.IsTrue(balance1.IsSuccess);
+            Assert.AreEqual(762710 - 81840 - 205621 + 20000, balance1.Result);
+            Assert.AreEqual(28570 + 5000, balance2.Result);
+            Assert.AreEqual(28570 + 10000, balance3.Result);
+            
+            Assert.IsFalse(balance4.IsSuccess);
         }
 
         [Test]
-        public void GetAllBalanceUser()
+        public async Task AggregateBalance()
         {
-            var allUserBalance1 = _balanceService.GetAllBalanceUser(1);
-            var allUserBalance2 = _balanceService.GetAllBalanceUser(2);
-
-            Assert.AreEqual(762710 + 28570 - 81840 - 205621, allUserBalance1);
-            Assert.AreEqual(28570, allUserBalance2);
+            var balance1 = await _balanceService.AggregateBalance(new [] {1, 2}, 1);
+            var balance2 = await _balanceService.AggregateBalance(new [] {1, 2, 3}, 1);
+            var balance3 = await _balanceService.AggregateBalance(new [] {3}, 2);
+            
+            Assert.IsTrue(balance1.IsSuccess);
+            Assert.AreEqual(762710 + 28570 - 81840 - 205621 + 25000, balance1.Result);
+            
+            Assert.IsFalse(balance2.IsSuccess);            
+            
+            Assert.IsTrue(balance3.IsSuccess);
+            Assert.AreEqual(28570 + 10000, balance3.Result);
         }
 
         [Test]
         public async Task RefillBalance()
         {
-            var balanceBefore = _balanceService.GetBalance(1);
+            var balanceBefore = await _balanceService.GetBalance(1, 1);
             var result = await _balanceService.RefillBalance(1, 300000, DateTime.Now);
             
             Assert.IsTrue(result.IsSuccess);
-            var balanceAfter = _balanceService.GetBalance(1);
-            Assert.AreEqual(balanceAfter - balanceBefore, 300000);
+            var balanceAfter = await _balanceService.GetBalance(1, 1);
+            Assert.AreEqual(balanceAfter.Result - balanceBefore.Result, 300000);
         }
 
         [Test]
@@ -68,12 +78,12 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
         [Test]
         public async Task WithdrawalBalance()
         {
-            var balanceBefore = _balanceService.GetBalance(1);
+            var balanceBefore = await _balanceService.GetBalance(1,1);
             var result = await _balanceService.WithdrawalBalance(1, 100000, DateTime.Now);
 
             Assert.IsTrue(result.IsSuccess);
-            var balanceAfter = _balanceService.GetBalance(1);
-            Assert.AreEqual(balanceBefore - balanceAfter, 100000);
+            var balanceAfter = await _balanceService.GetBalance(1, 1);
+            Assert.AreEqual(balanceBefore.Result - balanceAfter.Result, 100000);
         }
 
         [Test]
@@ -94,14 +104,6 @@ namespace Portfolio.Finance.Services.Test.ServicesTests
             var result = _balanceService.GetAllCurrencyOperations(1);
            
             Assert.AreEqual(2, result.Count());
-        }
-
-        [Test]
-        public void GetAllInvestSum()
-        {
-            var result = _balanceService.GetAllInvestSum(1);
-
-            Assert.AreEqual(2350000, result);
         }
 
         [Test]

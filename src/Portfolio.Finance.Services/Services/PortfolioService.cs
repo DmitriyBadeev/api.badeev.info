@@ -76,19 +76,9 @@ namespace Portfolio.Finance.Services.Services
                 return paperPriceResult;
             }
 
-            var paymentProfitResult = await GetPortfolioPaymentProfit(portfolioId, userId);
-            if (!paymentProfitResult.IsSuccess)
-            {
-                return new OperationResult<int>()
-                {
-                    Message = paymentProfitResult.Message,
-                    IsSuccess = paymentProfitResult.IsSuccess
-                };
-            }
+            var portfolioBalanceResult = await _balanceService.GetBalance(portfolioId, userId);
 
-            var portfolioBalance = _balanceService.GetBalance(portfolioId);
-
-            var cost = paperPriceResult.Result + paymentProfitResult.Result.Value + portfolioBalance;
+            var cost = paperPriceResult.Result + portfolioBalanceResult.Result;
 
             return new OperationResult<int>()
             {

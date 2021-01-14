@@ -24,23 +24,23 @@ namespace Portfolio.Finance.API.Queries
 
         [Authorize]
         public async Task<List<StockReport>> GetStockReports([CurrentUserIdGlobalState] int userId,
-            [Service] IMarketService marketService, int portfolioId)
+            [Service] IPortfolioService portfolioService, int portfolioId)
         {
-            return await QueryGetters.GetStockReports(userId, marketService, portfolioId);
+            return await QueryGetters.GetStockReports(userId, portfolioService, portfolioId);
         }
 
         [Authorize]
         public async Task<List<FondReport>> GetFondReports([CurrentUserIdGlobalState] int userId,
-            [Service] IMarketService marketService, int portfolioId)
+            [Service] IPortfolioService portfolioService, int portfolioId)
         {
-            return await QueryGetters.GetFondReports(userId, marketService, portfolioId);
+            return await QueryGetters.GetFondReports(userId, portfolioService, portfolioId);
         }
 
         [Authorize]
         public async Task<List<BondReport>> GetBondReports([CurrentUserIdGlobalState] int userId,
-            [Service] IMarketService marketService, int portfolioId)
+            [Service] IPortfolioService portfolioService, int portfolioId)
         {
-            return await QueryGetters.GetBondReports(userId, marketService, portfolioId);
+            return await QueryGetters.GetBondReports(userId, portfolioService, portfolioId);
         }
 
         [Authorize]

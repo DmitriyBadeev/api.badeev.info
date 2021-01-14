@@ -19,30 +19,11 @@ namespace Portfolio.Finance.Services.Services
             _financeDataService = financeDataService;
         }
 
-        public int GetAllBalanceUser(int userId)
-        {
-            var userPortfolios = _financeDataService.EfContext.Portfolios
-                .Where(p => p.UserId == userId)
-                .ToList();
-
-            return userPortfolios.Aggregate(0, (total, portfolio) => total + GetBalance(portfolio.Id));
-        }
-
         public IEnumerable<CurrencyOperation> GetAllCurrencyOperations(int portfolioId)
         {
             return _financeDataService.EfContext.CurrencyOperations.Where(o => o.PortfolioId == portfolioId);
         }
 
-        public int GetAllInvestSum(int userId)
-        {
-            var operations = _financeDataService.EfContext.CurrencyOperations
-                .Include(o => o.CurrencyAction)
-                .Include(o => o.Portfolio)
-                .Where(o => o.Portfolio.UserId == userId);
-
-            return GetOperationsSum(operations);
-        }
-        
         public int GetAggregateInvestSum(IEnumerable<int> portfolioIds, int userId)
         {
             var operations = _financeDataService.EfContext.CurrencyOperations
@@ -63,29 +44,82 @@ namespace Portfolio.Finance.Services.Services
             return GetOperationsSum(operations);
         }
 
-        public int GetBalance(int portfolioId)
+        public async Task<OperationResult<int>> AggregateBalance(IEnumerable<int> portfolioIds, int userId)
         {
             var balance = 0;
 
+            var ids = portfolioIds.ToList();
+            foreach (var portfolioId in ids)
+            {
+                var portfolioBalance = await GetBalance(portfolioId, userId);
+
+                if (!portfolioBalance.IsSuccess)
+                {
+                    return portfolioBalance;
+                }
+
+                balance += portfolioBalance.Result;
+            }
+
+            return new OperationResult<int>()
+            {
+                IsSuccess = true,
+                Message = $"Баланс портфелей с id={string.Join(", ", ids)}",
+                Result = balance
+            };
+        }
+        
+        public async Task<OperationResult<int>> GetBalance(int portfolioId, int userId)
+        {
+            var portfolio = await _financeDataService.EfContext.Portfolios.FindAsync(portfolioId);
+
+            if (portfolio == null)
+            {
+                return new OperationResult<int>()
+                {
+                    IsSuccess = false,
+                    Message = "Порфель не найден"
+                };
+            }
+
+            if (portfolio.UserId != userId)
+            {
+                return new OperationResult<int>()
+                {
+                    IsSuccess = false,
+                    Message = "Портфель не принадлежит пользователю"
+                };
+            }
+            
             var currencyOperations = _financeDataService.EfContext.CurrencyOperations
                 .Where(o => o.PortfolioId == portfolioId)
                 .Include(o => o.CurrencyAction);
 
-            foreach (var currencyOperation in currencyOperations)
-            {
-                balance = ApplyCurrencyOperation(currencyOperation, balance);
-            }
+            var balance = Enumerable.Aggregate(currencyOperations, 0, 
+                (current, currencyOperation) => ApplyCurrencyOperation(currencyOperation, current));
 
             var assetOperations = _financeDataService.EfContext.AssetOperations
                 .Where(o => o.PortfolioId == portfolioId)
                 .Include(o => o.AssetAction);
 
-            foreach (var assetOperation in assetOperations)
-            {
-                balance = ApplyAssetOperation(assetOperation, balance);
-            }
+            var payments = await _financeDataService.EfContext.Payments
+                .Where(p => p.PortfolioId == portfolioId)
+                .ToListAsync();
+                
+            var paymentProfit = payments    
+                .Aggregate(0, (sum, payment) => sum + payment.PaymentValue);
 
-            return balance;
+            balance = payments.Aggregate(balance, (current, payment) => current + payment.PaymentValue);
+            
+            balance = Enumerable.Aggregate(assetOperations, balance, 
+                (current, assetOperation) => ApplyAssetOperation(assetOperation, current));
+
+            return new OperationResult<int>()
+            {
+                IsSuccess = true,
+                Message = $"Баланс портфеля {portfolio.Name}",
+                Result = balance
+            };
         }
         
         //TODO Проверка на нужного пользователя
@@ -161,8 +195,8 @@ namespace Portfolio.Finance.Services.Services
                 };
             }
 
-            var currentBalance = GetBalance(portfolioId);
-            if (price > currentBalance)
+            var currentBalanceResult = await GetBalance(portfolioId, portfolio.UserId);
+            if (price > currentBalanceResult.Result)
             {
                 return new OperationResult()
                 {

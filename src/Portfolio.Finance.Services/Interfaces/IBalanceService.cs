@@ -8,14 +8,11 @@ namespace Portfolio.Finance.Services.Interfaces
 {
     public interface IBalanceService
     {
-        int GetBalance(int portfolioId);
+        Task<OperationResult<int>> AggregateBalance(IEnumerable<int> portfolioIds, int userId);
+        Task<OperationResult<int>> GetBalance(int portfolioId, int userId);
 
         IEnumerable<CurrencyOperation> GetAllCurrencyOperations(int portfolioId);
         
-        int GetAllInvestSum(int userId);
-
-        int GetAllBalanceUser(int userId);
-
         Task<OperationResult> RefillBalance(int portfolioId, int price, DateTime date);
 
         Task<OperationResult> WithdrawalBalance(int portfolioId, int price, DateTime date);

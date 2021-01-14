@@ -26,28 +26,28 @@ namespace Portfolio.Finance.API.Subscriptions
         [Subscribe]
         [Topic]
         public async Task<List<StockReport>> OnUpdateStockReports(
-            [Service] IMarketService marketService,
+            [Service] IPortfolioService portfolioService,
             [EventMessage] int userId, int portfolioId)
         {
-            return await QueryGetters.GetStockReports(userId, marketService, portfolioId);
+            return await QueryGetters.GetStockReports(userId, portfolioService, portfolioId);
         }
 
         [Subscribe]
         [Topic]
         public async Task<List<FondReport>> OnUpdateFondReports(
-            [Service] IMarketService marketService,
+            [Service] IPortfolioService portfolioService,
             [EventMessage] int userId, int portfolioId)
         {
-            return await QueryGetters.GetFondReports(userId, marketService, portfolioId);
+            return await QueryGetters.GetFondReports(userId, portfolioService, portfolioId);
         }
 
         [Subscribe]
         [Topic]
         public async Task<List<BondReport>> OnUpdateBondReports(
-            [Service] IMarketService marketService,
+            [Service] IPortfolioService portfolioService,
             [EventMessage] int userId, int portfolioId)
         {
-            return await QueryGetters.GetBondReports(userId, marketService, portfolioId);
+            return await QueryGetters.GetBondReports(userId, portfolioService, portfolioId);
         }
 
         [Subscribe]

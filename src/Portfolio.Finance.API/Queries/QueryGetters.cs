@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Portfolio.Finance.API.Queries.Response;
 using Portfolio.Finance.Services;
 using Portfolio.Finance.Services.DTO;
 using Portfolio.Finance.Services.Interfaces;
-using Portfolio.Finance.Services.Services;
 
 namespace Portfolio.Finance.API.Queries
 {
@@ -15,17 +13,23 @@ namespace Portfolio.Finance.API.Queries
         public static AllPortfoliosReport GetAllPortfoliosReport(int userId, IMarketService marketService, 
             IBalanceService balanceService, IAggregatePortfolioService aggregatePortfolioService)
         {
-            var allCost = FinanceHelpers.GetPriceDouble(marketService.GetAllCost(userId));
-            var allPaperProfit = FinanceHelpers.GetPriceDouble(marketService.GetAllPaperProfit(userId));
-            var allPaperProfitPercent = marketService.GetPercentOfPaperProfit(userId);
+            var allCostResult = aggregatePortfolioService.AggregateCost(new[] {1, 2}, userId).Result;
+            var allCost = FinanceHelpers.GetPriceDouble(allCostResult.Result);
+            
+            var paperProfitResult = 
+                aggregatePortfolioService.AggregatePaperProfit(new[] {1, 2}, userId).Result.Result;
+            var allPaperProfit = FinanceHelpers.GetPriceDouble(paperProfitResult.Value);
+            var allPaperProfitPercent = paperProfitResult.Percent;
 
             var paymentProfitResult =
                 aggregatePortfolioService.AggregatePaymentProfit(new[] {1, 2}, userId).Result.Result;
             var allPaymentProfit = FinanceHelpers.GetPriceDouble(paymentProfitResult.Value);
             var allPaymentProfitPercent = paymentProfitResult.Percent;
             
-            var allInvestSum = FinanceHelpers.GetPriceDouble(balanceService.GetAllInvestSum(userId));
-            var allBalance = FinanceHelpers.GetPriceDouble(marketService.GetUserBalanceWithPaidPayments(userId));
+            var allInvestSum = FinanceHelpers.GetPriceDouble(balanceService.GetAggregateInvestSum(new []{1, 2}, userId));
+
+            var balanceResult = balanceService.AggregateBalance(new[] {1, 2}, userId).Result;
+            var allBalance = FinanceHelpers.GetPriceDouble(balanceResult.Result);
 
             return new AllPortfoliosReport()
             {
@@ -39,9 +43,10 @@ namespace Portfolio.Finance.API.Queries
             };
         }
 
-        public static async Task<List<StockReport>> GetStockReports(int userId, IMarketService marketService, int portfolioId)
+        public static async Task<List<StockReport>> GetStockReports(int userId, 
+            IPortfolioService portfolioService, int portfolioId)
         {
-            var stocks = marketService.GetStocks(portfolioId, userId);
+            var stocks = portfolioService.GetStocks(portfolioId, userId);
 
             var stockReports = new List<StockReport>();
 
@@ -77,9 +82,9 @@ namespace Portfolio.Finance.API.Queries
             return stockReports;
         }
 
-        public static async Task<List<FondReport>> GetFondReports(int userId, IMarketService marketService, int portfolioId)
+        public static async Task<List<FondReport>> GetFondReports(int userId, IPortfolioService portfolioService, int portfolioId)
         {
-            var fonds = marketService.GetFonds(portfolioId, userId);
+            var fonds = portfolioService.GetFonds(portfolioId, userId);
 
             var fondReports = new List<FondReport>();
 
@@ -113,9 +118,9 @@ namespace Portfolio.Finance.API.Queries
             return fondReports;
         }
 
-        public static async Task<List<BondReport>> GetBondReports(int userId, IMarketService marketService, int portfolioId)
+        public static async Task<List<BondReport>> GetBondReports(int userId, IPortfolioService portfolioService, int portfolioId)
         {
-            var bonds = marketService.GetBonds(portfolioId, userId);
+            var bonds = portfolioService.GetBonds(portfolioId, userId);
 
             var bondReports = new List<BondReport>();
 
